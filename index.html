@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <!--
 *
-* Copyright (C) 2014, bitmovin GmbH, All Rights Reserved
+* Copyright (C) 2015, bitmovin GmbH, All Rights Reserved
 *
 * Created on: 2014-11-26 13:47:08
+* Update on:  2015-04-14 10:24:34
 * Author:     Reinhard Grandl <reinhard.grandl@bitmovin.net>
 *
 * This source code and its use and distribution, is subject to the terms
@@ -83,7 +84,6 @@
             <br>
             <span id='audioBuffer'>0.0</span> [sec]<br>
             <span id='videoBuffer'>0.0</span> [sec]<br>
-            <span id='resolution'>000 x 000</span><br>
             <br>
             <br>
             <span id='dlAudioBitrate'>0.0</span> [kbps]<br>
@@ -113,35 +113,52 @@
 
     <script type="text/javascript">
       window.graphTimeSeries = new TimeSeries();
-
       var conf = {
-        key:      'INSERT YOUR KEY HERE',
-		mpd: 'http://bitcdn-global.bitmovin.com/content/sintel/sintel.mpd',
-		mobilempd: 'http://bitcdn-global.bitmovin.com/content/sintel/sintel-mobile.mpd',
-		hls: 'http://bitcdn-global.bitmovin.com/content/sintel/hls/playlist.m3u8',
-		poster: 'bitdash/sintel-poster.png',
-        autoplay: true,
-        muted:    false,
+        key: 'INSERT YOUR KEY HERE',
+        source: {
+            mpd:    '//bitdash-a.akamaihd.net/content/sintel/sintel.mpd',
+            hls:    '//bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8',
+            poster: 'sintel-poster.png'
+        },
+        playback: {
+            muted:          false,
+            autoplay:       true
+        },
         events: {
-          onError: function(data) { console.warn("bitdash error: " + data.code + ": " + data.message); },
-          onReady: function(obj)  { console.warn(this.getVersion(true) + ' onReady: ', obj); startGraph(); }
+            onError: function(obj) {
+              console.warn('bitdash Error: ', obj);
+            },
+            onReady: function(obj) {
+              console.warn(this.getVersion(true) + ' onReady: ', obj);
+              startGraph();
+            },
+            onPlay:  function(obj) {
+              console.warn('bitdash onPlay: ', obj);
+            },
+            onPause: function(obj) {
+              console.warn('bitdash onPause: ', obj);
+            },
+            onPlaybackFinished: function(obj) {
+             console.warn('bitdash onPlaybackFinished: ', obj);
+           }
         }
-      };
+    };
 
       var player = bitdash("player").setup(conf);
 
       setInterval(function() {
-        var dlVidBitrate = Math.round(player.getDownloadedVideoBitrate() / 10.24) / 100;
+        var downloadedVideoData = player.getDownloadedVideoData();
+        var downloadedAudioData = player.getDownloadedAudioData();
+        var videoBitrateKbps    = Math.round(downloadedVideoData.bitrate / 10.24) / 100;
 
         document.getElementById('version').innerHTML          = player.getVersion();
         document.getElementById('audioBuffer').innerHTML      = player.getAudioBufferLength();
         document.getElementById('videoBuffer').innerHTML      = player.getVideoBufferLength();
-        document.getElementById('resolution').innerHTML       = player.getCurrentVideoWidth() + ' x ' + player.getCurrentVideoHeight();
-        document.getElementById('dlAudioBitrate').innerHTML   = Math.round(player.getDownloadedAudioBitrate() / 10.24) / 100;
-        document.getElementById('dlResolution').innerHTML     = player.getDownloadedVideoWidth() + ' x ' + player.getDownloadedVideoHeight();
-        document.getElementById('dlVideoBitrate').innerHTML   = Math.round(player.getDownloadedVideoBitrate() / 10.24) / 100;
+        document.getElementById('dlAudioBitrate').innerHTML   = Math.round(downloadedAudioData.bitrate / 10.24) / 100;
+        document.getElementById('dlResolution').innerHTML     = downloadedVideoData.width + ' x ' + downloadedVideoData.height;
+        document.getElementById('dlVideoBitrate').innerHTML   = videoBitrateKbps;
 
-        window.graphTimeSeries.append(new Date().getTime(), dlVidBitrate);
+        window.graphTimeSeries.append(new Date().getTime(), videoBitrateKbps);
       }, 500);
 
       var startGraph = function() {
