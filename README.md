@@ -21,6 +21,10 @@ The folling content is provided with this sample:
 * Sintel DASH MPD (limited to 1.5 Mbps) incl. multiple subtitles and audio tracks
 * Sintel HLS M3U8 incl. multiple subtitles and audio tracks
 
+## Generate Content The Easy Way
+
+To generate MPEG-DASH content on your own, please have a look at http://www.bitcodin.com/ and give it a free try!
+
 ## bitdash Demo Area
 
 Additional demos can be found in the bitdash demo area at www.dash-player.com/demo/
