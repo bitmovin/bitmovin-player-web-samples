@@ -1,4 +1,4 @@
-# bitdash MPEG-DASH Player for HTML5 and Web - Example Page
+# bitdash MPEG-DASH & HLS Player for HTML5 and Web - Example Page
 
 This is a sample page for the bitdash MPEG-DASH player for HTML5 (MSE) as well as Flash. 
 
@@ -18,7 +18,7 @@ To generate MPEG-DASH content on your own, please have a look at http://www.bitc
 
 ## Additional Demos and Documentation
 
-Additional demos can be found in the bitdash demo area at www.dash-player.com/demo/. For more information on our rich API and player configuration, we refer to developer.dash-player.com
+Additional demos can be found in the bitdash demo area at www.dash-player.com/demo/. For more information on our rich API and player configuration, we refer to http://developer.dash-player.com/
 
 ## Copyright
 
