@@ -3,195 +3,101 @@
 *
 * Copyright (C) 2015, bitmovin GmbH, All Rights Reserved
 *
-* Created on: 2014-11-26 13:47:08
-* Update on:  2015-04-14 10:24:34
-* Author:     Reinhard Grandl <reinhard.grandl@bitmovin.net>
+* Created on: 2015-07-25 11:35:04
+* Author:     bitmovin GmbH <dash-player@bitmovin.net>
 *
 * This source code and its use and distribution, is subject to the terms
 * and conditions of the applicable license agreement.
 *
 -->
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
+<head>
+<title>bitdash demo</title>
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href='http://fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'/>
+<!-- bitdash player -->
+<script type="text/javascript" src="bitdash.min.js">
+</script>
+<style>
 
-    <!-- bitdash player -->
-    <script type="text/javascript" src="bitdash.min.js"></script>
-
-    <!-- Chart Library http://smoothiecharts.org/LICENSE.txt -->
-    <script src="smoothie.js" type="text/javascript"></script>
-
-    <style type="text/css" media="screen">
-      h1{
-        text-align:     center;
-        text-transform: uppercase;
-        font-weight:    bold;
-        font:           44px/54px 'PT Sans', sans-serif;
-      }
-      h2 {
-        text-align:     center;
-        text-transform: uppercase;
-        font:           16px/26px 'PT Sans', sans-serif;
-        font-weight:    bold;
-      }
-      div#debugData h1 {
-        font:           16px/26px 'PT Sans', sans-serif;
-        font-weight:    bold;
-      }
-      p#version {
-        text-align:     center;
-      }
-      div#videoData {
-        width:          7em;
-        margin-right:   20px;
-        float:          right;
-      }
-      div#videoDataLabels {
-        width:          12em;
-        float:          left;
-      }
-      div#debugData {
-        box-shadow:     0 0 20px rgba(0,0,0,0.8);
-        font:           16px/26px 'PT Sans', sans-serif;
-        border-radius:  5px;
-        margin-left:    5%;
-        margin-top:     50px;
-        float:          left;
-      }
-      div#graphWrapper {
-        box-shadow:     0 0 20px rgba(0,0,0,0.8);
-        float:          left;
-        margin-left:    5%;
-        margin-top:     50px;
-        width:          60%;
-      }
-      .bitdash-html5-player-controls-wrapper{
-        box-shadow: 0 0 20px rgba(0,0,0,0.8);
-      }
-    </style>
-  </head>
-  <body>
-    <center>
-      <h1>bitdash Demo Page - by bitmovin GmbH</h1>
-      <div id="wrapper">
-        <div id="player"></div>
+    figure {
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      font-family: 'Dosis';
+      color:       white;
+      text-align:  center;
+    }
+    .container a {
+      color: white;
+    }
+    .container h1 {
+      font:          54px/66px 'Dosis';
+      margin-bottom: 22px;
+      line-height:   66px;
+    }
+    .container h2 {
+      font-weight:   normal;
+      margin-bottom: 36px;
+      line-height:   26px;
+    }
+    .player-wrapper {
+      width:        50%;
+      margin-right: auto;
+      margin-left:  auto;
+      box-shadow:   0 0 30px rgba(0,0,0,0.7);
+    }
+    #webserver-warning {
+      margin:           50px;
+      padding:          20px;
+      background-color: rgba(255,0,0,0.5);
+      display:          none;
+    }
+  </style>
+</head>
+<body background="http://bitdash-a.akamaihd.net/webpages/bitmovin/images/background.jpg">
+<div class="container">
+  <h1>HTML5 Adaptive Streaming Player for MPEG-DASH & HLS</h1>
+  <h2>Your videos play everywhere with low startup delay, no buffering and in highest quality.</h2>
+  <div id="webserver-warning">
+    <div class="ca-content">
+      <h1>Unsupported Protocol</h1>
+      <h2>This file has been loaded using the unsupported "file" protocol. Please use a <a href="http://wiki.selfhtml.org/wiki/Webserver/lokal" target="_blank">web server</a> and open this page using http or https.</h2>
+    </div>
+  </div>
+  <div class="content">
+    <div class="player-wrapper">
+      <div id="player">
       </div>
-      <div id="debugData">
-        <h1>bitdash Data Monitoring</h1>
-        <p id="version">unkown version</p>
-        <div id="videoData">
-          <p>
-            <br>
-            <span id='audioBuffer'>0.0</span> [sec]<br>
-            <span id='videoBuffer'>0.0</span> [sec]<br>
-            <br>
-            <br>
-            <span id='dlAudioBitrate'>0.0</span> [kbps]<br>
-            <span id='dlVideoBitrate'>0.0</span> [kbps]<br>
-            <span id='dlResolution'>000 x 000</span><br>
-          </p>
-        </div>
-        <div id="videoDataLabels">
-          <p>
-            <strong>Playback Data</strong><br>
-            Audio Buffer Length:<br>
-            Video Buffer Length:<br>
-            Resolution:<br>
-            <br>
-            <strong>Download Data</strong><br>
-            Audio Bitrate:<br>
-            Video Bitrate:<br>
-            Resolution:<br>
-          </p>
-        </div>
-      </div>
-      <div id="graphWrapper">
-        <h2>Video Bitrate Graph</h2>
-        <canvas id="graph"></canvas>
-      </div>
-	  </center>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
 
-    <script type="text/javascript">
-      window.graphTimeSeries = new TimeSeries();
-      var conf = {
-        key: 'INSERT YOUR KEY HERE',
-        source: {
-            mpd:    '//bitdash-a.akamaihd.net/content/sintel/sintel.mpd',
-            hls:    '//bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8',
-            poster: 'sintel-poster.png'
-        },
-        playback: {
-            muted:          false,
-            autoplay:       true
-        },
-        events: {
-            onError: function(obj) {
-              console.warn('bitdash Error: ', obj);
-            },
-            onReady: function(obj) {
-              console.warn(this.getVersion(true) + ' onReady: ', obj);
-              startGraph();
-            },
-            onPlay:  function(obj) {
-              console.warn('bitdash onPlay: ', obj);
-            },
-            onPause: function(obj) {
-              console.warn('bitdash onPause: ', obj);
-            },
-            onPlaybackFinished: function(obj) {
-             console.warn('bitdash onPlaybackFinished: ', obj);
-           }
-        }
-    };
+  if (location.protocol === 'file:') {
+    document.getElementById('webserver-warning').style.display = 'block';
+  }
 
-      var player = bitdash("player").setup(conf);
+  var player;
 
-      setInterval(function() {
-        var downloadedVideoData = player.getDownloadedVideoData();
-        var downloadedAudioData = player.getDownloadedAudioData();
-        var videoBitrateKbps    = Math.round(downloadedVideoData.bitrate / 10.24) / 100;
-
-        document.getElementById('version').innerHTML          = player.getVersion();
-        document.getElementById('audioBuffer').innerHTML      = player.getAudioBufferLength();
-        document.getElementById('videoBuffer').innerHTML      = player.getVideoBufferLength();
-        document.getElementById('dlAudioBitrate').innerHTML   = Math.round(downloadedAudioData.bitrate / 10.24) / 100;
-        document.getElementById('dlResolution').innerHTML     = downloadedVideoData.width + ' x ' + downloadedVideoData.height;
-        document.getElementById('dlVideoBitrate').innerHTML   = videoBitrateKbps;
-
-        window.graphTimeSeries.append(new Date().getTime(), videoBitrateKbps);
-      }, 500);
-
-      var startGraph = function() {
-        var graph = document.getElementById('graph');
-
-        graph.width  = graph.parentNode.offsetWidth;
-        if (graph.width < 300) {
-          graph.width = 300;
-        }
-        graph.height = 306;
-
-        var smoothie = new SmoothieChart({
-          interpolation : 'step',
-          labels        : {
-            precision : 0,
-            fillStyle :'#000'
-          },
-          maxValue      : 7000,
-          minValue      : 0,
-          millisPerPixel: 100,
-          grid          : {
-            millisPerLine: 10000,
-            borderVisible: false,
-            fillStyle:'transparent'
-          }
-        });
-        smoothie.streamTo(graph, 500);
-
-        smoothie.addTimeSeries(window.graphTimeSeries, {
-          strokeStyle : 'rgb(0, 0, 0)',
-          lineWidth   : 3
-        });
-      };
-    </script>
-  </body>
+  var conf = {
+    key:              'YOUR KEY HERE',
+    source: {
+      dash:           'https://bitdash-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd',
+      hls:            'https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8',
+      progressive:    'https://bitdash-a.akamaihd.net/content/MI201109210084_1/MI201109210084_mpeg-4_hd_high_1080p25_10mbits.mp4',
+      poster:         'https://bitdash-a.akamaihd.net/content/MI201109210084_1/poster.jpg'
+    },
+    style: {
+      width:            '100%',
+      aspectratio:      '16:9'
+    }
+  };
+  
+  player = bitdash("player").setup(conf);
+</script>
+</body>
 </html>
