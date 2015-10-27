@@ -4,11 +4,9 @@ This is a sample page for the bitdash MPEG-DASH player for HTML5 (MSE) as well a
 
 ![bitdash MPEG-DASH Demo](https://raw.githubusercontent.com/bitmovin/bitdash-MPEG-DASH-demo/master/screenshot.png "bitdash MPEG-DASH Demo Page")
 
-This demo can be also found at http://www.dash-player.com/bitdash_github_demo/ 
-
 ## Howto Install
 
-1. Download a free version at http://www.dash-player.com
+1. Download a free version at https://portal.bitmovin.com/portal/free-player
 2. Checkout the sample provided in this repository
 3. Add the API key to the bitdash config in the index.html
 4. Put the sample together with the free bitdash version to your webserver
@@ -18,9 +16,9 @@ This demo can be also found at http://www.dash-player.com/bitdash_github_demo/
 
 To generate MPEG-DASH content on your own, please have a look at http://www.bitcodin.com/ and give it a free try!
 
-## bitdash Demo Area
+## Additional Demos and Documentation
 
-Additional demos can be found in the bitdash demo area at www.dash-player.com/demo/
+Additional demos can be found in the bitdash demo area at www.dash-player.com/demo/. For more information on our rich API and player configuration, we refer to developer.dash-player.com
 
 ## Copyright
 
