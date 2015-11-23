@@ -19,6 +19,7 @@
 <link href='http://fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'/>
 <!-- bitdash player -->
 <script type="text/javascript" src="PATH/TO/bitdash.min.js">
+<script type="text/javascript" src="adaptation/PreferredStartupQuality.js"></script>
 </script>
 <style>
 
@@ -82,22 +83,24 @@
   }
 
   var player;
+  var startupQuality;
 
   var conf = {
     key:              'YOUR KEY HERE',
     source: {
-      dash:           'https://bitdash-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd',
-      hls:            'https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8',
-      progressive:    'https://bitdash-a.akamaihd.net/content/MI201109210084_1/MI201109210084_mpeg-4_hd_high_1080p25_10mbits.mp4',
-      poster:         'https://bitdash-a.akamaihd.net/content/MI201109210084_1/poster.jpg'
+      dash:           'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
     },
     style: {
       width:            '100%',
       aspectratio:      '16:9'
+    },
+    tweaks: {
+      startup_threshold: 5
     }
   };
   
-  player = bitdash("player").setup(conf);
+  player         = bitdash("player").setup(conf);
+  startupQuality = new PreferredStartupQuality(player, 1000000, 10);
 </script>
 </body>
 </html>
