@@ -98,8 +98,15 @@
       startup_threshold: 5
     }
   };
-  
-  player         = bitdash("player").setup(conf);
+
+  player = bitdash("player");
+
+  player.setup(conf).then(function(value) {
+    console.log('Successfully created bitdash player instance'); // Success!
+  }, function(reason) {
+    console.log('Error while creating bitdash player instance'); // Error!
+  });
+
   startupQuality = new PreferredStartupQuality(player, 1000000, 10);
 </script>
 </body>

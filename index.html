@@ -96,8 +96,14 @@
       aspectratio:      '16:9'
     }
   };
-  
-  player = bitdash("player").setup(conf);
+
+  player = bitdash("player");
+
+  player.setup(conf).then(function(value) {
+    console.log('Successfully created bitdash player instance'); // Success!
+  }, function(reason) {
+    console.log('Error while creating bitdash player instance'); // Error!
+  });
 </script>
 </body>
 </html>
