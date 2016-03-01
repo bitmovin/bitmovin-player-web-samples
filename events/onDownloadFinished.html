@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<!--
+*
+* Copyright (C) 2016, bitmovin GmbH, All Rights Reserved
+*
+* Created on: 2016-03-01 13:50:17
+* Author:     bitmovin GmbH <dash-player@bitmovin.net>
+*
+* This source code and its use and distribution, is subject to the terms
+* and conditions of the applicable license agreement.
+*
+-->
+<html lang="en">
+<head>
+  <title>bitdash demo</title>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href='http://fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'/>
+  <!-- bitdash player -->
+  <script type="text/javascript" src="//bitmovin-a.akamaihd.net/bitdash/latest/bitdash.min.js"></script>
+
+  <style>
+
+    figure {
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      font-family: 'Dosis';
+      color:       white;
+      text-align:  center;
+    }
+    .container a {
+      color: white;
+    }
+    .container h1 {
+      font:          54px/66px 'Dosis';
+      margin-bottom: 22px;
+      line-height:   66px;
+    }
+    .container h2 {
+      font-weight:   normal;
+      margin-bottom: 36px;
+      line-height:   26px;
+    }
+    .player-wrapper {
+      width:        50%;
+      margin-right: auto;
+      margin-left:  auto;
+      box-shadow:   0 0 30px rgba(0,0,0,0.7);
+    }
+    #webserver-warning {
+      margin:           50px;
+      padding:          20px;
+      background-color: rgba(255,0,0,0.5);
+      display:          none;
+    }
+  </style>
+</head>
+<body background="//bitdash-a.akamaihd.net/webpages/bitmovin/images/background.jpg">
+<div class="container">
+  <h1>HTML5 Adaptive Streaming Player for MPEG-DASH & HLS</h1>
+  <h2>Your videos play everywhere with low startup delay, no buffering and in highest quality.</h2>
+  <div id="webserver-warning">
+    <div class="ca-content">
+      <h1>Unsupported Protocol</h1>
+      <h2>This file has been loaded using the unsupported "file" protocol. Please use a <a href="http://wiki.selfhtml.org/wiki/Webserver/lokal" target="_blank">web server</a> and open this page using http or https.</h2>
+    </div>
+  </div>
+  <div class="content">
+    <div class="player-wrapper">
+      <div id="player">
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+
+  if (location.protocol === 'file:') {
+    document.getElementById('webserver-warning').style.display = 'block';
+  }
+
+  var playerId = 'player';
+  var subtitleDisplay;
+
+  var conf = {
+    key:              'YOUR KEY HERE',
+    source: {
+      dash:           '//bitlivedemo-a.akamaihd.net/mpds/stream-exo-liveedge.php?streamkey=bitcodin&inputType=dash',
+      hls:            'http://bitlivestreamdemo.bitmovin.com/m3u8s/bitcodin.m3u8'
+    },
+    style: {
+      width:            '100%',
+      aspectratio:      '16:9',
+      subtitlesHidden:  true
+    }
+  };
+
+  var onDownloadFinished = function(event) {
+    if (!event.success) { // download failed
+      console.error('segment ' + event.url + ' could not be loaded (' + event.httpStatus + ')');
+    }
+  };
+
+  bitdash(playerId).setup(conf).then(function(player) {
+    player.addEventHandler('onDownloadFinished', onDownloadFinished);
+    console.log('Successfully created bitdash player instance'); // Success!
+  }, function(reason) {
+    console.log('Error while creating bitdash player instance'); // Error!
+  });
+
+</script>
+</body>
+</html>
