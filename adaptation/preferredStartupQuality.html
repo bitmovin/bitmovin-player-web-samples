@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <!--
 *
-* Copyright (C) 2016, bitmovin GmbH, All Rights Reserved
+* Copyright (C) 2015, bitmovin GmbH, All Rights Reserved
 *
-* Created on: 2016-03-01 11:39:27
+* Created on: 2015-07-25 11:35:04
 * Author:     bitmovin GmbH <dash-player@bitmovin.net>
 *
 * This source code and its use and distribution, is subject to the terms
@@ -12,16 +12,16 @@
 -->
 <html lang="en">
 <head>
-  <title>bitdash demo</title>
-  <meta charset="UTF-8"/>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href='http://fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'/>
-  <!-- bitdash player -->
-  <script type="text/javascript" src="//bitmovin-a.akamaihd.net/bitdash/latest/bitdash.min.js"></script>
-  <script type="text/javascript" src="scripts/customSubtitleDisplay.js"></script>
+<title>bitdash demo</title>
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href='http://fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'/>
+<!-- bitdash player -->
+<script type="text/javascript" src="//bitmovin-a.akamaihd.net/bitdash/latest/bitdash.min.js"></script>
+<script type="text/javascript" src="preferredStartupQuality.js"></script>
 
-  <style>
+<style>
 
     figure {
       margin: 0;
@@ -82,33 +82,32 @@
     document.getElementById('webserver-warning').style.display = 'block';
   }
 
-  var playerId = 'player';
-  var subtitleDisplay;
+  var player;
+  var startupQuality;
 
   var conf = {
     key:              'YOUR KEY HERE',
     source: {
-      dash:           '//bitdash-a.akamaihd.net/content/sintel/sintel.mpd',
-      hls:            '//bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8'
+      dash:           'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
     },
     style: {
       width:            '100%',
-      aspectratio:      '16:9',
-      subtitlesHidden:  true
+      aspectratio:      '16:9'
+    },
+    tweaks: {
+      startup_threshold: 5
     }
   };
 
-  bitdash(playerId).setup(conf).then(function(player) {
-    var playerFigure = document.getElementById(playerId).getElementsByTagName('figure')[0];
-    subtitleDisplay = new CustomSubtitleDisplay(playerFigure);
-    player.addEventHandler('onCueEnter', subtitleDisplay.showCue);
-    player.addEventHandler('onCueExit', subtitleDisplay.hideCue);
-    player.addEventHandler('onSubtitleChange', subtitleDisplay.clear);
+  player = bitdash("player");
+
+  player.setup(conf).then(function(value) {
     console.log('Successfully created bitdash player instance'); // Success!
   }, function(reason) {
     console.log('Error while creating bitdash player instance'); // Error!
   });
 
+  startupQuality = new PreferredStartupQuality(player, 1000000, 10);
 </script>
 </body>
 </html>
