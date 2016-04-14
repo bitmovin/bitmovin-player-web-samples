@@ -2,15 +2,15 @@
 This is a sample page of the bitdash MPEG-DASH & HLS player for HTML5 (MSE) as well as Flash. 
 
 ## Demos
-* **adaptation**
-    * preferredStartupQuality - Set a minimum startup quality for a specified amount of time before using the built-in adaptation logic again.
-    * regionOfInterest - Multiple players with low quality and the active player (where the mouse is over) switches to better quality.
-* **events**
-    * onDownloadFinished - Report download errors for live streams using the onDownloadFinished player event.
-* **streamRecovery**
-    * liveStreamRecovery - Automatically restart live streams if too many download errors happened e.g. to get over missing segments.
-* **subtitles**
-    * customSubtitleDisplay - Render subtitles using the onCueEnter and onCueExit player events.
+* [**adaptation**](adaptation/)
+    * [preferredStartupQuality](adaptation/preferredStartupQuality.js): Set a minimum startup quality for a specified amount of time before using the built-in adaptation logic again.
+    * [regionOfInterest](adaptation/regionOfInterest.html): Multiple players with low quality and the active player (where the mouse is over) switches to better quality.
+* [**events**](events/)
+    * [onDownloadFinished](events/onDownloadFinished.html): Report download errors for live streams using the onDownloadFinished player event.
+* [**streamRecovery**](streamRecovery/)
+    * [liveStreamRecovery](streamRecovery/liveStreamRecovery.js): Automatically restart live streams if too many download errors happened e.g. to get over missing segments.
+* [**subtitles**](subtitles/)
+    * [customSubtitleDisplay](subtitles/customSubtitleDisplay.js): Render subtitles using the onCueEnter and onCueExit player events.
 
 ![bitdash MPEG-DASH Demo](https://raw.githubusercontent.com/bitmovin/bitdash-MPEG-DASH-demo/master/screenshot.png "bitdash MPEG-DASH Demo Page")
 
