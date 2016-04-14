@@ -1,6 +1,16 @@
 # MPEG-DASH & HLS Player
 This is a sample page of the bitdash MPEG-DASH & HLS player for HTML5 (MSE) as well as Flash. 
 
+## Demos
+* **adaptation**
+    * preferredStartupQuality - Set a minimum startup quality for a specified amount of time before using the built-in adaptation logic again.
+* **events**
+    * onDownloadFinished - Report download errors for live streams using the onDownloadFinished player event.
+* **streamRecovery**
+    * liveStreamRecovery - Automatically restart live streams if too many download errors happened e.g. to get over missing segments.
+* **subtitles**
+    * customSubtitleDisplay - Render subtitles using the onCueEnter and onCueExit player events.
+
 ![bitdash MPEG-DASH Demo](https://raw.githubusercontent.com/bitmovin/bitdash-MPEG-DASH-demo/master/screenshot.png "bitdash MPEG-DASH Demo Page")
 
 ## Howto Install
