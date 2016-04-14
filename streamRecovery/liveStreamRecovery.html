@@ -77,13 +77,9 @@
   </div>
 </div>
 <script type="text/javascript">
-
   if (location.protocol === 'file:') {
     document.getElementById('webserver-warning').style.display = 'block';
   }
-
-  var player;
-  var startupQuality;
 
   var conf = {
     key:              'YOUR KEY HERE',
@@ -98,7 +94,7 @@
     }
   };
 
-  player = bitdash("player");
+  var player = bitdash("player");
 
   player.setup(conf).then(function(value) {
     console.log('Successfully created bitdash player instance'); // Success!
@@ -106,7 +102,7 @@
     console.log('Error while creating bitdash player instance'); // Error!
   });
 
-  startupQuality = new LiveStreamRecovery(player, 2);
+  var recovery = new LiveStreamRecovery(player, 2);
 </script>
 </body>
 </html>
