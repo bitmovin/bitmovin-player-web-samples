@@ -5,6 +5,7 @@ This is a sample page of the bitdash MPEG-DASH & HLS player for HTML5 (MSE) as w
 * [**adaptation**](adaptation/)
     * [preferredStartupQuality](adaptation/preferredStartupQuality.js): Set a minimum startup quality for a specified amount of time before using the built-in adaptation logic again.
     * [regionOfInterest](adaptation/regionOfInterest.html): Multiple players with low quality and the active player (where the mouse is over) switches to better quality.
+    * [rateBasedSwitching](adaptation/rateBasedSwitching.js): Measuring the speed of downloads and select the quality accordingly.
 * [**events**](events/)
     * [onDownloadFinished](events/onDownloadFinished.html): Report download errors for live streams using the onDownloadFinished player event.
 * [**streamRecovery**](streamRecovery/)
