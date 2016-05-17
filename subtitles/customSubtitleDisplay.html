@@ -104,6 +104,8 @@
     player.addEventHandler('onCueEnter', subtitleDisplay.showCue);
     player.addEventHandler('onCueExit', subtitleDisplay.hideCue);
     player.addEventHandler('onSubtitleChange', subtitleDisplay.clear);
+    player.addEventHandler('onSeek', subtitleDisplay.clear);
+    player.addEventHandler('onTimeShift', subtitleDisplay.clear);
     console.log('Successfully created bitdash player instance'); // Success!
   }, function(reason) {
     console.log('Error while creating bitdash player instance'); // Error!

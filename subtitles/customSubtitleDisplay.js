@@ -33,17 +33,23 @@ function CustomSubtitleDisplay(figure) {
   var subtitleList;
   var cues;
 
+  var getIdFromCue = function(cue) {
+    return cue.start + '-' + cue.end + ':' + cue.text;
+  };
+
   var showCue = function(data) {
-    cues[data.text] = document.createElement('li');
-    cues[data.text].innerHTML = data.text;
-    subtitleList.appendChild(cues[data.text]);
+    var id = getIdFromCue(data);
+    cues[id] = document.createElement('li');
+    cues[id].innerHTML = data.text;
+    subtitleList.appendChild(cues[id]);
   };
 
   var hideCue = function(data) {
-    if (cues.hasOwnProperty(data.text) && cues[data.text].parentNode) {
-      cues[data.text].parentNode.removeChild(cues[data.text]);
+    var id = getIdFromCue(data);
+    if (cues.hasOwnProperty(id) && cues[id].parentNode) {
+      cues[id].parentNode.removeChild(cues[id]);
     }
-    delete cues[data.text];
+    delete cues[id];
   };
 
   var clear = function() {
