@@ -89,6 +89,17 @@
     playerHeight = fig.clientHeight + 'px';
   };
 
+  var errorHandler = function() {
+    if (conf.source.poster) {
+      var img = document.createElement('img');
+      img.src = conf.source.poster;
+      img.style.width = playerWidth;
+      img.style.height = playerHeight;
+
+      document.getElementById('player').appendChild(img);
+    }
+  };
+
   var conf = {
     key: 'YOUR KEY HERE',
     source: {
@@ -115,14 +126,7 @@
           case 3023:
           case 3024:
           case 3028:
-            if (conf.source.poster) {
-              var img = document.createElement('img');
-              img.src = conf.source.poster;
-              img.style.width = playerWidth;
-              img.style.height = playerHeight;
-
-              document.getElementById('player').appendChild(img);
-            }
+            errorHandler();
             break;
           default:
             console.error('error', errObj);
