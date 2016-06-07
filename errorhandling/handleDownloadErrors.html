@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<!--
+*
+* Copyright (C) 2015, bitmovin GmbH, All Rights Reserved
+*
+* Created on: 2015-07-25 11:35:04
+* Author:     bitmovin GmbH <dash-player@bitmovin.com>
+*
+* This source code and its use and distribution, is subject to the terms
+* and conditions of the applicable license agreement.
+*
+-->
+<html lang="en">
+<head>
+  <title>Bitmovin's Adpative Streaming Player Demo</title>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href='http://fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'/>
+
+  <!-- bitdash player -->
+  <script type="text/javascript" src="http://bitmovin-a.akamaihd.net/bitdash/beta/5.1.0-b4/bitdash.min.js"></script>
+
+  <style>
+    figure {
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      font-family: 'Dosis';
+      color:       white;
+      text-align:  center;
+    }
+    .container a {
+      color: white;
+    }
+    .container h1 {
+      font:          54px/66px 'Dosis';
+      margin-bottom: 22px;
+      line-height:   66px;
+    }
+    .container h2 {
+      font-weight:   normal;
+      margin-bottom: 36px;
+      line-height:   26px;
+    }
+    .player-wrapper {
+      width:        50%;
+      margin-right: auto;
+      margin-left:  auto;
+      box-shadow:   0 0 30px rgba(0,0,0,0.7);
+    }
+    #player-overlay {
+      position: absolute;
+      background-color: black;
+      color: white;
+      z-index: 10000;
+      font-size: 2em;
+    }
+    #webserver-warning {
+      margin:           50px;
+      padding:          20px;
+      background-color: rgba(255,0,0,0.5);
+      display:          none;
+    }
+  </style>
+</head>
+<body background="http://bitdash-a.akamaihd.net/webpages/bitmovin/images/background.jpg">
+<div class="container">
+  <h1>HTML5 Adaptive Streaming Player for MPEG-DASH & HLS</h1>
+  <h2>Your videos play everywhere with low startup delay, no buffering and in highest quality.</h2>
+  <div id="webserver-warning">
+    <div class="ca-content">
+      <h1>Unsupported Protocol</h1>
+      <h2>This file has been loaded using the unsupported "file" protocol. Please use a <a href="http://wiki.selfhtml.org/wiki/Webserver/lokal" target="_blank">web server</a> and open this page using http or https.</h2>
+    </div>
+  </div>
+  <div class="content">
+    <div class="player-wrapper">
+      <div id="player"></div>
+    </div>
+    <div class="description">
+      <p>For more information about bitdash, please have a look at our online <a href="https://bitmovin.com/support/" target="_blank">Developer Section</a>.</p>
+    </div>
+  </div>
+
+</div>
+<script type="text/javascript">
+  if (location.protocol === 'file:') {
+    document.getElementById('webserver-warning').style.display = 'block';
+  }
+
+  var streamStarted        = false;
+  var restartCount         = 0;
+  var restartLimit         = 5;
+  var triggerPlayOnRestart = false;
+  var player;
+
+  var conf = {
+    key: 'YOUR-KEY-HERE',
+    source: {
+      dash: "https://bitdash-a.akamaihd.net/content/art-of-motion_drm/mpds/11331.mpd",
+      drm: {
+        widevine: {
+          LA_URL: "https://wv-ref-eme-player.appspot.com/proxy",
+          licenseRequestRetryDelay: 5000,
+          maxLicenseRequestRetries: Infinity
+        },
+      }
+    },
+    tweaks: {
+      max_retries: Infinity,
+      retry_delay: 1000,
+      disable_retry_for_response_status: {
+        media: [401, 403]
+      }
+    },
+    events: {
+      onDownloadFinished: function(data) {
+        if (data.downloadType === 'license' && streamStarted === false
+          && (data.httpStatus === 400 || data.httpStatus === 500)) {
+          if (restartCount < restartLimit) {
+            restartCount++;
+            triggerPlayOnRestart = true;
+            this.load(conf.source);
+            console.warn('Reloaded player due to error loading DRM License');
+          } else {
+            console.warn('Could not load DRM License');
+            this.pause();
+          }
+        }
+      },
+      onTimeChanged: function(data) {
+        streamStarted = true;
+      },
+      onSourceUnloaded: function(data) {
+        streamStarted = false;
+      },
+      onReady: function(data) {
+        if (triggerPlayOnRestart) {
+          triggerPlayOnRestart = false;
+          this.play();
+        }
+      }
+    },
+    adaptation: {
+      desktop: {
+        logic: 'v2'
+      }
+    },
+    style: {
+      width:       '100%',
+      aspectratio: '16:9'
+    }
+  };
+
+  player = bitdash('player');
+  player.setup(conf).catch(function(){
+    console.error('Error setting up bitdash player')
+  });
+
+</script>
+</body>
+</html>
