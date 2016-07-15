@@ -8,6 +8,7 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
     * [rateBasedSwitching](adaptation/rateBasedSwitching.js): Measuring the speed of downloads and select the quality accordingly.
 * [**events**](events/)
     * [onDownloadFinished](events/onDownloadFinished.html): Report download errors for live streams using the onDownloadFinished player event.
+    * [eventConstants](events/eventConstants.html): Use event constants for registering event handlers at the player.
 * [**streamRecovery**](streamRecovery/)
     * [liveStreamRecovery](streamRecovery/liveStreamRecovery.js): Automatically restart live streams if too many download errors happened e.g. to get over missing segments.
 * [**subtitles**](subtitles/)
