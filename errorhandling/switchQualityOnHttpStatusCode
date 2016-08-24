@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<!--
+*
+* Copyright (C) 2016, bitmovin GmbH, All Rights Reserved
+*
+* This source code and its use and distribution, is subject to the terms
+* and conditions of the applicable license agreement.
+*
+-->
+<html lang="en">
+<head>
+  <title>Bitmovin HTML5 Adpative Streaming Player Demo</title>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href='http://fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'/>
+
+  <!-- bitdash player -->
+  <script type="text/javascript" src="http://bitmovin-a.akamaihd.net/bitmovin-player/stable/5.1/bitdash.min.js"></script>
+  <style>
+    figure {
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      font-family: 'Dosis';
+      color:       white;
+      text-align:  center;
+    }
+    .container a {
+      color: white;
+    }
+    .container h1 {
+      font:          54px/66px 'Dosis';
+      margin-bottom: 22px;
+      line-height:   66px;
+    }
+    .container h2 {
+      font-weight:   normal;
+      margin-bottom: 36px;
+      line-height:   26px;
+    }
+    .player-wrapper {
+      width:        50%;
+      margin-right: auto;
+      margin-left:  auto;
+      box-shadow:   0 0 30px rgba(0,0,0,0.7);
+    }
+    #player-overlay {
+      position: absolute;
+      background-color: black;
+      color: white;
+      z-index: 10000;
+      font-size: 2em;
+    }
+    #webserver-warning {
+      margin:           50px;
+      padding:          20px;
+      background-color: rgba(255,0,0,0.5);
+      display:          none;
+    }
+  </style>
+</head>
+<body background="http://bitdash-a.akamaihd.net/webpages/bitmovin/images/background.jpg">
+<div class="container">
+  <h1>HTML5 Adaptive Streaming Player for MPEG-DASH & HLS</h1>
+  <h2>Your videos play everywhere with low startup delay, no buffering and in highest quality.</h2>
+  <div id="webserver-warning">
+    <div class="ca-content">
+      <h1>Unsupported Protocol</h1>
+      <h2>This file has been loaded using the unsupported "file" protocol. Please use a <a href="http://wiki.selfhtml.org/wiki/Webserver/lokal" target="_blank">web server</a> and open this page using http or https.</h2>
+    </div>
+  </div>
+  <div class="content">
+    <div class="player-wrapper">
+      <div id="player"></div>
+    </div>
+    <div class="description">
+      <p>For more information about bitdash, please have a look at our online <a href="https://bitmovin.com/support/" target="_blank">Developer Section</a>.</p>
+    </div>
+  </div>
+
+</div>
+<script type="text/javascript">
+  if (location.protocol === 'file:') {
+    document.getElementById('webserver-warning').style.display = 'block';
+  }
+
+  var availableAudioQualities = null;
+  var availableVideoQualities = null;
+  var qualityOverwritten = false;
+  var player;
+
+  var conf = {
+    key: 'YOUR-KEY-HERE',
+    source: {
+      dash: "https://bitdash-a.akamaihd.net/content/art-of-motion_drm/mpds/11331.mpd",
+    },
+    tweaks: {
+      max_retries: 5,
+      retry_delay: 1000,
+      disable_retry_for_response_status: {
+        media: [
+          400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414,
+          415, 416, 417, 418, 420, 421, 422, 423, 424, 425, 426, 428, 429, 431, 451,
+          444, 449, 500, 501, 502, 503, 504, 505, 506, 507, 508, 509, 510, 511
+        ]
+      }
+    },
+    events: {
+      onDownloadFinished: function(data) {
+        var currentAudioQuality;
+        var currentVideoQuality;
+        var selectedAudioQuality;
+        var selectedVideoQuality;
+        var idx;
+        if (data.downloadType === 'media' && data.httpStatus >= 400 && data.httpStatus <= 599) {
+          // switch to next-lower representation
+          availableAudioQualities = availableAudioQualities || player.getAvailableAudioQualities();
+          availableVideoQualities = availableVideoQualities || player.getAvailableVideoQualities();
+          currentAudioQuality = player.getDownloadedAudioData();
+          currentVideoQuality = player.getDownloadedVideoData();
+
+          if (availableAudioQualities.length > 1) {
+            for (idx = 0; idx < availableAudioQualities.length; idx++) {
+              if (currentAudioQuality.id === availableAudioQualities[idx].id) {
+                break;
+              }
+              selectedAudioQuality = availableAudioQualities[idx];
+            }
+            selectedAudioQuality = selectedAudioQuality || availableAudioQualities[idx + 1];
+          } else {
+            selectedAudioQuality = currentAudioQuality;
+          }
+
+          if (availableVideoQualities.length > 1) {
+            for (idx = 0; idx < availableVideoQualities.length; idx++) {
+              if (currentVideoQuality.id === availableVideoQualities[idx].id) {
+                break;
+              }
+              selectedVideoQuality = availableVideoQualities[idx];
+            }
+            selectedVideoQuality = selectedVideoQuality || availableVideoQualities[idx + 1];
+          } else {
+            selectedVideoQuality = currentVideoQuality;
+          }
+
+          qualityOverwritten = true;
+          player.setAudioQuality(selectedAudioQuality.id);
+          player.setVideoQuality(selectedVideoQuality.id);
+        } else if (data.downloadType === 'media' && data.httpStatus === 200 && qualityOverwritten) {
+          qualityOverwritten = false;
+          player.setAudioQuality('auto');
+          player.setVideoQuality('auto');
+        }
+      }
+    },
+    style: {
+      width:       '100%',
+      aspectratio: '16:9'
+    }
+  };
+
+  player = bitdash('player');
+  player.setup(conf).catch(function(){
+    console.error('Error setting up bitdash player')
+  });
+
+</script>
+</body>
+</html>
