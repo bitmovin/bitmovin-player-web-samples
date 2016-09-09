@@ -21,7 +21,6 @@
   <script type="text/javascript" src="//bitmovin-a.akamaihd.net/bitdash/latest/bitdash.min.js"></script>
 
   <style>
-
     figure {
       margin: 0;
       padding: 0;
@@ -50,6 +49,30 @@
       margin-left:  auto;
       box-shadow:   0 0 30px rgba(0,0,0,0.7);
     }
+    .run-animation {
+      animation-name: shake;
+      animation-duration: 1s;
+      animation-timing-function: cubic-bezier(0.36, 0.07, 0.19, 0.97);
+      animation-delay: initial;
+      animation-iteration-count: initial;
+      animation-direction: initial;
+      animation-fill-mode: both;
+      animation-play-state: initial;
+    }
+    @keyframes shake {
+      10%, 90% {
+        transform: translate3d(-1px, 0, 0);
+      }
+      20%, 80% {
+        transform: translate3d(2px, 0, 0);
+      }
+      30%, 50%, 70% {
+        transform: translate3d(-4px, 0, 0);
+      }
+      40%, 60% {
+        transform: translate3d(4px, 0, 0);
+      }
+    }
     #webserver-warning {
       margin:           50px;
       padding:          20px;
@@ -73,6 +96,9 @@
       <div id="player">
       </div>
     </div>
+    <div>
+      <!--<button type="button" class="button">Show Events</button>-->
+    </div>
   </div>
 </div>
 <script type="text/javascript">
@@ -81,6 +107,7 @@
     document.getElementById('webserver-warning').style.display = 'block';
   }
 
+  var watermark;
   var playerId = 'player';
 
   var conf = {
@@ -96,15 +123,28 @@
     }
   };
 
-  var onDownloadFinished = function(event) {
-    if (!event.success) { // download failed
-      console.error('segment ' + event.url + ' could not be loaded (' + event.httpStatus + ')');
-    }
+  var logEventTypes = function() {
+    console.log('The bitdash player offers the following event constants:');
+    console.log('bitdash.EVENT', bitdash.EVENT);
+    console.log('bitdash.EVENTS', bitdash.EVENTS);
+  };
+
+  var onPlay = function(event) {
+    watermark.className += " run-animation";
+  };
+
+  var onPause = function(event) {
+    watermark.className = watermark.className.replace(" run-animation", "");
   };
 
   bitdash(playerId).setup(conf).then(function(player) {
-    player.addEventHandler('onDownloadFinished', onDownloadFinished);
+    watermark = document.getElementsByClassName('bitdash-watermark')[0];
+
+    player.addEventHandler(bitdash.EVENT.ON_PLAY, onPlay);
+    player.addEventHandler(bitdash.EVENT.ON_PAUSE, onPause);
+
     console.log('Successfully created bitdash player instance'); // Success!
+    logEventTypes();
   }, function(reason) {
     console.log('Error while creating bitdash player instance'); // Error!
   });
