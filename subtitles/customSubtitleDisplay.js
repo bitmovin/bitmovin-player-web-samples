@@ -48,6 +48,8 @@ function CustomSubtitleDisplay(figure) {
 
   var availableRegions = {};
 
+  var updateFontSize = function() {};
+
   var addClass = function (element, cssClass) {
     if (!element || !cssClass) {
       return;
@@ -138,9 +140,13 @@ function CustomSubtitleDisplay(figure) {
     regionDiv.style.height   = '90%';
     regionDiv.style.textAlign = 'center';
 
-    var fontSize = Math.round(figure.clientHeight / cellResolution.rows) + 'px';
-    regionDiv.style.fontSize   = fontSize;
-    regionDiv.style.lineHeight = fontSize;
+    updateFontSize = function() {
+      var fontSize = Math.round(figure.clientHeight / cellResolution.rows) + 'px';
+      regionDiv.style.fontSize   = fontSize;
+      regionDiv.style.lineHeight = fontSize;
+    };
+
+    updateFontSize();
 
     if (!alwaysShowBackground) {
       addClass(regionDiv, noRegionBackgroundCSSClass);
@@ -255,6 +261,7 @@ function CustomSubtitleDisplay(figure) {
     showCue: show,
     hideCue: hide,
     clear: clear,
-    destroy: destroy
+    destroy: destroy,
+    updateFontSize: updateFontSize
   }
 }

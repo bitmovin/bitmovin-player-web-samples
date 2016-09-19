@@ -107,6 +107,7 @@
     player.addEventHandler('onSubtitleChange', subtitleDisplay.clear);
     player.addEventHandler('onSeek', subtitleDisplay.clear);
     player.addEventHandler('onTimeShift', subtitleDisplay.clear);
+    player.addEventHandler('onPlayerResize', subtitleDisplay.updateFontSize);
     console.log('Successfully created bitdash player instance'); // Success!
   }, function(reason) {
     console.log('Error while creating bitdash player instance'); // Error!
