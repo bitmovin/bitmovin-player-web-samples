@@ -1,5 +1,5 @@
 # Bitmovin Adaptive Streaming Player for MPEG-DASH & HLS
-This showcases are build around the Bitmovin Adaptive Streaming Player, demonstrating usage and capabilities of the HTML5 based HLS and MPEG-DASH player, as well as the Flash based Fallabck.
+This showcases are build around the Bitmovin Adaptive Streaming Player, demonstrating usage and capabilities of the HTML5 based HLS and MPEG-DASH player, as well as the Flash based fallback.
 
 ## Demos
 * [**adaptation**](adaptation/)
