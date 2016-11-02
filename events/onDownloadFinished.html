@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href='http://fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'/>
   <!-- bitdash player -->
-  <script type="text/javascript" src="//bitmovin-a.akamaihd.net/bitdash/latest/bitdash.min.js"></script>
+  <script type="text/javascript" src="//bitmovin-a.akamaihd.net/bitmovin-player/stable/6/bitmovinplayer.min.js"></script>
 
   <style>
 
@@ -102,7 +102,7 @@
     }
   };
 
-  bitdash(playerId).setup(conf).then(function(player) {
+  bitmovin.player(playerId).setup(conf).then(function(player) {
     player.addEventHandler('onDownloadFinished', onDownloadFinished);
     console.log('Successfully created bitdash player instance'); // Success!
   }, function(reason) {
