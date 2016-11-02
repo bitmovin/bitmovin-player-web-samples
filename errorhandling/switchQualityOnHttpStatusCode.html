@@ -95,6 +95,13 @@
     key: 'YOUR-KEY-HERE',
     source: {
       dash: "https://bitdash-a.akamaihd.net/content/art-of-motion_drm/mpds/11331.mpd",
+      drm: {
+        widevine: {
+          LA_URL: "http://widevine-proxy.appspot.com/proxy",
+          licenseRequestRetryDelay: 5000,
+          maxLicenseRequestRetries: Infinity
+        },
+      }
     },
     tweaks: {
       max_retries: 5,
