@@ -8,7 +8,7 @@
   <link href='http://fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'/>
 
   <!-- bitdash player -->
-  <script type="text/javascript" src="https://bitmovin-a.akamaihd.net/bitmovin-player/stable/5/bitdash.min.js"></script>
+  <script type="text/javascript" src="//bitmovin-a.akamaihd.net/bitmovin-player/stable/6/bitmovinplayer.min.js"></script>
 
   <style>
     figure {
@@ -114,7 +114,7 @@
       }
     }
   };
-  var player = bitdash("player");
+  var player = bitmovin.player("player");
   player.setup(conf).then(function(value) {
     // Success
     console.log("Successfully created bitdash player instance");
