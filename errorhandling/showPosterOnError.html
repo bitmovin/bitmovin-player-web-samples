@@ -48,6 +48,10 @@
       margin-right: auto;
       margin-left: auto;
     }
+    #player .poster {
+      max-width: 100%;
+      max-height: 100%;
+    }
     #webserver-warning {
       margin: 50px;
       padding: 20px;
@@ -80,22 +84,11 @@
     document.getElementById('webserver-warning').style.display = 'block';
   }
 
-  var playerWidth;
-  var playerHeight;
-
-  var savePlayerSize = function () {
-    var fig = player.getFigure();
-    playerWidth = fig.clientWidth + 'px';
-    playerHeight = fig.clientHeight + 'px';
-  };
-
   var errorHandler = function() {
     if (conf.source.poster) {
       var img = document.createElement('img');
+      img.className = 'poster';
       img.src = conf.source.poster;
-      img.style.width = playerWidth;
-      img.style.height = playerHeight;
-
       document.getElementById('player').appendChild(img);
     }
   };
@@ -118,7 +111,6 @@
       showErrors: false
     },
     events: {
-      onReady: savePlayerSize,
       onError: function (errObj) {
         switch (errObj.code) {
           case 2006:
@@ -142,8 +134,6 @@
   }, function (reason) {
     console.log('Error while creating bitdash player instance'); // Error!
   });
-
-  savePlayerSize();
 </script>
 </body>
 </html>
