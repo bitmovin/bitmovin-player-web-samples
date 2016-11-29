@@ -11,14 +11,14 @@ var conf = {
           hls:         "//bitmovin-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8",
           poster:      "//bitmovin-a.akamaihd.net/content/MI201109210084_1/poster.jpg"
         },
-    events: {
-        onSegmentRequestFinished: function(params){
-        console.log(JSON.stringify(params));
-        if(!params.httpStatus==200)
-        {
-            window.alert(params.httpStatus + " HTTP error while downloading the last segment");
-        }
- }
+         events: {
+            onSegmentRequestFinished: function(params){
+              console.log(JSON.stringify(params));
+              if(!params.httpStatus==200)
+              {
+                window.alert(params.httpStatus + " HTTP error while downloading the last segment");
+              }
+    }
 }
     };
 var player = bitmovin.player("player");
