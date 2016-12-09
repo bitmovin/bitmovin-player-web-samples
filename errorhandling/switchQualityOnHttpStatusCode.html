@@ -13,10 +13,10 @@
   <meta charset="UTF-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href='http://fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'/>
+  <link href='//fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'/>
 
   <!-- bitdash player -->
-  <script type="text/javascript" src="http://bitmovin-a.akamaihd.net/bitmovin-player/staging/5/bitdash.min.js"></script>
+  <script type="text/javascript" src="//bitmovin-a.akamaihd.net/bitmovin-player/stable/6/bitmovinplayer.min.js"></script>
   <style>
     figure {
       margin: 0;
@@ -95,6 +95,13 @@
     key: 'YOUR-KEY-HERE',
     source: {
       dash: "https://bitdash-a.akamaihd.net/content/art-of-motion_drm/mpds/11331.mpd",
+      drm: {
+        widevine: {
+          LA_URL: "http://widevine-proxy.appspot.com/proxy",
+          licenseRequestRetryDelay: 5000,
+          maxLicenseRequestRetries: Infinity
+        },
+      }
     },
     tweaks: {
       max_retries: 5,
@@ -161,7 +168,7 @@
     }
   };
 
-  player = bitdash('player');
+  player = bitmovin.player('player');
   player.setup(conf).catch(function(){
     console.error('Error setting up bitdash player')
   });
