@@ -12,35 +12,39 @@
 -->
 <html lang="en">
 <head>
-<script type="text/javascript" src="https://bitmovin-a.akamaihd.net/bitmovin-player/stable/6/bitmovinplayer.min.js"></script>
+  <script type="text/javascript" src="https://bitmovin-a.akamaihd.net/bitmovin-player/stable/6/bitmovinplayer.min.js"></script>
 </head>
-  <body>
+<body>
 <div id="player"></div>
 <script type="text/javascript">
-var conf = {
-        key:       'YOUR KEY HERE',
+    var conf = {
+        key: 'YOUR KEY HERE',
         source: {
-          dash:        "//bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd",
-          hls:         "//bitmovin-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8",
-          poster:      "//bitmovin-a.akamaihd.net/content/MI201109210084_1/poster.jpg"
+            dash: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd",
+            hls: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8",
+            poster: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/poster.jpg"
         },
-         events: {
-            onSegmentRequestFinished: function(params){
-              console.log(JSON.stringify(params));
-              if(!params.httpStatus==200)
-              {
-                window.alert(params.httpStatus + " HTTP error while downloading the last segment");
-              }
-    }
-}
+        events: {
+            onSegmentRequestFinished: function (params) {
+                console.log(JSON.stringify(params));
+                if (!params.httpStatus == 200) {
+                    window.alert(params.httpStatus + " HTTP error while downloading the last segment");
+                }
+            }
+        }
     };
-var player = bitmovin.player("player");
-player.setup(conf).then(function(value) {
+
+    var player = bitmovin.player("player");
+
+    player.setup(conf).then(function (value) {
         // Success
         console.log("Successfully created bitmovin player instance");
-    }, function(reason) {
+    }, function (reason) {
         // Error!
         console.log("Error while creating bitmovin player instance");
     });
+
 </script>
 </body>
+</html>
+
