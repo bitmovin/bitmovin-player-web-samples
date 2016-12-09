@@ -19,7 +19,7 @@
   <link href='//fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'/>
 
   <!-- bitdash player -->
-  <script type="text/javascript" src="http://bitmovin-a.akamaihd.net/bitmovin-player/staging/5.1/bitdash.min.js"></script>
+  <script type="text/javascript" src="//bitmovin-a.akamaihd.net/bitmovin-player/stable/6.1.3/bitmovinplayer.min.js"></script>
 
   <style>
     figure {
@@ -149,9 +149,9 @@
     }
   };
 
-  player = bitdash('player');
+  player = bitmovin.player('player');
   player.setup(conf).catch(function(){
-    console.error('Error setting up bitdash player')
+    console.error('Error setting up bitdash player');
   });
 
 </script>
