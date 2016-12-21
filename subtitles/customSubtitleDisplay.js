@@ -177,7 +177,7 @@ function CustomSubtitleDisplay(figure) {
     var region = getRegion(event.regionName, event.regionStyle);
 
     var elem = document.createElement('li');
-    elem.innerHTML = event.text;
+    elem.innerHTML = event.text.replace(/\n/g, '<br/>');
 
     removeClass(region.region, noRegionBackgroundCSSClass);
 
@@ -188,7 +188,7 @@ function CustomSubtitleDisplay(figure) {
     event.regionName = event.regionName || defaultRegionName;
 
     var elem = document.createElement('li');
-    elem.innerHTML = event.text;
+    elem.innerHTML = event.text.replace(/\n/g, '<br/>');
 
     if (!availableRegions.hasOwnProperty(event.regionName)) {
       return;
