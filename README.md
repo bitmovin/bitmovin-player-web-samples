@@ -21,7 +21,7 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
 * [**playlist**](playlist/)
     * [simplePlaylist](playlist/simplePlaylist.html): Build a playlist with Bitmovin HTML5 Player API.
     
-![bitdash MPEG-DASH Demo](https://ox4zindgwb3p1qdp2lznn7zb-wpengine.netdna-ssl.com/wp-content/uploads/2015/10/bitmovin-watermarking.jpg "bitdash MPEG-DASH Demo Page")
+![bitdash MPEG-DASH Demo](https://ox4zindgwb3p1qdp2lznn7zb-wpengine.netdna-ssl.com/wp-content/uploads/2015/10/bitmovin-watermarking.jpg?style=centerme "bitdash MPEG-DASH Demo Page")
 
 ## Howto Install
 
