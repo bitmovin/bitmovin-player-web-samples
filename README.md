@@ -21,7 +21,7 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
 * [**playlist**](playlist/)
     * [simplePlaylist](playlist/simplePlaylist.html): Build a playlist with Bitmovin HTML5 Player API.
 
-![bitdash MPEG-DASH Demo](images/background.png?style=centerme "bitdash MPEG-DASH Demo Page")
+![bitdash MPEG-DASH Demo](images/background.png?style=centerme "Bitmovin HTML5 Player Demo Page")
 
 ## Howto Install
 
