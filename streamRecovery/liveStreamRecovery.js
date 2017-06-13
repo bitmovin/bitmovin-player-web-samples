@@ -32,7 +32,7 @@ var LiveStreamRecovery = function(player, maxErrorCount) {
   var userConfig        = player.getConfig();
   var restarted         = false;
 
-  player.addEventHandler('onStartBuffering',   function(data) {
+  player.addEventHandler('onStallStarted',   function(data) {
     if (consecutiveErrors > maxErrorCount) {
       console.log('restarting stream');
       player.load(userConfig.source);
