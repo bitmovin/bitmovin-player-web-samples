@@ -360,7 +360,7 @@
       this.removeEventHandler('onDownloadFinished', onDownloadFinished);
     }
   }
-  function onVideoPlaybackQualityChange(event) {
+  function onVideoPlaybackQualityChanged(event) {
     playerStats[this.getFigure().parentNode.id]['playback-representation'].innerHTML = event.targetQuality;
     playerStats[this.getFigure().parentNode.id]['playback-representation'].className = 'changed';
     setTimeout(function() {
@@ -413,7 +413,7 @@
         player.addEventHandler('onPlay', onPlay);
       }
       player.addEventHandler('onDownloadFinished', onDownloadFinished);
-      player.addEventHandler('onVideoPlaybackQualityChange', onVideoPlaybackQualityChange);
+      player.addEventHandler('onVideoPlaybackQualityChanged', onVideoPlaybackQualityChanged);
       player.addEventHandler('onPlaybackFinished', function () {
         this.play();
       });
