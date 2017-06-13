@@ -83,7 +83,7 @@ var RateBasedSwitching = function(player, bufferSize, segmentLength) {
 
   this.remove = function() {
     player.removeEventHandler('onDownloadFinished', onDownloadFinished);
-    player.removeEventHandler('onStartBuffering', resetBuffer);
+    player.removeEventHandler('onStallStarted', resetBuffer);
     player.removeEventHandler('onVideoAdaptation', onVideoAdaptation);
   };
 
@@ -101,7 +101,7 @@ var RateBasedSwitching = function(player, bufferSize, segmentLength) {
 
     var init = function() {
       player.addEventHandler('onDownloadFinished', onDownloadFinished);
-      player.addEventHandler('onStartBuffering', resetBuffer);
+      player.addEventHandler('onStallStared', resetBuffer);
       player.addEventHandler('onVideoAdaptation', onVideoAdaptation);
     };
 
