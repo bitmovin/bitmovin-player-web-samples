@@ -137,13 +137,11 @@
     };
 
     var logEventTypes = function () {
-        console.log();
         console.log('The Bitmovin HTML5 Player offers the following event constants:', bitmovin.player.EVENTS);
     };
 
     var onPlay = function (event) {
         if (!watermark) watermark = document.getElementsByClassName('bmpui-ui-watermark');
-        console.log(watermark);
         if (watermark) {
             watermark.className += " run-animation";
         }
