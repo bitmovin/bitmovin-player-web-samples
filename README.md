@@ -9,12 +9,19 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
 * [**events**](events/)
     * [onDownloadFinished](events/onDownloadFinished.html): Report download errors for live streams using the onDownloadFinished player event.
     * [eventConstants](events/eventConstants.html): Use event constants for registering event handlers at the player.
+    * [onSegmentRequestFinished](events/onSegmentRequestFinished.html): Use onSegmentRequestFinished event to analyse which segment has been downloaded and implement custom workflows according to the HTTP status code.
+* [**errorHandling**](errorhandling/)
+    * [handleDownloadErrors](errorhandling/handleDownloadErrors.html): Implement a custom retry logic when a files fail to be downloaded.
+    * [showPosterOnError](errorhandling/showPosterOnError.html): Display a still image whenever an error occurs.
+    * [switchQualityOnHttpStatusCode](errorhandling/switchQualityOnHttpStatusCode.html): Tweak the ABR behavior based on HTTP errors.
 * [**streamRecovery**](streamRecovery/)
     * [liveStreamRecovery](streamRecovery/liveStreamRecovery.js): Automatically restart live streams if too many download errors happened e.g. to get over missing segments.
 * [**subtitles**](subtitles/)
     * [customSubtitleDisplay](subtitles/customSubtitleDisplay.js): Render subtitles using the onCueEnter and onCueExit player events.
-
-![bitdash MPEG-DASH Demo](https://raw.githubusercontent.com/bitmovin/bitdash-MPEG-DASH-demo/master/screenshot.png "bitdash MPEG-DASH Demo Page")
+* [**playlist**](playlist/)
+    * [simplePlaylist](playlist/simplePlaylist.html): Build a playlist with Bitmovin HTML5 Player API.
+    
+![bitdash MPEG-DASH Demo](https://ox4zindgwb3p1qdp2lznn7zb-wpengine.netdna-ssl.com/wp-content/uploads/2015/10/bitmovin-watermarking.jpg "bitdash MPEG-DASH Demo Page")
 
 ## Howto Install
 
