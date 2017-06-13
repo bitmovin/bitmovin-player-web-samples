@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href='//fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'/>
   <!-- bitdash player -->
-  <script type="text/javascript" src="//bitmovin-a.akamaihd.net/bitmovin-player/stable/6/bitmovinplayer.min.js"></script>
+  <script type="text/javascript" src="//bitmovin-a.akamaihd.net/bitmovin-player/stable/7.1/bitmovinplayer.js"></script>
 
   <style>
     figure {
@@ -61,6 +61,15 @@
   </style>
 </head>
 <body background="//bitdash-a.akamaihd.net/webpages/bitmovin/images/background.jpg">
+<style>
+  .bmpui-ui-skin-modern .bmpui-ui-tvnoisecanvas {
+    display: none;
+  }
+
+  .bmpui-ui-skin-modern .bmpui-ui-errormessage-label {
+    display: none;
+  }
+</style>
 <div class="container">
   <h1>HTML5 Adaptive Streaming Player for MPEG-DASH & HLS</h1>
   <h2>Your videos play everywhere with low startup delay, no buffering and in highest quality.</h2>
@@ -90,6 +99,7 @@
       img.className = 'poster';
       img.src = conf.source.poster;
       document.getElementById('player').appendChild(img);
+      player.load({poster: img.src});
     }
   };
 
