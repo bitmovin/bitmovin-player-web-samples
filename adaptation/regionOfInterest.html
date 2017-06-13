@@ -12,424 +12,427 @@
 -->
 <html lang="en">
 <head>
-  <title>Bitmovin Player demo</title>
-  <meta charset="UTF-8"/>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href='//fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'/>
-  <!-- Bitmovin Player -->
-  <script type="text/javascript" src="//bitmovin-a.akamaihd.net/bitmovin-player/stable/7.1/bitmovinplayer.js"></script>
-  <style>
+    <title>Bitmovin Player demo</title>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='//fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'/>
+    <!-- Bitmovin Player -->
+    <script type="text/javascript"
+            src="//bitmovin-a.akamaihd.net/bitmovin-player/stable/7.1/bitmovinplayer.js"></script>
+    <style>
 
-    figure {
-      margin: 0;
-      padding: 0;
-      min-height: 0 !important;
-    }
+        figure {
+            margin: 0;
+            padding: 0;
+            min-height: 0 !important;
+        }
 
-    .container {
-      font-family: 'Dosis';
-      color: white;
-      text-align: center;
-    }
+        .container {
+            font-family: 'Dosis';
+            color: white;
+            text-align: center;
+        }
 
-    .container a {
-      color: white;
-    }
+        .container a {
+            color: white;
+        }
 
-    .container h1 {
-      font: 54px/66px 'Dosis';
-      margin-bottom: 22px;
-      line-height: 66px;
-    }
+        .container h1 {
+            font: 54px/66px 'Dosis';
+            margin-bottom: 22px;
+            line-height: 66px;
+        }
 
-    .container h2 {
-      font-weight: normal;
-      margin-bottom: 36px;
-      line-height: 26px;
-    }
+        .container h2 {
+            font-weight: normal;
+            margin-bottom: 36px;
+            line-height: 26px;
+        }
 
-    .playback-stats h3 {
-      font-weight: normal;
-      text-transform: uppercase;
-      margin-bottom: 5px;
-      margin-top: 5px;
-      line-height: 26px;
-    }
-    .player-wrapper {
-      width: 80%;
-      margin-right: auto;
-      margin-left: auto;
-      margin-top: 20px;
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
-      border-spacing: 0;
-      border-collapse: collapse;
-      background-color: black;
-    }
+        .playback-stats h3 {
+            font-weight: normal;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            margin-top: 5px;
+            line-height: 26px;
+        }
 
-    .playback-stats {
-      width: 50%;
-      margin-right: auto;
-      margin-left: auto;
-      margin-top: 20px;
-      height: auto;
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
-      background-color: gray;
-    }
+        .player-wrapper {
+            width: 80%;
+            margin-right: auto;
+            margin-left: auto;
+            margin-top: 20px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+            border-spacing: 0;
+            border-collapse: collapse;
+            background-color: black;
+        }
 
-    .playback-stats td {
-      -webkit-transition: background-color 250ms ease;
-      -moz-transition: background-color 250ms ease;
-      -o-transition: background-color 250ms ease;
-      -ms-transition: background-color 250ms ease;
-      transition: background-color 250ms ease;
-      padding: 5px;
-    }
-    
-    .active {
-      background-color: #2eabe2;
-    }
+        .playback-stats {
+            width: 50%;
+            margin-right: auto;
+            margin-left: auto;
+            margin-top: 20px;
+            height: auto;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+            background-color: gray;
+        }
 
-    .changed {
-      -webkit-transition: color 100ms ease !important;
-      -moz-transition: color 100ms ease !important;
-      -o-transition: color 100ms ease !important;
-      -ms-transition: color 100ms ease !important;
-      transition: color 100ms ease !important;
-      color: #f3922b !important;
-    }
+        .playback-stats td {
+            -webkit-transition: background-color 250ms ease;
+            -moz-transition: background-color 250ms ease;
+            -o-transition: background-color 250ms ease;
+            -ms-transition: background-color 250ms ease;
+            transition: background-color 250ms ease;
+            padding: 5px;
+        }
 
-    #playback-stats-wrapper-table {
-      width: 100%;
-      height: auto;
-      border-spacing: 0;
-      border-collapse: collapse;
-      margin-top: 5px;
-      padding-bottom: 5px;
-      border: 0 none;
-    }
+        .active {
+            background-color: #2eabe2;
+        }
 
-    #playback-stats-wrapper-table div {
-      -webkit-transition: color 1000ms ease;
-      -moz-transition: color 1000ms ease;
-      -o-transition: color 1000ms ease;
-      -ms-transition: color 1000ms ease;
-      transition: color 1000ms ease;
-    }
+        .changed {
+            -webkit-transition: color 100ms ease !important;
+            -moz-transition: color 100ms ease !important;
+            -o-transition: color 100ms ease !important;
+            -ms-transition: color 100ms ease !important;
+            transition: color 100ms ease !important;
+            color: #f3922b !important;
+        }
 
-    #playback-stats-wrapper-table .active div {
-      color: white;
-    }
+        #playback-stats-wrapper-table {
+            width: 100%;
+            height: auto;
+            border-spacing: 0;
+            border-collapse: collapse;
+            margin-top: 5px;
+            padding-bottom: 5px;
+            border: 0 none;
+        }
 
-    #playback-stats-wrapper-table span {
-      color: lightblue;
-    }
+        #playback-stats-wrapper-table div {
+            -webkit-transition: color 1000ms ease;
+            -moz-transition: color 1000ms ease;
+            -o-transition: color 1000ms ease;
+            -ms-transition: color 1000ms ease;
+            transition: color 1000ms ease;
+        }
 
-    #playback-stats-wrapper-table .active span {
-      color: white;
-    }
+        #playback-stats-wrapper-table .active div {
+            color: white;
+        }
 
-    .playback-stats-cell {
-      width: 50%;
-      padding: 5px;
-      margin: 0;
-    }
+        #playback-stats-wrapper-table span {
+            color: lightblue;
+        }
 
-    .playback-stats-row {
-      width: 50%;
-      padding: 0;
-      margin: 0;
-    }
+        #playback-stats-wrapper-table .active span {
+            color: white;
+        }
 
-    #webserver-warning {
-      margin: 50px;
-      padding: 20px;
-      background-color: rgba(255, 0, 0, 0.5);
-      display: none;
-    }
-  </style>
+        .playback-stats-cell {
+            width: 50%;
+            padding: 5px;
+            margin: 0;
+        }
+
+        .playback-stats-row {
+            width: 50%;
+            padding: 0;
+            margin: 0;
+        }
+
+        #webserver-warning {
+            margin: 50px;
+            padding: 20px;
+            background-color: rgba(255, 0, 0, 0.5);
+            display: none;
+        }
+    </style>
 </head>
 <body background="http://bitdash-a.akamaihd.net/webpages/bitmovin/images/background.jpg">
 <div class="container">
-  <h1>HTML5 Adaptive Streaming Player for MPEG-DASH & HLS</h1>
-  <h2>Your videos play everywhere with low startup delay, no buffering and in highest quality.</h2>
-  <div id="webserver-warning">
-    <div class="ca-content">
-      <h1>Unsupported Protocol</h1>
-      <h2>This file has been loaded using the unsupported "file" protocol. Please use a <a
-          href="http://wiki.selfhtml.org/wiki/Webserver/lokal" target="_blank">web server</a> and open this page using
-        http or https.</h2>
+    <h1>HTML5 Adaptive Streaming Player for MPEG-DASH & HLS</h1>
+    <h2>Your videos play everywhere with low startup delay, no buffering and in highest quality.</h2>
+    <div id="webserver-warning">
+        <div class="ca-content">
+            <h1>Unsupported Protocol</h1>
+            <h2>This file has been loaded using the unsupported "file" protocol. Please use a <a
+                    href="http://wiki.selfhtml.org/wiki/Webserver/lokal" target="_blank">web server</a> and open this
+                page using
+                http or https.</h2>
+        </div>
     </div>
-  </div>
-  <div class="content">
-      <table id="player-wrapper-table" class="player-wrapper">
-        <tr style="height: 50%; padding: 0; margin: 0;">
-          <td id="top-left-player" style="width: 50%; padding: 0; margin: 0;"></td>
-          <td id="top-right-player" style="width: 50%; padding: 0; margin: 0;"></td>
-        </tr>
-        <tr style="height: 50%; padding: 0; margin: 0;">
-          <td id="bottom-left-player" style="width: 50%; padding: 0; margin: 0;"></td>
-          <td id="bottom-right-player" style="width: 50%; padding: 0; margin: 0;"></td>
-        </tr>
-      </table>
-    <div class="playback-stats">
-      <h3>playback control</h3>
-      <button id="play" onclick="playPause('play')" disabled>play</button>
-      <button id="pause" onclick="playPause('pause')" disabled>pause</button>
-      <h3>playback stats</h3>
-      <table id="playback-stats-wrapper-table">
-        <tr class="playback-stats-row">
-          <td id="top-left-player-stats" class="playback-stats-cell">
-            <h3>top-left player</h3>
-            <span>chosen representation</span>
-            <div id="top-left-player-chosen-representation"></div>
-            <br/>
-            <span>playback representation</span>
-            <div id="top-left-player-playback-representation"></div>
-          </td>
-          <td id="top-right-player-stats" class="playback-stats-cell">
-            <h3>top-right player</h3>
-            <span>chosen representation</span>
-            <div id="top-right-player-chosen-representation"></div>
-            <br/>
-            <span>playback representation</span>
-            <div id="top-right-player-playback-representation"></div>
-          </td>
-        </tr>
-        <tr class="playback-stats-row">
-          <td id="bottom-left-player-stats" class="playback-stats-cell">
-            <h3>bottom-left player</h3>
-            <span>chosen representation</span>
-            <div id="bottom-left-player-chosen-representation"></div>
-            <br/>
-            <span>playback representation</span>
-            <div id="bottom-left-player-playback-representation"></div>
-          </td>
-          <td id="bottom-right-player-stats" class="playback-stats-cell">
-            <h3>bottom-right player</h3>
-            <span>chosen representation</span>
-            <div id="bottom-right-player-chosen-representation"></div>
-            <br/>
-            <span>playback representation</span>
-            <div id="bottom-right-player-playback-representation"></div>
-          </td>
-        </tr>
-      </table>
+    <div class="content">
+        <table id="player-wrapper-table" class="player-wrapper">
+            <tr style="height: 50%; padding: 0; margin: 0;">
+                <td id="top-left-player" style="width: 50%; padding: 0; margin: 0;"></td>
+                <td id="top-right-player" style="width: 50%; padding: 0; margin: 0;"></td>
+            </tr>
+            <tr style="height: 50%; padding: 0; margin: 0;">
+                <td id="bottom-left-player" style="width: 50%; padding: 0; margin: 0;"></td>
+                <td id="bottom-right-player" style="width: 50%; padding: 0; margin: 0;"></td>
+            </tr>
+        </table>
+        <div class="playback-stats">
+            <h3>playback control</h3>
+            <button id="play" onclick="playPause('play')" disabled>play</button>
+            <button id="pause" onclick="playPause('pause')" disabled>pause</button>
+            <h3>playback stats</h3>
+            <table id="playback-stats-wrapper-table">
+                <tr class="playback-stats-row">
+                    <td id="top-left-player-stats" class="playback-stats-cell">
+                        <h3>top-left player</h3>
+                        <span>chosen representation</span>
+                        <div id="top-left-player-chosen-representation"></div>
+                        <br/>
+                        <span>playback representation</span>
+                        <div id="top-left-player-playback-representation"></div>
+                    </td>
+                    <td id="top-right-player-stats" class="playback-stats-cell">
+                        <h3>top-right player</h3>
+                        <span>chosen representation</span>
+                        <div id="top-right-player-chosen-representation"></div>
+                        <br/>
+                        <span>playback representation</span>
+                        <div id="top-right-player-playback-representation"></div>
+                    </td>
+                </tr>
+                <tr class="playback-stats-row">
+                    <td id="bottom-left-player-stats" class="playback-stats-cell">
+                        <h3>bottom-left player</h3>
+                        <span>chosen representation</span>
+                        <div id="bottom-left-player-chosen-representation"></div>
+                        <br/>
+                        <span>playback representation</span>
+                        <div id="bottom-left-player-playback-representation"></div>
+                    </td>
+                    <td id="bottom-right-player-stats" class="playback-stats-cell">
+                        <h3>bottom-right player</h3>
+                        <span>chosen representation</span>
+                        <div id="bottom-right-player-chosen-representation"></div>
+                        <br/>
+                        <span>playback representation</span>
+                        <div id="bottom-right-player-playback-representation"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
-  </div>
 </div>
 <script type="text/javascript">
 
-  if (location.protocol === 'file:') {
-    document.getElementById('webserver-warning').style.display = 'block';
-  }
-
-  var playerWrapperTable        = document.getElementById('player-wrapper-table');
-  var topLeftPlayerWrapper      = document.getElementById('top-left-player');
-  var topRightPlayerWrapper     = document.getElementById('top-right-player');
-  var bottomLeftPlayerWrapper   = document.getElementById('bottom-left-player');
-  var bottomRightPlayerWrapper  = document.getElementById('bottom-right-player');
-
-  var minVideoRepresentation    = null;
-  var maxVideoRepresentation    = null;
-  var initializedPlayers        = 0;
-
-  var players                   = {
-    'top-left-player'           : null,
-    'top-right-player'          : null,
-    'bottom-left-player'        : null,
-    'bottom-right-player'       : null
-  };
-
-  var playerWrappers            = [
-    topLeftPlayerWrapper,
-    topRightPlayerWrapper,
-    bottomLeftPlayerWrapper,
-    bottomRightPlayerWrapper
-  ];
-
-  var playerStats               = {
-    'top-left-player'           : {
-      'wrapper'                 : document.getElementById('top-left-player-stats'),
-      'chosen-representation'   : document.getElementById('top-left-player-chosen-representation'),
-      'playback-representation' : document.getElementById('top-left-player-playback-representation')
-    },
-    'top-right-player'          : {
-      'wrapper'                 : document.getElementById('top-right-player-stats'),
-      'chosen-representation'   : document.getElementById('top-right-player-chosen-representation'),
-      'playback-representation' : document.getElementById('top-right-player-playback-representation')
-    },
-    'bottom-left-player'        : {
-      'wrapper'                 : document.getElementById('bottom-left-player-stats'),
-      'chosen-representation'   : document.getElementById('bottom-left-player-chosen-representation'),
-      'playback-representation' : document.getElementById('bottom-left-player-playback-representation')
-    },
-    'bottom-right-player'       : {
-      'wrapper'                 : document.getElementById('bottom-right-player-stats'),
-      'chosen-representation'   : document.getElementById('bottom-right-player-chosen-representation'),
-      'playback-representation' : document.getElementById('bottom-right-player-playback-representation')
-    }
-  };
-
-  var config                    = {
-    key : 'YOUR KEY HERE',
-    source: {
-      dash: '//bitdash-a.akamaihd.net/content/sintel/sintel.mpd',
-      hls: 'http://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8',
-      progressive: [
-        {url: 'http://bitdash-a.akamaihd.net/content/sintel/Sintel.mp4', type: 'video/mp4'},
-        {url: 'http://bitdash-a.akamaihd.net/content/sintel/Sintel.webm', type: 'video/webm'}
-      ]
-    },
-    style: {
-      width: '100%',
-      height: '100%',
-      playOverlay: false,
-      ux: false,
-      mouse: false
-    },
-    playback: {
-      autoplay: true
-    },
-    adaptation: {
-      desktop: {
-        bitrates: {
-          minSelectableAudioBitrate: 0,
-          maxSelectableAudioBitrate: 1,
-          minSelectableVideoBitrate: 0,
-          maxSelectableVideoBitrate: 1
-        }
-      },
-      mobile: {
-        bitrates: {
-          minSelectableAudioBitrate: 0,
-          maxSelectableAudioBitrate: 1,
-          minSelectableVideoBitrate: 0,
-          maxSelectableVideoBitrate: 1
-        }
-      }
-    },
-    tweaks: {
-      max_buffer_level: 6
-    }
-  };
-
-  function setPlayerWrapperTableSize() {
-    playerWrapperTable.style.height = (playerWrapperTable.clientWidth / 2.35) + 'px';
-  }
-
-  function getMinMaxVideoRepresentation() {
-    if (players['top-left-player'] && (!maxVideoRepresentation || !minVideoRepresentation)) {
-      maxVideoRepresentation = { bitrate: 0 };
-      minVideoRepresentation = { bitrate: Infinity };
-      var availableVideoRepresentations = players['top-left-player'].getAvailableVideoQualities();
-      for (var idx = 0; idx < availableVideoRepresentations.length; idx++) {
-        if (availableVideoRepresentations[idx].bitrate > maxVideoRepresentation.bitrate) {
-          maxVideoRepresentation = availableVideoRepresentations[idx];
-        }
-        if (availableVideoRepresentations[idx].bitrate < minVideoRepresentation.bitrate) {
-          minVideoRepresentation = availableVideoRepresentations[idx];
-        }
-      }
-    }
-  }
-
-  function playPause(type) {
-    for (var prop in players) {
-      if (players.hasOwnProperty(prop)) {
-        if (type === 'play') {
-          players[prop].play();
-        } else if (type === 'pause') {
-          players[prop].pause();
-        }
-      }
-    }
-  }
-
-  function onPlay() {
-    this.pause();
-    this.removeEventHandler('onPlay', onPlay);
-  }
-
-  function onDownloadFinished(event) {
-    if (event.url.indexOf('segment_1') >= 0) {
-      if (++initializedPlayers === 4) {
-        document.getElementById('play').removeAttribute('disabled');
-        document.getElementById('pause').removeAttribute('disabled');
-      }
-      this.removeEventHandler('onDownloadFinished', onDownloadFinished);
-    }
-  }
-  function onVideoPlaybackQualityChanged(event) {
-    playerStats[this.getFigure().parentNode.id]['playback-representation'].innerHTML = event.targetQuality;
-    playerStats[this.getFigure().parentNode.id]['playback-representation'].className = 'changed';
-    setTimeout(function() {
-      playerStats[this.getFigure().parentNode.id]['playback-representation'].removeAttribute('class');
-    }.bind(this), 300);
-  }
-
-  function onMouseEnter(event) {
-    getMinMaxVideoRepresentation();
-    if (players.hasOwnProperty(event.target.getAttribute('id')) && players[event.target.getAttribute('id')]) {
-      players[event.target.getAttribute('id')].setVideoQuality(maxVideoRepresentation.id);
-      playerStats[event.target.getAttribute('id')]['wrapper'].className = 'active';
-      playerStats[event.target.getAttribute('id')]['chosen-representation'].className = 'changed';
-      setTimeout(function() {
-        playerStats[event.target.getAttribute('id')]['chosen-representation'].removeAttribute('class');
-      }, 300);
-      playerStats[event.target.getAttribute('id')]['chosen-representation'].innerHTML = maxVideoRepresentation.id;
-    }
-  }
-
-  function onMouseLeave(event) {
-    getMinMaxVideoRepresentation();
-    if (players.hasOwnProperty(event.target.getAttribute('id')) && players[event.target.getAttribute('id')]) {
-      players[event.target.getAttribute('id')].setVideoQuality(minVideoRepresentation.id);
-      playerStats[event.target.getAttribute('id')]['wrapper'].removeAttribute('class');
-      playerStats[event.target.getAttribute('id')]['chosen-representation'].className = 'changed';
-      setTimeout(function() {
-        playerStats[event.target.getAttribute('id')]['chosen-representation'].removeAttribute('class');
-      }, 300);
-      playerStats[event.target.getAttribute('id')]['chosen-representation'].innerHTML = minVideoRepresentation.id;
-    }
-  }
-
-  (function init() {
-    var idx;
-    (window.onresize = setPlayerWrapperTableSize)();
-    initializedPlayers = 0;
-
-    for (idx = 0; idx < playerWrappers.length; idx++) {
-      playerWrappers[idx].onmouseenter = onMouseEnter;
-      playerWrappers[idx].onmouseleave = onMouseLeave;
+    if (location.protocol === 'file:') {
+        document.getElementById('webserver-warning').style.display = 'block';
     }
 
-    var playerReady = function(player) {
-      players[player.getFigure().parentNode.id] = player;
+    var playerWrapperTable = document.getElementById('player-wrapper-table');
+    var topLeftPlayerWrapper = document.getElementById('top-left-player');
+    var topRightPlayerWrapper = document.getElementById('top-right-player');
+    var bottomLeftPlayerWrapper = document.getElementById('bottom-left-player');
+    var bottomRightPlayerWrapper = document.getElementById('bottom-right-player');
 
-      if (player.isPlaying()) {
-        player.pause();
-      } else {
-        player.addEventHandler('onPlay', onPlay);
-      }
-      player.addEventHandler('onDownloadFinished', onDownloadFinished);
-      player.addEventHandler('onVideoPlaybackQualityChanged', onVideoPlaybackQualityChanged);
-      player.addEventHandler('onPlaybackFinished', function () {
-        this.play();
-      });
+    var minVideoRepresentation = null;
+    var maxVideoRepresentation = null;
+    var initializedPlayers = 0;
+
+    var players = {
+        'top-left-player': null,
+        'top-right-player': null,
+        'bottom-left-player': null,
+        'bottom-right-player': null
     };
 
-    var playerCreationFailed = function(reason) {
-      console.error('player could not be created');
-      console.error(reason);
+    var playerWrappers = [
+        topLeftPlayerWrapper,
+        topRightPlayerWrapper,
+        bottomLeftPlayerWrapper,
+        bottomRightPlayerWrapper
+    ];
+
+    var playerStats = {
+        'top-left-player': {
+            'wrapper': document.getElementById('top-left-player-stats'),
+            'chosen-representation': document.getElementById('top-left-player-chosen-representation'),
+            'playback-representation': document.getElementById('top-left-player-playback-representation')
+        },
+        'top-right-player': {
+            'wrapper': document.getElementById('top-right-player-stats'),
+            'chosen-representation': document.getElementById('top-right-player-chosen-representation'),
+            'playback-representation': document.getElementById('top-right-player-playback-representation')
+        },
+        'bottom-left-player': {
+            'wrapper': document.getElementById('bottom-left-player-stats'),
+            'chosen-representation': document.getElementById('bottom-left-player-chosen-representation'),
+            'playback-representation': document.getElementById('bottom-left-player-playback-representation')
+        },
+        'bottom-right-player': {
+            'wrapper': document.getElementById('bottom-right-player-stats'),
+            'chosen-representation': document.getElementById('bottom-right-player-chosen-representation'),
+            'playback-representation': document.getElementById('bottom-right-player-playback-representation')
+        }
     };
 
-    bitmovin.player('top-left-player').setup(config).then(playerReady, playerCreationFailed);
-    bitmovin.player('top-right-player').setup(config).then(playerReady, playerCreationFailed);
-    bitmovin.player('bottom-left-player').setup(config).then(playerReady, playerCreationFailed);
-    bitmovin.player('bottom-right-player').setup(config).then(playerReady, playerCreationFailed);
+    var config = {
+        key: 'YOUR KEY HERE',
+        source: {
+            dash: '//bitdash-a.akamaihd.net/content/sintel/sintel.mpd',
+            hls: 'http://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8',
+            progressive: [
+                {url: 'http://bitdash-a.akamaihd.net/content/sintel/Sintel.mp4', type: 'video/mp4'},
+                {url: 'http://bitdash-a.akamaihd.net/content/sintel/Sintel.webm', type: 'video/webm'}
+            ]
+        },
+        style: {
+            width: '100%',
+            height: '100%',
+            playOverlay: false,
+            ux: false,
+            mouse: false
+        },
+        playback: {
+            autoplay: true
+        },
+        adaptation: {
+            desktop: {
+                bitrates: {
+                    minSelectableAudioBitrate: 0,
+                    maxSelectableAudioBitrate: 1,
+                    minSelectableVideoBitrate: 0,
+                    maxSelectableVideoBitrate: 1
+                }
+            },
+            mobile: {
+                bitrates: {
+                    minSelectableAudioBitrate: 0,
+                    maxSelectableAudioBitrate: 1,
+                    minSelectableVideoBitrate: 0,
+                    maxSelectableVideoBitrate: 1
+                }
+            }
+        },
+        tweaks: {
+            max_buffer_level: 6
+        }
+    };
 
-  })();
+    function setPlayerWrapperTableSize() {
+        playerWrapperTable.style.height = (playerWrapperTable.clientWidth / 2.35) + 'px';
+    }
+
+    function getMinMaxVideoRepresentation() {
+        if (players['top-left-player'] && (!maxVideoRepresentation || !minVideoRepresentation)) {
+            maxVideoRepresentation = {bitrate: 0};
+            minVideoRepresentation = {bitrate: Infinity};
+            var availableVideoRepresentations = players['top-left-player'].getAvailableVideoQualities();
+            for (var idx = 0; idx < availableVideoRepresentations.length; idx++) {
+                if (availableVideoRepresentations[idx].bitrate > maxVideoRepresentation.bitrate) {
+                    maxVideoRepresentation = availableVideoRepresentations[idx];
+                }
+                if (availableVideoRepresentations[idx].bitrate < minVideoRepresentation.bitrate) {
+                    minVideoRepresentation = availableVideoRepresentations[idx];
+                }
+            }
+        }
+    }
+
+    function playPause(type) {
+        for (var prop in players) {
+            if (players.hasOwnProperty(prop)) {
+                if (type === 'play') {
+                    players[prop].play();
+                } else if (type === 'pause') {
+                    players[prop].pause();
+                }
+            }
+        }
+    }
+
+    function onPlay() {
+        this.pause();
+        this.removeEventHandler('onPlay', onPlay);
+    }
+
+    function onDownloadFinished(event) {
+        if (event.url.indexOf('segment_1') >= 0) {
+            if (++initializedPlayers === 4) {
+                document.getElementById('play').removeAttribute('disabled');
+                document.getElementById('pause').removeAttribute('disabled');
+            }
+            this.removeEventHandler('onDownloadFinished', onDownloadFinished);
+        }
+    }
+    function onVideoPlaybackQualityChanged(event) {
+        playerStats[this.getFigure().parentNode.id]['playback-representation'].innerHTML = event.targetQuality;
+        playerStats[this.getFigure().parentNode.id]['playback-representation'].className = 'changed';
+        setTimeout(function () {
+            playerStats[this.getFigure().parentNode.id]['playback-representation'].removeAttribute('class');
+        }.bind(this), 300);
+    }
+
+    function onMouseEnter(event) {
+        getMinMaxVideoRepresentation();
+        if (players.hasOwnProperty(event.target.getAttribute('id')) && players[event.target.getAttribute('id')]) {
+            players[event.target.getAttribute('id')].setVideoQuality(maxVideoRepresentation.id);
+            playerStats[event.target.getAttribute('id')]['wrapper'].className = 'active';
+            playerStats[event.target.getAttribute('id')]['chosen-representation'].className = 'changed';
+            setTimeout(function () {
+                playerStats[event.target.getAttribute('id')]['chosen-representation'].removeAttribute('class');
+            }, 300);
+            playerStats[event.target.getAttribute('id')]['chosen-representation'].innerHTML = maxVideoRepresentation.id;
+        }
+    }
+
+    function onMouseLeave(event) {
+        getMinMaxVideoRepresentation();
+        if (players.hasOwnProperty(event.target.getAttribute('id')) && players[event.target.getAttribute('id')]) {
+            players[event.target.getAttribute('id')].setVideoQuality(minVideoRepresentation.id);
+            playerStats[event.target.getAttribute('id')]['wrapper'].removeAttribute('class');
+            playerStats[event.target.getAttribute('id')]['chosen-representation'].className = 'changed';
+            setTimeout(function () {
+                playerStats[event.target.getAttribute('id')]['chosen-representation'].removeAttribute('class');
+            }, 300);
+            playerStats[event.target.getAttribute('id')]['chosen-representation'].innerHTML = minVideoRepresentation.id;
+        }
+    }
+
+    (function init() {
+        var idx;
+        (window.onresize = setPlayerWrapperTableSize)();
+        initializedPlayers = 0;
+
+        for (idx = 0; idx < playerWrappers.length; idx++) {
+            playerWrappers[idx].onmouseenter = onMouseEnter;
+            playerWrappers[idx].onmouseleave = onMouseLeave;
+        }
+
+        var playerReady = function (player) {
+            players[player.getFigure().parentNode.id] = player;
+
+            if (player.isPlaying()) {
+                player.pause();
+            } else {
+                player.addEventHandler('onPlay', onPlay);
+            }
+            player.addEventHandler('onDownloadFinished', onDownloadFinished);
+            player.addEventHandler('onVideoPlaybackQualityChanged', onVideoPlaybackQualityChanged);
+            player.addEventHandler('onPlaybackFinished', function () {
+                this.play();
+            });
+        };
+
+        var playerCreationFailed = function (reason) {
+            console.error('player could not be created');
+            console.error(reason);
+        };
+
+        bitmovin.player('top-left-player').setup(config).then(playerReady, playerCreationFailed);
+        bitmovin.player('top-right-player').setup(config).then(playerReady, playerCreationFailed);
+        bitmovin.player('bottom-left-player').setup(config).then(playerReady, playerCreationFailed);
+        bitmovin.player('bottom-right-player').setup(config).then(playerReady, playerCreationFailed);
+
+    })();
 
 </script>
 

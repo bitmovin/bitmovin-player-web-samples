@@ -27,59 +27,59 @@
  *
  ****************************************************************************/
 
-var PreferredStartupQuality = function(player, preferredStartupQualityBps, startupPhaseSeconds) {
-  var availableQualities = null;
-  var isInStartup        = true;
-  var startupTimerID;
+var PreferredStartupQuality = function (player, preferredStartupQualityBps, startupPhaseSeconds) {
+    var availableQualities = null;
+    var isInStartup = true;
+    var startupTimerID;
 
-  var preferredQuality = preferredStartupQualityBps || 1000000;
-  var startupSeconds   = startupPhaseSeconds        || 10;
+    var preferredQuality = preferredStartupQualityBps || 1000000;
+    var startupSeconds = startupPhaseSeconds || 10;
 
-  var onVideoAdaptation = function(e) {
-    if (isInStartup) {
-      if (!availableQualities) {
-        availableQualities = this.getAvailableVideoQualities();
-        startupTimerID = setTimeout(function() {
-          isInStartup = false;
-        }, startupSeconds * 1000);
-      }
+    var onVideoAdaptation = function (e) {
+        if (isInStartup) {
+            if (!availableQualities) {
+                availableQualities = this.getAvailableVideoQualities();
+                startupTimerID = setTimeout(function () {
+                    isInStartup = false;
+                }, startupSeconds * 1000);
+            }
 
-      for (var i = availableQualities.length - 1; i >= 0; i--) {
-        if (availableQualities[i].id === e.suggested) {
-          // Use the suggested quality if it's higher than the preferred
-          return e.suggested;
+            for (var i = availableQualities.length - 1; i >= 0; i--) {
+                if (availableQualities[i].id === e.suggested) {
+                    // Use the suggested quality if it's higher than the preferred
+                    return e.suggested;
+                }
+                if (availableQualities[i].bitrate <= preferredQuality) {
+                    return availableQualities[i].id;
+                }
+            }
+
+            return availableQualities[availableQualities.length - 1].id;
         }
-        if (availableQualities[i].bitrate <= preferredQuality) {
-          return availableQualities[i].id;
-        }
-      }
 
-      return availableQualities[availableQualities.length - 1].id;
-    }
+        return e.suggested;
+    };
 
-    return e.suggested;
-  };
+    var onReady = function () {
+        isInStartup = true;
+        clearTimeout(startupTimerID);
+        availableQualities = null;
+    };
 
-  var onReady = function() {
-    isInStartup = true;
-    clearTimeout(startupTimerID);
-    availableQualities = null;
-  };
+    player.addEventHandler('onReady', onReady);
+    player.addEventHandler('onVideoAdaptation', onVideoAdaptation);
 
-  player.addEventHandler('onReady', onReady);
-  player.addEventHandler('onVideoAdaptation', onVideoAdaptation);
+    this.remove = function () {
+        player.removeEventHandler('onReady', onReady);
+        player.removeEventHandler('onVideoAdaptation', onVideoAdaptation);
 
-  this.remove = function() {
-    player.removeEventHandler('onReady', onReady);
-    player.removeEventHandler('onVideoAdaptation', onVideoAdaptation);
+        clearTimeout(startupTimerID);
+        isInStartup = true;
+        availableQualities = null;
+    };
 
-    clearTimeout(startupTimerID);
-    isInStartup   = true;
-    availableQualities = null;
-  };
-
-  this.stopStartup = function() {
-    isInStartup = false;
-    clearTimeout(startupTimerID);
-  };
+    this.stopStartup = function () {
+        isInStartup = false;
+        clearTimeout(startupTimerID);
+    };
 };

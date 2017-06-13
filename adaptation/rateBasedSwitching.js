@@ -27,84 +27,84 @@
  *
  ****************************************************************************/
 
-var RateBasedSwitching = function(player, bufferSize, segmentLength) {
-  var downloadRates = [ ];
-  var maxBufferLevel = null;
+var RateBasedSwitching = function (player, bufferSize, segmentLength) {
+    var downloadRates = [];
+    var maxBufferLevel = null;
 
-  function onDownloadFinished(event) {
-    if (event.downloadType === 'media' && event.url.indexOf('video') > -1 && event.url.indexOf('init.mp4') < 0) {
-      downloadRates.unshift((event.size * 8) / event.downloadTime);
-      while (downloadRates.length > bufferSize) {
-        downloadRates.pop();
-      }
-    }
-  }
-
-  function resetBuffer() {
-    downloadRates = [ ];
-  }
-
-  function getMeanBitrate() {
-    var mean = 0;
-    var count = 0;
-    var depth = Math.min(Math.max(1, parseInt(Math.min(player.getVideoBufferLength() / (maxBufferLevel - segmentLength), 1) * bufferSize)), downloadRates.length);
-
-    for (var idx = 0; idx < depth; idx++) {
-      var currentValue = downloadRates[idx] * (1 - (idx * (1 / bufferSize)));
-      if (currentValue < 0) break;
-      mean += currentValue;
-      count++;
+    function onDownloadFinished(event) {
+        if (event.downloadType === 'media' && event.url.indexOf('video') > -1 && event.url.indexOf('init.mp4') < 0) {
+            downloadRates.unshift((event.size * 8) / event.downloadTime);
+            while (downloadRates.length > bufferSize) {
+                downloadRates.pop();
+            }
+        }
     }
 
-    return count > 0 ? (mean / count) : 0;
-  }
-
-  function onVideoAdaptation() {
-    var availableVideoQualities = player.getAvailableVideoQualities();
-    var maxVideoRepresentation = { bitrate: 0 };
-    var minVideoRepresentation = { bitrate: Infinity };
-    var meanBitrate = getMeanBitrate();
-
-    for (var idx = 0; idx < availableVideoQualities.length; idx++) {
-      if (maxVideoRepresentation.bitrate < availableVideoQualities[idx].bitrate && availableVideoQualities[idx].bitrate < meanBitrate) {
-        maxVideoRepresentation = availableVideoQualities[idx];
-      }
-      if (availableVideoQualities[idx].bitrate < minVideoRepresentation.bitrate) {
-        minVideoRepresentation = availableVideoQualities[idx];
-      }
+    function resetBuffer() {
+        downloadRates = [];
     }
 
-    if (maxVideoRepresentation.id) {
-      return maxVideoRepresentation.id;
-    } else {
-      return minVideoRepresentation.id;
-    }
-  }
+    function getMeanBitrate() {
+        var mean = 0;
+        var count = 0;
+        var depth = Math.min(Math.max(1, parseInt(Math.min(player.getVideoBufferLength() / (maxBufferLevel - segmentLength), 1) * bufferSize)), downloadRates.length);
 
-  (function() {
+        for (var idx = 0; idx < depth; idx++) {
+            var currentValue = downloadRates[idx] * (1 - (idx * (1 / bufferSize)));
+            if (currentValue < 0) break;
+            mean += currentValue;
+            count++;
+        }
 
-    if (!player) {
-      return;
-    }
-
-    if (player.getConfig().hasOwnProperty('tweaks') && player.getConfig().tweaks.hasOwnProperty('max_buffer_level')) {
-      maxBufferLevel = player.getConfig().tweaks.max_buffer_level;
-    } else {
-      maxBufferLevel = 20;
+        return count > 0 ? (mean / count) : 0;
     }
 
-    var init = function() {
-      player.addEventHandler('onDownloadFinished', onDownloadFinished);
-      player.addEventHandler('onStallStared', resetBuffer);
-      player.addEventHandler('onVideoAdaptation', onVideoAdaptation);
-    };
+    function onVideoAdaptation() {
+        var availableVideoQualities = player.getAvailableVideoQualities();
+        var maxVideoRepresentation = {bitrate: 0};
+        var minVideoRepresentation = {bitrate: Infinity};
+        var meanBitrate = getMeanBitrate();
 
-    if (player.isReady()) {
-      init();
-    } else {
-      player.addEventHandler('onReady', init);
+        for (var idx = 0; idx < availableVideoQualities.length; idx++) {
+            if (maxVideoRepresentation.bitrate < availableVideoQualities[idx].bitrate && availableVideoQualities[idx].bitrate < meanBitrate) {
+                maxVideoRepresentation = availableVideoQualities[idx];
+            }
+            if (availableVideoQualities[idx].bitrate < minVideoRepresentation.bitrate) {
+                minVideoRepresentation = availableVideoQualities[idx];
+            }
+        }
+
+        if (maxVideoRepresentation.id) {
+            return maxVideoRepresentation.id;
+        } else {
+            return minVideoRepresentation.id;
+        }
     }
 
-  })();
+    (function () {
+
+        if (!player) {
+            return;
+        }
+
+        if (player.getConfig().hasOwnProperty('tweaks') && player.getConfig().tweaks.hasOwnProperty('max_buffer_level')) {
+            maxBufferLevel = player.getConfig().tweaks.max_buffer_level;
+        } else {
+            maxBufferLevel = 20;
+        }
+
+        var init = function () {
+            player.addEventHandler('onDownloadFinished', onDownloadFinished);
+            player.addEventHandler('onStallStared', resetBuffer);
+            player.addEventHandler('onVideoAdaptation', onVideoAdaptation);
+        };
+
+        if (player.isReady()) {
+            init();
+        } else {
+            player.addEventHandler('onReady', init);
+        }
+
+    })();
 
 };
