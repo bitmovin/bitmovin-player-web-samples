@@ -20,7 +20,7 @@
     <link rel="icon" type="../image/png" href="../images/bit-fav.png">
     <!-- Bitmovin Player -->
     <script type="text/javascript"
-            src="//bitmovin-a.akamaihd.net/bitmovin-player/stable/7.1/bitmovinplayer.min.js"></script>
+            src="//bitmovin-a.akamaihd.net/bitmovin-player/stable/7.1/bitmovinplayer.js"></script>
     <style>
         body {
             margin: 0;
@@ -172,9 +172,12 @@
         }
     };
 
-    var onDownloadFinished = function (event) {
-        if (!event.success) { // download failed
-            console.error('segment ' + event.url + ' could not be loaded (' + event.httpStatus + ')');
+    var onDownloadFinished = function (data) {
+        if (!data.success) { // download failed
+            console.error('segment ' + data.url + ' could not be loaded (' + data.httpStatus + ')');
+        }
+        else {
+          console.log(data)
         }
     };
 

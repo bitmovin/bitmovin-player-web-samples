@@ -364,7 +364,7 @@
         }
     }
     function onVideoPlaybackQualityChanged(event) {
-        playerStats[this.getFigure().parentNode.id]['playback-representation'].innerHTML = event.targetQuality;
+        playerStats[this.getFigure().parentNode.id]['playback-representation'].innerHTML = event.targetQuality.id;
         playerStats[this.getFigure().parentNode.id]['playback-representation'].className = 'changed';
         setTimeout(function () {
             playerStats[this.getFigure().parentNode.id]['playback-representation'].removeAttribute('class');
