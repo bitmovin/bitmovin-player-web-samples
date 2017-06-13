@@ -20,8 +20,8 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
     * [customSubtitleDisplay](subtitles/customSubtitleDisplay.js): Render subtitles using the onCueEnter and onCueExit player events.
 * [**playlist**](playlist/)
     * [simplePlaylist](playlist/simplePlaylist.html): Build a playlist with Bitmovin HTML5 Player API.
-    
-![bitdash MPEG-DASH Demo](https://ox4zindgwb3p1qdp2lznn7zb-wpengine.netdna-ssl.com/wp-content/uploads/2015/10/bitmovin-watermarking.jpg?style=centerme "bitdash MPEG-DASH Demo Page")
+
+![bitdash MPEG-DASH Demo](images/background.png?style=centerme "bitdash MPEG-DASH Demo Page")
 
 ## Howto Install
 
@@ -29,7 +29,7 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
 2. Get your personal key from the player overview page
 3. Checkout the sample provided in this repository
 4. Add the player key to the player configuration in the example you want to use
-5. Enjoy best adaptive streaming performance! 
+5. Enjoy best adaptive streaming performance!
 
 ## Generate Content The Easy Way
 
