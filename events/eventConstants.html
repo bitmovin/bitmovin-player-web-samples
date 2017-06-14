@@ -128,32 +128,6 @@
             }
         }
 
-        .run-animation {
-            animation-name: shake;
-            animation-duration: 1s;
-            animation-timing-function: cubic-bezier(0.36, 0.07, 0.19, 0.97);
-            animation-delay: initial;
-            animation-iteration-count: initial;
-            animation-direction: initial;
-            animation-fill-mode: both;
-            animation-play-state: initial;
-        }
-
-        @keyframes shake {
-            10%, 90% {
-                transform: translate3d(-1px, 0, 0);
-            }
-            20%, 80% {
-                transform: translate3d(2px, 0, 0);
-            }
-            30%, 50%, 70% {
-                transform: translate3d(-4px, 0, 0);
-            }
-            40%, 60% {
-                transform: translate3d(4px, 0, 0);
-            }
-        }
-
         #webserver-warning {
             margin: 50px;
             padding: 20px;
@@ -175,6 +149,7 @@
         <div class="content">
             <div class="player-wrapper">
                 <div id="player"></div>
+                <div id="eventLog" class="h1" align="center">TEST</div>
             </div>
             <div class="description">
                 <p>For more information about the bitmovin player, please have a look at our online <a
@@ -211,19 +186,16 @@
     };
 
     var onPlay = function (event) {
-        if (!watermark) watermark = document.getElementsByClassName(' bmpui-ui-watermark');
-        if (watermark) {
-            watermark.className += " run-animation";
-        }
+        document.getElementById('eventLog').innerHTML = event.type + ' triggered';
     };
 
     var onPause = function (event) {
-        if (watermark) watermark.className = watermark.className.replace(" run-animation", "");
+        document.getElementById('eventLog').innerHTML = event.type + ' triggered';
     };
 
     bitmovin.player(playerId).setup(conf).then(function (player) {
         player.addEventHandler(bitmovin.player.EVENT.ON_PLAY, onPlay);
-        player.addEventHandler(bitmovin.player.EVENT.ON_PAUSE, onPause);
+        player.addEventHandler(bitmovin.player.EVENT.ON_PAUSED, onPause);
 
         console.log('Successfully created Bitmovin Player instance'); // Success!
         logEventTypes();
