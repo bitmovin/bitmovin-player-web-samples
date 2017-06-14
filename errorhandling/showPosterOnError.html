@@ -94,6 +94,11 @@
             background: #f69c2a;
         }
 
+        #player .poster {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
         #webserver-warning h1, #webserver-warning h2 {
             font-weight: 400;
         }
@@ -154,6 +159,7 @@
         <div class="content">
             <div class="player-wrapper">
                 <div id="player"></div>
+                <div id="poster"></div>
             </div>
             <div class="description">
                 <p>For more information about the bitmovin player, please have a look at our online <a
@@ -172,9 +178,6 @@
             var img = document.createElement('img');
             img.className = 'poster';
             img.src = conf.source.poster;
-            img.aspectratio = '50%';
-            //img.height = '50%';
-            //img.width = '50%'
             document.getElementById('player').appendChild(img);
             player.load({poster: img.src}).then(function () {
                 player.play();
