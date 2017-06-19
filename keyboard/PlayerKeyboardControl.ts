@@ -100,12 +100,12 @@ class DefaultPlayerKeymap implements PlayerKeyMap {
         let retVal = [];
         let allBindings = this.getAllBindings();
         // split the key command by + and check all parts seperatly so we have the same behavior with ctrl+alt as with alt+ctrl
-        let allNeededKeys = keyRepresentation.split(KeyboardEventMapper.KeyCommandSeperator);
+        let allNeededKeys = keyRepresentation.split(KeyboardEventMapper.KeyCommandSeparator);
         allBindings.forEach((element: KeyToFunctionBinding) => {
-            element.keyBinding.split(KeyboardEventMapper.KeyBindingSeperator).forEach((singleBinding: string) => {
+            element.keyBinding.split(KeyboardEventMapper.KeyBindingSeparator).forEach((singleBinding: string) => {
                 let containsAllParts = true;
                 // make sure that the same amount of keys is needed and then make sure that all keys are contained
-                let singleBindingParts = singleBinding.split(KeyboardEventMapper.KeyCommandSeperator);
+                let singleBindingParts = singleBinding.split(KeyboardEventMapper.KeyCommandSeparator);
                 if (allNeededKeys.length === singleBindingParts.length) {
                     allNeededKeys.forEach((keyCommandPart: string) => {
                         if (singleBindingParts.indexOf(keyCommandPart) < 0) {
@@ -193,7 +193,7 @@ class PlayerKeyboardControl {
 
         this.keyMap = PlayerKeyboardControl.mergeConfigWithDefault(paramKeyMap);
         // default to enabled
-        // this also reigsters the event listeneres
+        // this also registers the event listeners
         this.enable(true);
 
         // destroy this together with the player
@@ -234,7 +234,7 @@ class PlayerKeyboardControl {
             if (attr && paramKeyMap[attr]) {
                 let toCheck = paramKeyMap[attr];
                 // avoid wrong configs and check for elements being real keyListeners
-                if(toCheck['keyBinding'] && toCheck['callback']) {
+                if (toCheck['keyBinding'] && toCheck['callback']) {
                     retVal[attr] = paramKeyMap[attr];
                 } else {
                     console.log('Invalid Key Listener at params[' + attr + ']');
@@ -262,8 +262,8 @@ class PlayerKeyboardControl {
  */
 class KeyboardEventMapper {
 
-    public static KeyBindingSeperator = ' / ';
-    public static KeyCommandSeperator = '+';
+    public static KeyBindingSeparator = ' / ';
+    public static KeyCommandSeparator = '+';
 
     /**
      * keys which will represented as a modifier
@@ -375,7 +375,7 @@ class KeyboardEventMapper {
         }
         if (event.altKey) {
             if (needsConcat) {
-                retVal += KeyboardEventMapper.KeyCommandSeperator;
+                retVal += KeyboardEventMapper.KeyCommandSeparator;
             } else {
                 needsConcat = true;
             }
@@ -383,7 +383,7 @@ class KeyboardEventMapper {
         }
         if (event.ctrlKey || event.metaKey) {
             if (needsConcat) {
-                retVal += KeyboardEventMapper.KeyCommandSeperator;
+                retVal += KeyboardEventMapper.KeyCommandSeparator;
             } else {
                 needsConcat = true;
             }
@@ -393,7 +393,7 @@ class KeyboardEventMapper {
         let convertedCode = KeyboardEventMapper.convertKeyCodeToString(event);
         if (convertedCode) {
             if (needsConcat) {
-                retVal += KeyboardEventMapper.KeyCommandSeperator;
+                retVal += KeyboardEventMapper.KeyCommandSeparator;
             }
             retVal += convertedCode;
         } else {
