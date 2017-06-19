@@ -27,32 +27,32 @@
  *
  ****************************************************************************/
 
-var LiveStreamRecovery = function(player, maxErrorCount) {
-  var consecutiveErrors = 0;
-  var userConfig        = player.getConfig();
-  var restarted         = false;
+var LiveStreamRecovery = function (player, maxErrorCount) {
+    var consecutiveErrors = 0;
+    var userConfig = player.getConfig();
+    var restarted = false;
 
-  player.addEventHandler('onStartBuffering',   function(data) {
-    if (consecutiveErrors > maxErrorCount) {
-      console.log('restarting stream');
-      player.load(userConfig.source);
-      restarted = true;
-    }
-  });
+    player.addEventHandler('onStallStarted', function (data) {
+        if (consecutiveErrors > maxErrorCount) {
+            console.log('restarting stream');
+            player.load(userConfig.source);
+            restarted = true;
+        }
+    });
 
-  player.addEventHandler('onDownloadFinished', function(data) {
-    if(data.success === false) {
-      consecutiveErrors++;
-    } else {
-      consecutiveErrors = 0;
-    }
-  });
-  
-  player.addEventHandler('onReady', function(data) {
-    if(restarted === true) {
-      player.play();
-      restarted = false;
-    }
-  });
+    player.addEventHandler('onDownloadFinished', function (data) {
+        if (data.success === false) {
+            consecutiveErrors++;
+        } else {
+            consecutiveErrors = 0;
+        }
+    });
+
+    player.addEventHandler('onReady', function (data) {
+        if (restarted === true) {
+            player.play();
+            restarted = false;
+        }
+    });
 
 };
