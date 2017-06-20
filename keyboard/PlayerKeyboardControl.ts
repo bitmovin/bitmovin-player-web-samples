@@ -183,9 +183,12 @@ class PlayerKeyboardControl {
     private keyMap: PlayerKeyMap;
     private isEnabled: boolean;
     private player: SupportedPlayerTypes;
+    private shouldPreventScrolling: boolean;
+    
 
-    constructor(wrappedPlayer: SupportedPlayerTypes, config?: any) {
+    constructor(wrappedPlayer: SupportedPlayerTypes, preventPageScroll = true, config?: any) {
         this.player = wrappedPlayer;
+        this.shouldPreventScrolling = preventPageScroll;
         let paramKeyMap = {};
         if (config) {
             paramKeyMap = config;
@@ -208,18 +211,38 @@ class PlayerKeyboardControl {
         // we cannot use the keypress event as that event does not work with modifiers
         // only add the keyUp listener as we do not expect users holding buttons to control the player
         if (this.isEnabled) {
-            // document.addEventListener('keypress', this.handleKeyEvent, false);
-            // document.addEventListener('keydown', this.handleKeyEvent, false);
+            // in order to stop the browser from scrolling we have to add an additional onKeyDown listener
+            // because the browser would scroll on that one already
+            if(this.shouldPreventScrolling) {
+                document.addEventListener('keydown', this.preventScrolling, false);
+            }
             document.addEventListener('keyup', this.handleKeyEvent, false);
         } else {
             // document.addEventListener('keypress', this.handleKeyEvent, false);
-            // document.removeEventListener('keydown', this.handleKeyEvent, false);
+            document.removeEventListener('keydown', this.preventScrolling, false);
             document.removeEventListener('keyup', this.handleKeyEvent, false);
         }
     }
 
     public disable(shouldBeDisabled: boolean = true) {
         this.enable(!shouldBeDisabled);
+    }
+
+    /**
+     * Use this method to prevent the browser from scrolling via keyboard
+     * @param preventScrolling true if keyboard scrolling should be prevented, false if nots
+     */
+    public setPreventScrolling(preventScrolling: boolean): void {
+        this.shouldPreventScrolling = preventScrolling;
+
+        // set up or remove the listener if necessary
+        if (this.isEnabled) {
+            if (preventScrolling) {
+                document.addEventListener('keydown', this.preventScrolling, false);
+            } else {
+                document.removeEventListener('keydown', this.preventScrolling, false);
+            }
+        }
     }
 
     public destroy() {
@@ -243,6 +266,16 @@ class PlayerKeyboardControl {
         }
         return retVal;
     }
+
+    public preventScrolling = (event: KeyboardEvent) => {
+        const keyCode = event.which || event.keyCode;
+        // prevent scrolling with arrow keys, space, pageUp and pageDown
+        if (KeyboardEventMapper.isScrollKey(keyCode)) {
+            // maybe we should check here if we actually have a keybinding for the keyCode and only prevent
+            // the scrolling if we actually handle the event
+            event.preventDefault();
+        }
+    };
 
     public handleKeyEvent = (event: KeyboardEvent) => {
         if (this.isEnabled) {
@@ -311,6 +344,21 @@ class KeyboardEventMapper {
         220: '\\',
         221: ']',
         222: '\''
+    };
+
+    /**
+     * Keys wich normally move the page
+     */
+    public static ScrollingKeys = {
+        32: 'space',
+        33: 'pageup',
+        34: 'pagedown',
+        35: 'end',
+        36: 'home',
+        37: 'left',
+        38: 'up',
+        39: 'right',
+        40: 'down',
     };
 
     /**
@@ -447,5 +495,9 @@ class KeyboardEventMapper {
 
     public static isFKey(keyCode: number): boolean {
         return KeyboardEventMapper.F_Keys.hasOwnProperty('' + keyCode);
+    }
+
+    public static isScrollKey(keyCode: number): boolean {
+        return KeyboardEventMapper.ScrollingKeys.hasOwnProperty('' + keyCode)
     }
 }

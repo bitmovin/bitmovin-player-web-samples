@@ -99,12 +99,12 @@ var DefaultPlayerKeymap = (function () {
         var retVal = [];
         var allBindings = this.getAllBindings();
         // split the key command by + and check all parts seperatly so we have the same behavior with ctrl+alt as with alt+ctrl
-        var allNeededKeys = keyRepresentation.split(KeyboardEventMapper.KeyCommandSeperator);
+        var allNeededKeys = keyRepresentation.split(KeyboardEventMapper.KeyCommandSeparator);
         allBindings.forEach(function (element) {
-            element.keyBinding.split(KeyboardEventMapper.KeyBindingSeperator).forEach(function (singleBinding) {
+            element.keyBinding.split(KeyboardEventMapper.KeyBindingSeparator).forEach(function (singleBinding) {
                 var containsAllParts = true;
                 // make sure that the same amount of keys is needed and then make sure that all keys are contained
-                var singleBindingParts = singleBinding.split(KeyboardEventMapper.KeyCommandSeperator);
+                var singleBindingParts = singleBinding.split(KeyboardEventMapper.KeyCommandSeparator);
                 if (allNeededKeys.length === singleBindingParts.length) {
                     allNeededKeys.forEach(function (keyCommandPart) {
                         if (singleBindingParts.indexOf(keyCommandPart) < 0) {
@@ -125,8 +125,18 @@ var DefaultPlayerKeymap = (function () {
  * Class to control a given player instance via the keyboard
  */
 var PlayerKeyboardControl = (function () {
-    function PlayerKeyboardControl(wrappedPlayer, config) {
+    function PlayerKeyboardControl(wrappedPlayer, preventPageScroll, config) {
+        if (preventPageScroll === void 0) { preventPageScroll = true; }
         var _this = this;
+        this.preventScrolling = function (event) {
+            var keyCode = event.which || event.keyCode;
+            // prevent scrolling with arrow keys, space, pageUp and pageDown
+            if (KeyboardEventMapper.isScrollKey(keyCode)) {
+                // maybe we should check here if we actually have a keybinding for the keyCode and only prevent
+                // the scrolling if we actually handle the event
+                event.preventDefault();
+            }
+        };
         this.handleKeyEvent = function (event) {
             if (_this.isEnabled) {
                 var keyStringRepresentation = KeyboardEventMapper.convertKeyboardEventToString(event);
@@ -137,13 +147,14 @@ var PlayerKeyboardControl = (function () {
             }
         };
         this.player = wrappedPlayer;
+        this.shouldPreventScrolling = preventPageScroll;
         var paramKeyMap = {};
         if (config) {
             paramKeyMap = config;
         }
         this.keyMap = PlayerKeyboardControl.mergeConfigWithDefault(paramKeyMap);
         // default to enabled
-        // this also reigsters the event listeneres
+        // this also registers the event listeners
         this.enable(true);
         // destroy this together with the player
         this.player.addEventHandler('onDestroy', function () {
@@ -157,19 +168,38 @@ var PlayerKeyboardControl = (function () {
         // we cannot use the keypress event as that event does not work with modifiers
         // only add the keyUp listener as we do not expect users holding buttons to control the player
         if (this.isEnabled) {
-            // document.addEventListener('keypress', this.handleKeyEvent, false);
-            // document.addEventListener('keydown', this.handleKeyEvent, false);
+            // in order to stop the browser from scrolling we have to add an additional onKeyDown listener
+            // because the browser would scroll on that one already
+            if (this.shouldPreventScrolling) {
+                document.addEventListener('keydown', this.preventScrolling, false);
+            }
             document.addEventListener('keyup', this.handleKeyEvent, false);
         }
         else {
             // document.addEventListener('keypress', this.handleKeyEvent, false);
-            // document.removeEventListener('keydown', this.handleKeyEvent, false);
+            document.removeEventListener('keydown', this.preventScrolling, false);
             document.removeEventListener('keyup', this.handleKeyEvent, false);
         }
     };
     PlayerKeyboardControl.prototype.disable = function (shouldBeDisabled) {
         if (shouldBeDisabled === void 0) { shouldBeDisabled = true; }
         this.enable(!shouldBeDisabled);
+    };
+    /**
+     * Use this method to prevent the browser from scrolling via keyboard
+     * @param preventScrolling true if keyboard scrolling should be prevented, false if nots
+     */
+    PlayerKeyboardControl.prototype.setPreventScrolling = function (preventScrolling) {
+        this.shouldPreventScrolling = preventScrolling;
+        // set up or remove the listener if necessary
+        if (this.isEnabled) {
+            if (preventScrolling) {
+                document.addEventListener('keydown', this.preventScrolling, false);
+            }
+            else {
+                document.removeEventListener('keydown', this.preventScrolling, false);
+            }
+        }
     };
     PlayerKeyboardControl.prototype.destroy = function () {
         // removes the listener
@@ -214,7 +244,7 @@ var KeyboardEventMapper = (function () {
         }
         if (event.altKey) {
             if (needsConcat) {
-                retVal += KeyboardEventMapper.KeyCommandSeperator;
+                retVal += KeyboardEventMapper.KeyCommandSeparator;
             }
             else {
                 needsConcat = true;
@@ -223,7 +253,7 @@ var KeyboardEventMapper = (function () {
         }
         if (event.ctrlKey || event.metaKey) {
             if (needsConcat) {
-                retVal += KeyboardEventMapper.KeyCommandSeperator;
+                retVal += KeyboardEventMapper.KeyCommandSeparator;
             }
             else {
                 needsConcat = true;
@@ -233,7 +263,7 @@ var KeyboardEventMapper = (function () {
         var convertedCode = KeyboardEventMapper.convertKeyCodeToString(event);
         if (convertedCode) {
             if (needsConcat) {
-                retVal += KeyboardEventMapper.KeyCommandSeperator;
+                retVal += KeyboardEventMapper.KeyCommandSeparator;
             }
             retVal += convertedCode;
         }
@@ -280,10 +310,13 @@ var KeyboardEventMapper = (function () {
     KeyboardEventMapper.isFKey = function (keyCode) {
         return KeyboardEventMapper.F_Keys.hasOwnProperty('' + keyCode);
     };
+    KeyboardEventMapper.isScrollKey = function (keyCode) {
+        return KeyboardEventMapper.ScrollingKeys.hasOwnProperty('' + keyCode);
+    };
     return KeyboardEventMapper;
 }());
-KeyboardEventMapper.KeyBindingSeperator = ' / ';
-KeyboardEventMapper.KeyCommandSeperator = '+';
+KeyboardEventMapper.KeyBindingSeparator = ' / ';
+KeyboardEventMapper.KeyCommandSeparator = '+';
 /**
  * keys which will represented as a modifier
  */
@@ -329,6 +362,20 @@ KeyboardEventMapper.ControlKeys = {
     220: '\\',
     221: ']',
     222: '\''
+};
+/**
+ * Keys wich normally move the page
+ */
+KeyboardEventMapper.ScrollingKeys = {
+    32: 'space',
+    33: 'pageup',
+    34: 'pagedown',
+    35: 'end',
+    36: 'home',
+    37: 'left',
+    38: 'up',
+    39: 'right',
+    40: 'down'
 };
 /**
  * All number on the numblock an the keys surrounding it
