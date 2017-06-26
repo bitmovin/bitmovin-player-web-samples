@@ -20,6 +20,9 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
     * [customSubtitleDisplay](subtitles/customSubtitleDisplay.js): Render subtitles using the onCueEnter and onCueExit player events.
 * [**playlist**](playlist/)
     * [simplePlaylist](playlist/simplePlaylist.html): Build a playlist with Bitmovin HTML5 Player API.
+* [**keyboard**](keyboard/)
+   -[keyboardSupport](keyboard/keyboardSupport.html): Make Bitmovin HTML5 Player controllable with the keyboard
+   -[keyboardCustom](keyboard/keyboardCustom.html): Make Bitmovin HTML5 Player controllable with some custom keyboard shortcuts
 
 ![bitdash MPEG-DASH Demo](images/background.png?style=centerme "Bitmovin HTML5 Player Demo Page")
 
