@@ -198,7 +198,6 @@ var segmentNumber = 0;
           throughput = Math.min(throughput, MAX_BITRATE)
           chosenQuality = player.getDownloadedVideoData().bitrate;
           segmentNumber++;
-          //segmentNumber = parseInt((player.getCurrentTime() + player.getVideoBufferLength()) /3.8);
           dataset.push([segmentNumber, throughput/1000, parseInt(chosenQuality)/1000000, null, null]);
           drawLineChart();
     }
