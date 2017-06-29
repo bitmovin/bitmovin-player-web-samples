@@ -1,27 +1,30 @@
 # Bitmovin Adaptive Streaming Player for MPEG-DASH & HLS
 This showcases are build around the Bitmovin Adaptive Streaming Player, demonstrating usage and capabilities of the HTML5 based HLS and MPEG-DASH player, as well as the Flash based fallback.
 
+![bitdash MPEG-DASH Demo](images/background.png?style=centerme "Bitmovin HTML5 Player Demo Page")
+
 ## Demos
 * [**adaptation**](adaptation/)
     * [preferredStartupQuality](adaptation/preferredStartupQuality.js): Set a minimum startup quality for a specified amount of time before using the built-in adaptation logic again.
     * [regionOfInterest](adaptation/regionOfInterest.html): Multiple players with low quality and the active player (where the mouse is over) switches to better quality.
     * [rateBasedSwitching](adaptation/rateBasedSwitching.js): Measuring the speed of downloads and select the quality accordingly.
-* [**events**](events/)
-    * [onDownloadFinished](events/onDownloadFinished.html): Report download errors for live streams using the onDownloadFinished player event.
-    * [eventConstants](events/eventConstants.html): Use event constants for registering event handlers at the player.
-    * [onSegmentRequestFinished](events/onSegmentRequestFinished.html): Use onSegmentRequestFinished event to analyse which segment has been downloaded and implement custom workflows according to the HTTP status code.
 * [**errorHandling**](errorhandling/)
     * [handleDownloadErrors](errorhandling/handleDownloadErrors.html): Implement a custom retry logic when a files fail to be downloaded.
     * [showPosterOnError](errorhandling/showPosterOnError.html): Display a still image whenever an error occurs.
     * [switchQualityOnHttpStatusCode](errorhandling/switchQualityOnHttpStatusCode.html): Tweak the ABR behavior based on HTTP errors.
+* [**events**](events/)
+    * [onDownloadFinished](events/onDownloadFinished.html): Report download errors for live streams using the onDownloadFinished player event.
+    * [eventConstants](events/eventConstants.html): Use event constants for registering event handlers at the player.
+    * [onSegmentRequestFinished](events/onSegmentRequestFinished.html): Use onSegmentRequestFinished event to analyse which segment has been downloaded and implement custom workflows according to the HTTP status code.
+* [**keyboard**](keyboard/)
+   * [keyboardSupport](keyboard/keyboardSupport.html): Make Bitmovin HTML5 Player controllable with the keyboard
+   * [keyboardCustom](keyboard/keyboardCustom.html): Make Bitmovin HTML5 Player controllable with some custom keyboard shortcuts
+* [**playlist**](playlist/)
+    * [simplePlaylist](playlist/simplePlaylist.html): Build a playlist with Bitmovin HTML5 Player API.
 * [**streamRecovery**](streamRecovery/)
     * [liveStreamRecovery](streamRecovery/liveStreamRecovery.js): Automatically restart live streams if too many download errors happened e.g. to get over missing segments.
 * [**subtitles**](subtitles/)
     * [customSubtitleDisplay](subtitles/customSubtitleDisplay.js): Render subtitles using the onCueEnter and onCueExit player events.
-* [**playlist**](playlist/)
-    * [simplePlaylist](playlist/simplePlaylist.html): Build a playlist with Bitmovin HTML5 Player API.
-
-![bitdash MPEG-DASH Demo](images/background.png?style=centerme "Bitmovin HTML5 Player Demo Page")
 
 ## Howto Install
 
