@@ -156,6 +156,7 @@
 <script type="text/javascript">
 var data;
 var conf;
+var SEGMENT_DURATION;
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawLineChart)
       var dataset = [
@@ -194,7 +195,6 @@ var segmentNumber = 0;
     var newValue = function(metrics){
           MAX_BITRATE = parseInt(document.getElementById('maxBitrate').value) * 1000 || Infinity;
           var throughput = metrics.throughput;
-          console.log(throughput);
           throughput = Math.min(throughput, MAX_BITRATE)
           chosenQuality = player.getDownloadedVideoData().bitrate;
           segmentNumber++;
@@ -217,9 +217,12 @@ var segmentNumber = 0;
         newValue({throughput: Math.round(((data.size * 8) / data.downloadTime) / 1000)});
       }
     });
+    player.addEventHandler('onSegmentPlayback', function(data) {
+      SEGMENT_DURATION = data.duration;
+    })
     player.addEventHandler('onTimeChanged', function(data) {
       var time = parseFloat(data.time);
-      var line = parseInt(time/3.8)+1;
+      var line = parseInt(time/SEGMENT_DURATION)+1;
       dataset[line+1][4] = dataset[line+1][2];
       dataset[line+1][3] = player.getVideoBufferLength()/10;
       drawLineChart();
