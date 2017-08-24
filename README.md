@@ -18,7 +18,7 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
 
 ## Howto Install
 
-1. Sign up for free at [https://app.bitmovin.com/register](https://app.bitmovin.com/register)
+1. Sign up for free at [https://dashboard.bitmovin.com/signup](https://dashboard.bitmovin.com/signup)
 2. Get your personal key from the player overview page
 3. Checkout the sample provided in this repository
 4. Add the player key to the player configuration in the example you want to use
@@ -26,7 +26,7 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
 
 ## Generate Content The Easy Way
 
-To generate MPEG-DASH & HLS content on your own, please have a look at the encoding section at  [https://app.bitmovin.com/](https://app.bitmovin.com/) and give it a free try!
+To generate MPEG-DASH & HLS content on your own, please have a look at the encoding section at  [https://dashboard.bitmovin.com/](https://dashboard.bitmovin.com/) and give it a free try!
 
 ## Additional Demos and Documentation
 
