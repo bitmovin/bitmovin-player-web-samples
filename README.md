@@ -11,6 +11,8 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
     * [eventConstants](events/eventConstants.html): Use event constants for registering event handlers at the player.
 * [**streamRecovery**](streamRecovery/)
     * [liveStreamRecovery](streamRecovery/liveStreamRecovery.js): Automatically restart live streams if too many download errors happened e.g. to get over missing segments.
+* [**ssai**](ssai/)
+    * [dfp](dfp/): Use Google DoubleClick for Server-side ad insertion (SSAI)
 * [**subtitles**](subtitles/)
     * [customSubtitleDisplay](subtitles/customSubtitleDisplay.js): Render subtitles using the onCueEnter and onCueExit player events.
 
