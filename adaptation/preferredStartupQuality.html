@@ -168,6 +168,7 @@
             width: '100%',
             aspectratio: '16:9'
         },
+        events: {},
         adaptation: {
           desktop: {
             logic: 'v1'
@@ -183,13 +184,7 @@
 
     player = bitmovin.player("player");
 
-    player.setup(conf).then(function (value) {
-        console.log('Successfully created Bitmovin Player instance'); // Success!
-    }, function (reason) {
-        console.log('Error while creating Bitmovin Player instance'); // Error!
-    });
-
-    startupQuality = new PreferredStartupQuality(player, 1000000, 10);
+    startupQuality = new PreferredStartupQuality(player, 1000000, 10, conf);
 </script>
 </body>
 </html>
