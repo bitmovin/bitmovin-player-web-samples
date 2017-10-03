@@ -27,7 +27,7 @@
  *
  ****************************************************************************/
 
-var PreferredStartupQuality = function (player, preferredStartupQualityBps, startupPhaseSeconds) {
+var PreferredStartupQuality = function (player, preferredStartupQualityBps, startupPhaseSeconds, conf) {
     var availableQualities = null;
     var isInStartup = true;
     var startupTimerID;
@@ -38,7 +38,7 @@ var PreferredStartupQuality = function (player, preferredStartupQualityBps, star
     var onVideoAdaptation = function (e) {
         if (isInStartup) {
             if (!availableQualities) {
-                availableQualities = this.getAvailableVideoQualities();
+                availableQualities = player.getAvailableVideoQualities();
                 startupTimerID = setTimeout(function () {
                     isInStartup = false;
                 }, startupSeconds * 1000);
@@ -65,14 +65,18 @@ var PreferredStartupQuality = function (player, preferredStartupQualityBps, star
         clearTimeout(startupTimerID);
         availableQualities = null;
     };
+    conf.adaptation.desktop.onVideoAdaptation = onVideoAdaptation;
+    conf.adaptation.mobile.onVideoAdaptation = onVideoAdaptation;
+    conf.events.onReady = onReady;
 
-    player.addEventHandler('onReady', onReady);
-    player.addEventHandler('onVideoAdaptation', onVideoAdaptation);
+    player.setup(conf).then(function (value) {
+        console.log('Successfully created Bitmovin Player instance'); // Success!
+    }, function (reason) {
+        console.log('Error while creating Bitmovin Player instance'); // Error!
+    });
 
     this.remove = function () {
         player.removeEventHandler('onReady', onReady);
-        player.removeEventHandler('onVideoAdaptation', onVideoAdaptation);
-
         clearTimeout(startupTimerID);
         isInStartup = true;
         availableQualities = null;
