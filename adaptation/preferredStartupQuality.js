@@ -65,6 +65,7 @@ var PreferredStartupQuality = function (player, preferredStartupQualityBps, star
         clearTimeout(startupTimerID);
         availableQualities = null;
     };
+    
     conf.adaptation.desktop.onVideoAdaptation = onVideoAdaptation;
     conf.adaptation.mobile.onVideoAdaptation = onVideoAdaptation;
     conf.events.onReady = onReady;
