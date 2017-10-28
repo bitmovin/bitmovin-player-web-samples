@@ -19,8 +19,9 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
     <link rel="icon" type="../image/png" href="../images/bit-fav.png">
     <!-- Bitmovin Player -->
-    <script type="text/javascript"
-            src="//bitmovin-a.akamaihd.net/bitmovin-player/stable/7.1/bitmovinplayer.js"></script>
+    <script type="text/javascript" src="//bitmovin-a.akamaihd.net/bitmovin-player/stable/7/bitmovinplayer.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="bitrateGraphs.js"></script>
     <style>
         body {
             margin: 0;
@@ -94,11 +95,6 @@
             background: #f69c2a;
         }
 
-        #player .poster {
-            max-width: 100%;
-            max-height: 100%;
-        }
-
         #webserver-warning h1, #webserver-warning h2 {
             font-weight: 400;
         }
@@ -131,26 +127,22 @@
                 display: none;
             }
         }
+        .charts {
+            width: 80%;
+            margin: 40px auto;
+        }
+
+        #curve_chart {
+            width: 100%;
+            height: auto;
+        }
     </style>
-</head>
+
 <body>
-<style>
-    .bmpui-ui-skin-modern .bmpui-ui-tvnoisecanvas {
-        display: none;
-    }
-
-    .bmpui-ui-skin-modern .bmpui-ui-errormessage-label {
-        display: none;
-    }
-
-    .bmpui-ui-skin-modern .bmpui-ui-watermark {
-        display: none;
-    }
-</style>
 <div id="wrapper">
     <div id="banner">
         <div class="logo"><img src="../images/bitmovin-logo.png"></div>
-        <div class="title"><h1>Title of the demo goes here.</h1></div>
+        <div class="title"><h1>Adaptation logic in Bitmovin Player</h1></div>
         <div class="clear"></div>
     </div>
     <div class="container">
@@ -159,7 +151,11 @@
         <div class="content">
             <div class="player-wrapper">
                 <div id="player"></div>
-                <div id="poster"></div>
+            </div>
+            <div class="charts">
+                <div id="curve_chart" align='right'></div>
+                <label for="maxBitrate">Max Bitrate (Mbps)</label>
+                <input type="text" name="MaxBitrate" id="maxBitrate" value="5" />
             </div>
             <div class="description">
                 <p>For more information about the bitmovin player, please have a look at our online <a
@@ -168,61 +164,28 @@
         </div>
     </div>
 </div>
+
 <script type="text/javascript">
-    if (location.protocol === 'file:') {
-        document.getElementById('webserver-warning').style.display = 'block';
+  if (location.protocol === "file:") {
+    document.getElementById("webserver-warning").style.display = "block";
+  }
+
+  var conf = {
+    key: "YourKEY",
+    source: {
+      dash: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd",
+      hls: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8",
+      progressive: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/MI201109210084_mpeg-4_hd_high_1080p25_10mbits.mp4",
+      poster: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/poster.jpg"
     }
+  };
 
-    var errorHandler = function () {
-        if (conf.source.poster) {
-            var img = document.createElement('img');
-            img.className = 'poster';
-            img.src = conf.source.poster;
-            document.getElementById('player').appendChild(img);
-            player.load({poster: img.src}).then(function () {
-                player.play();
-            });
-        }
-    };
+  var player = bitmovin.player("player");
+  var bitrateGraphs = new BitrateGraphs(player);
 
-    var conf = {
-        key: 'YOUR KEY HERE',
-        source: {
-            dash: 'http://YOUR-DASH-STREAM.mpd',
-            hls: 'http://YOUR-HLS-STREAM.m3u8',
-            progressive: [{
-                url: 'http://YOUR-MP4.mp4',
-                type: 'video/mp4'
-            }, {
-                url: 'http://YOUR-WEBM.webm',
-                type: 'video/webm'
-            }],
-            poster: '//bitmovin-a.akamaihd.net/content/MI201109210084_1/poster.jpg'
-        },
-        events: {
-            onError: function (errObj) {
-                switch (errObj.code) {
-                    case 2006:
-                    case 3006:
-                    case 3023:
-                    case 3024:
-                    case 3028:
-                        errorHandler();
-                        break;
-                    default:
-                        console.error('error', errObj);
-                        break;
-                }
-            }
-        }
-    };
-
-    var player = bitmovin.player('player');
-    player.setup(conf).then(function (player) {
-        console.log('Successfully created Bitmovin Player instance'); // Success!
-    }, function (reason) {
-        console.log('Error while creating Bitmovin Player instance'); // Error!
-    });
+  player.setup(conf).then(function() {
+    bitrateGraphs.init();
+  }, function(error) {
+    console.log(error);
+  });
 </script>
-</body>
-</html>
