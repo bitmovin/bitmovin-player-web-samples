@@ -23,6 +23,8 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
     * [simplePlaylist](playlist/simplePlaylist.html): Build a playlist with the Bitmovin HTML5 Player API.
 * [**streamRecovery**](streamRecovery/)
     * [liveStreamRecovery](streamRecovery/liveStreamRecovery.js): Automatically restart live streams if too many download errors happened e.g. to get over missing segments.
+* [**ssai**](ssai/)
+    * [dfp](dfp/): Use Google DoubleClick for Server-side ad insertion (SSAI)
 * [**subtitles**](subtitles/)
     * [customSubtitleDisplay](subtitles/customSubtitleDisplay.js): Render subtitles using the ON_CUE_ENTER and ON_CUE_EXIT player events.
 
