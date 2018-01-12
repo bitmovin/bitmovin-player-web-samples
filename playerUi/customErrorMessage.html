@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<!--
+*
+* Copyright (C) 2018, Bitmovin Inc, All Rights Reserved
+*
+* This source code and its use and distribution, is subject to the terms
+* and conditions of the applicable license agreement.
+*
+-->
+<html lang="en">
+<head>
+    <title>Bitmovin Demo</title>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
+    <link rel="icon" type="image/png" href="../images/bit-fav.png">
+    <!-- Bitmovin player -->
+    <script type="text/javascript" src="https://bitmovin-a.akamaihd.net/bitmovin-player/stable/7/bitmovinplayer.js"></script>
+    <!-- Bitmovin player UI-->
+    <script src="https://bitmovin-a.akamaihd.net/bitmovin-player/stable/7/bitmovinplayer-ui.js"></script>
+    <link rel="stylesheet" href="https://bitmovin-a.akamaihd.net/bitmovin-player/stable/7/bitmovinplayer-ui.css"/>
+    <!-- Bootstrap 3.3.7 -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <!-- Bitmovin Demo CSS -->
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 300;
+        }
+
+        body {
+            background: rgba(44, 131, 185, 1);
+            background: -moz-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+            background: -webkit-gradient(left top, right top, color-stop(0%, rgba(44, 131, 185, 1)), color-stop(100%, rgba(30, 171, 227, 1)));
+            background: -webkit-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+            background: -o-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+            background: -ms-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+            background: linear-gradient(to right, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2c83b9', endColorstr='#1eabe3', GradientType=1);
+        }
+
+        #wrapper {
+            background: url(logo-bg-demopage.png);
+            height: 100vh;
+        }
+
+        #banner {
+            border-bottom: 1px solid #fff;
+            background-color: #1eabe3;
+            width: 100%
+        }
+
+        #banner h1 {
+            margin: 0;
+            padding: 30px;
+        }
+
+        #banner .logo {
+            padding: 10px;
+            width: 25%;
+            min-width: 350px;
+            float: left;
+            margin: auto;
+        }
+
+        #banner .title {
+            width: 75%;
+            white-space: nowrap;
+        }
+
+        h1.bitmovin-headline, h2.bitmovin-headline, h3.bitmovin-headline, p {
+            color: #fff;
+            font-weight: 300;
+            text-align: center;
+            margin: 40px;
+        }
+
+        .bitmovin-description {
+            padding: 45px 0;
+            color: white;
+            font-size: large;
+        }
+
+        #player {
+            -webkit-box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
+            box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
+        }
+
+        a {
+            color: #97d9ef;
+            font-weight: 400;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #fff;
+        }
+
+        @media (max-width: 1000px) {
+            .logo {
+                width: 100%;
+            }
+
+            .title {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="wrapper">
+
+    <div id="banner">
+        <div class="logo"><a href="https://bitmovin.com"><img src="../images/bitmovin-logo.png"></a></div>
+        <div class="title"><h1 class="bitmovin-headline">Custom Error Messages</h1></div>
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="content">
+            <div class="row bitmovin-description">
+                <div class="col-lg-12 text-center">This example shows how you can show customize error messages by providing a configuration object to the ErrorMessageOverlay UI component</div>
+            </div>
+            <div class="row">
+                <div class="col-md-offset-1 col-md-10 col-lg-offset-2 col-lg-8">
+                    <div id="player"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <p>For more information about the bitmovin player, please have a look at our online <a href="https://developer.bitmovin.com" target="_blank">Developer Section</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+  var player = bitmovin.player("player");
+
+  var conf = {
+    key: "YOUR-PLAYER-LICENSE-KEY",
+    source: {
+      title: "Bitmovin Player " + player.version,
+      description: "This example shows how you can show custom error messages using a custom config for the ErrorMessageOverlay UI component",
+      dash: "https://bitmovin-a.akamaihd.net/content/art-of-motion_drm/mpds/11331.mpd",
+      poster: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/poster.jpg",
+      drm: {
+        widevine: {
+          LA_URL: "INVALID_LICENSING_URL",
+        },
+      },
+    },
+    style: {
+      ux: false,
+    },
+    events: {
+      onError: function(details) {
+        console.log("onError", details);
+      },
+    },
+  };
+
+  //catch all error messages
+  var customAllErrorMessageOverlayConfig = {
+    messages: function(error) {
+      switch (error.code) {
+        // DRM: License request failed
+        case 3011:
+          return 'This is a customized DRM Licensing Error Message';
+      }
+      // Return unmodified error message for all other errors
+      return error.message;
+    },
+  };
+
+  //catch only specific error messages
+  var customSpecificErrorMessageOverlayConfig = {
+    messages: {
+      // Overwrite error 3000 'Unknown error'
+      3000: 'Houston, we have a problem',
+
+      // Transform error 3001 'Unsupported manifest format' to uppercase
+      3001: function(error) {
+        return error.message.toUpperCase();
+      },
+
+      // Customize error 3006 'Could not load manifest, got HTTP status code XXX'
+      3006: function(error) {
+        var statusCode = error.message.substring(46);
+        return 'Manifest loading failed with HTTP error ' + statusCode;
+      },
+    },
+  };
+
+  //Custom UI structure
+  var subtitleOverlay = new bitmovin.playerui.SubtitleOverlay();
+  var subtitleSettingsPanel = new bitmovin.playerui.subtitlesettings.SubtitleSettingsPanel({
+    hidden: true,
+    overlay: subtitleOverlay,
+    settingsPanel: settingsPanel,
+  });
+  var subtitleSettingsOpenButton = new bitmovin.playerui.subtitlesettings.SubtitleSettingsOpenButton({
+    subtitleSettingsPanel: subtitleSettingsPanel,
+    settingsPanel: settingsPanel,
+  });
+
+  var settingsPanel = new bitmovin.playerui.SettingsPanel({
+    components: [
+      new bitmovin.playerui.SettingsPanelItem('Video Quality', new bitmovin.playerui.VideoQualitySelectBox()),
+      new bitmovin.playerui.SettingsPanelItem('Speed', new bitmovin.playerui.PlaybackSpeedSelectBox()),
+      new bitmovin.playerui.SettingsPanelItem('Audio Track', new bitmovin.playerui.AudioTrackSelectBox()),
+      new bitmovin.playerui.SettingsPanelItem('Audio Quality', new bitmovin.playerui.AudioQualitySelectBox()),
+      new bitmovin.playerui.SettingsPanelItem(
+        new bitmovin.playerui.subtitlesettings.SubtitleSettingsLabel({ text: 'Subtitles', opener: subtitleSettingsOpenButton }),
+        new bitmovin.playerui.SubtitleSelectBox()
+      ),
+    ],
+    hidden: true,
+  });
+
+  var controlBar = new bitmovin.playerui.ControlBar({
+    components: [
+      settingsPanel,
+      subtitleSettingsPanel,
+      new bitmovin.playerui.Container({
+        components: [
+          new bitmovin.playerui.PlaybackTimeLabel({
+            timeLabelMode: bitmovin.playerui.PlaybackTimeLabelMode.CurrentTime,
+            hideInLivePlayback: true,
+          }),
+          new bitmovin.playerui.SeekBar({ label: new bitmovin.playerui.SeekBarLabel() }),
+          new bitmovin.playerui.PlaybackTimeLabel({
+            timeLabelMode: bitmovin.playerui.PlaybackTimeLabelMode.TotalTime,
+            cssClasses: ['text-right'],
+          }),
+        ],
+        cssClasses: ['controlbar-top'],
+      }),
+      new bitmovin.playerui.Container({
+        components: [
+          new bitmovin.playerui.PlaybackToggleButton(),
+          new bitmovin.playerui.VolumeToggleButton(),
+          new bitmovin.playerui.VolumeSlider(),
+          new bitmovin.playerui.Spacer(),
+          new bitmovin.playerui.PictureInPictureToggleButton(),
+          new bitmovin.playerui.AirPlayToggleButton(),
+          new bitmovin.playerui.CastToggleButton(),
+          new bitmovin.playerui.VRToggleButton(),
+          new bitmovin.playerui.SettingsToggleButton({ settingsPanel: settingsPanel }),
+          new bitmovin.playerui.FullscreenToggleButton(),
+        ],
+        cssClasses: ['controlbar-bottom'],
+      }),
+    ],
+  });
+  var customPlayerUI = new bitmovin.playerui.UIContainer({
+    hideDelay: -1,
+    components: [
+      subtitleOverlay,
+      new bitmovin.playerui.BufferingOverlay(),
+      new bitmovin.playerui.PlaybackToggleOverlay(),
+      new bitmovin.playerui.CastStatusOverlay(),
+      controlBar,
+      new bitmovin.playerui.TitleBar(),
+      new bitmovin.playerui.RecommendationOverlay(),
+      new bitmovin.playerui.Watermark(),
+      new bitmovin.playerui.ErrorMessageOverlay(customAllErrorMessageOverlayConfig),
+    ],
+    cssClasses: ['ui-skin-modern'],
+  });
+
+  var myUiManager;
+  player.setup(conf).then(function(playerInstance) {
+    myUiManager = new bitmovin.playerui.UIManager(playerInstance, customPlayerUI);
+    console.log("Successfully created bitmovin player instance");
+  }, function(reason) {
+    console.log("Error while creating bitmovin player instance", reason);
+  });
+</script>
+</body>
+</html>
