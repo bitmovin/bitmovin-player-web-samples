@@ -41,7 +41,7 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
 
 ## Generate Content The Easy Way
 
-To generate MPEG-DASH & HLS content on your own, please have a look at the encoding section at  [https://dashboard.bitmovin.com/](https://dashboard.bitmovin.com/) and give it a free try!
+To generate MPEG-DASH & HLS content on your own, please have a look at the encoding section at  [https://developer.bitmovin.com/](https://developer.bitmovin.com/) and give it a free try!
 
 ## Additional Demos and Documentation
 
