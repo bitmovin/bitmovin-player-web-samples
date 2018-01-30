@@ -21,7 +21,7 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
    * [keyboardCustom](keyboard/keyboardCustom.html): Custom keyboard shortcuts for the Bitmovin Player.
 * [**playerUI**](playerUi/)
     * [customErrorMessage](playerUi/customErrorMessage.html): Set custom error messages within the Bitmovin Player
-    * [labeling](playerUi/labeling.html): Set custom UI, Quality and Subtitles labels
+    * [labeling](playerUi/labeling.html): Change Languages, Quality and Subtitles labels
 * [**playlist**](playlist/)
     * [simplePlaylist](playlist/simplePlaylist.html): Build a playlist with the Bitmovin HTML5 Player API.
 * [**streamRecovery**](streamRecovery/)
