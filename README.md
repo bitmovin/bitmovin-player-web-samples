@@ -19,15 +19,16 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
 * [**keyboard**](keyboard/)
    * [keyboardSupport](keyboard/keyboardSupport.html): Keyboard shortcuts for the Bitmovin Player.
    * [keyboardCustom](keyboard/keyboardCustom.html): Custom keyboard shortcuts for the Bitmovin Player.
-* [**playerUI**](playerUi/)
-    * [customErrorMessage](playerUi/customErrorMessage.html): Set custom error messages within the Bitmovin Player
-    * [labeling](playerUi/labeling.html): Change Languages, Quality and Subtitles labels
+* [**playerUi**](playerUi/)
+   * [customErrorMessage](playerUi/customErrorMessage.html): Display your own error messages within the Bitmovin HTML5 Player
+   * [timelineMarkers](playerUi/timelineMarkers.html): Identify the differents parts of a stream by setting some markers over the timeline
+   * [labeling](playerUi/labeling.html): Change Languages, Quality and Subtitles labels
 * [**playlist**](playlist/)
     * [simplePlaylist](playlist/simplePlaylist.html): Build a playlist with the Bitmovin HTML5 Player API.
 * [**streamRecovery**](streamRecovery/)
     * [liveStreamRecovery](streamRecovery/liveStreamRecovery.js): Automatically restart live streams if too many download errors happened e.g. to get over missing segments.
 * [**ssai**](ssai/)
-    * [dfp](dfp/): Use Google DoubleClick for Server-side ad insertion (SSAI)
+    * [dfp](ssai/dfp/): Use Google DoubleClick for Server-side ad insertion (SSAI)
 * [**subtitles**](subtitles/)
     * [customSubtitleDisplay](subtitles/customSubtitleDisplay.js): Render subtitles using the ON_CUE_ENTER and ON_CUE_EXIT player events.
 
@@ -41,7 +42,7 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
 
 ## Generate Content The Easy Way
 
-To generate MPEG-DASH & HLS content on your own, please have a look at the encoding section at  [https://dashboard.bitmovin.com/](https://dashboard.bitmovin.com/) and give it a free try!
+To generate MPEG-DASH & HLS content on your own, please have a look at the encoding section at  [https://developer.bitmovin.com/](https://developer.bitmovin.com/) and give it a free try!
 
 ## Additional Demos and Documentation
 
