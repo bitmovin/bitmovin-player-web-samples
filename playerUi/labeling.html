@@ -136,7 +136,7 @@
       document.getElementById('webserver-warning').style.display = 'block';
     }
     
-    var changeQualitiesLabels = function(data) {
+    var getQualityLabels = function(data) {
       if (data.width >= 1920) {
         return data.id + ' (Full HD)';
       }
@@ -148,7 +148,7 @@
       }
     }
     
-    var changeSubtitlesLabels = function(data) {
+    var getSubtitleLabels = function(data) {
       var label = data.label.toUpperCase() + ' (SubtitleID: ' + data.id + ')';
       if (data.label === 'en') {
         return label += ' (original)';
@@ -156,7 +156,7 @@
       return label;
     }
     
-    var changeTrackLabels = function(data) {
+    var getTrackLabels = function(data) {
       if (data.mimeType.indexOf('audio') >= 0) {
         return data.lang.toUpperCase();
       }
@@ -171,9 +171,9 @@
         poster: "https://bitmovin.com/wp-content/uploads/2016/06/sintel-poster.jpg",
         labeling: {
           dash: {
-            qualities: changeQualitiesLabels,
-            subtitles: changeSubtitlesLabels,
-            tracks: changeTrackLabels
+            qualities: getQualityLabels,
+            subtitles: getSubtitleLabels,
+            tracks: getTrackLabels
           }
         }
       },
