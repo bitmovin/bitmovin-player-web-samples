@@ -66,10 +66,6 @@ h2, h3, label, h4, #frame_string, td, .smpte-display, .button-description {
     text-align: center;
 }
 
-.bmpui-seekbar {
-    display: none;
-}
-
 .keyboard-button {
     float: left;
     margin: 0 5px 5px 0;
@@ -87,10 +83,6 @@ h2, h3, label, h4, #frame_string, td, .smpte-display, .button-description {
     margin: 10px auto;
     border: 1px solid yellow;
     max-width: 650px;
-}
-
-#test-asset-description li {
-    list-style: none;
 }
 
 .changed {
