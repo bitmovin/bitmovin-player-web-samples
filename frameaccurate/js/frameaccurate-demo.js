@@ -11,19 +11,19 @@ const assets = [
   },
 ];
 
-let player               = null;
-let stepSizeInput        = null;
-let stepBackButton       = null;
-let stepForwardButton    = null;
-let seekButton           = null;
-let smtpeSeekTime        = null;
-let testAssetSelection   = null;
+let player = null;
+let stepSizeInput = null;
+let stepBackButton = null;
+let stepForwardButton = null;
+let seekButton = null;
+let smtpeSeekTime = null;
+let testAssetSelection = null;
 let testAssetDescription = null;
 
 let smtpeController = null;
 
 let conf = {
-  key: '89f6ed6c-ab0e-46c2-ac47-5665e60c3c41',
+  key: 'YOUR KEY HERE',
 };
 
 let currentTimeDisplay = document.getElementById('playerTime');
