@@ -23,6 +23,7 @@ class FrameAccurateControls {
     }
     catch (error) {
       console.error('Error during converting smtpe to time: ' + error);
+      throw error;
     }
   }
 

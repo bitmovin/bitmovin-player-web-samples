@@ -22,6 +22,7 @@ var FrameAccurateControls = /** @class */ (function () {
         }
         catch (error) {
             console.error('Error during converting smtpe to time: ' + error);
+            throw error;
         }
     };
     FrameAccurateControls.prototype.getCurrentSmpte = function () {

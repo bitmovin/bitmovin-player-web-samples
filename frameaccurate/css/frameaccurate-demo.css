@@ -78,6 +78,9 @@ h2, h3, label, h4, #frame_string, td, .smpte-display, .button-description {
     font-weight: bold;
     color: black;
 }
+#player {
+    margin-top: 15px;
+}
 
 #test-asset-description {
     margin: 10px auto;

@@ -3,28 +3,12 @@ const assets = [
    * Add your own assets here
    */
   {
-    name: '24 FPS, 1 frame off, some duplicate frames',
+    name: '24 FPS',
     source: {
-      // progressive: './artofmotion_24fps_framenumbers.mp4'
       progressive: '//bitdash-a.akamaihd.net/content/art-of-motion-frame-numbers/artofmotion_24fps_framenumbers.mp4'
     },
     frameRate: 24,
-    // the following params are calculated but may be overwritten
-    // adjustmentFactor: 1,
-    // framesDroppedEachMinute: 0
   },
-  {
-    name: '60 FPS, 1 frame off, many duplicate frames',
-    source: {
-      // progressive: './artofmotion_24fps_framenumbers.mp4'
-      progressive: '//bitdash-a.akamaihd.net/content/art-of-motion-frame-numbers/artofmotion_60fps_framenumbers.mp4'
-    },
-    frameRate: 60,
-    // the following params are calculated but may be overwritten
-    // adjustmentFactor: 1,
-    // framesDroppedEachMinute: 0
-  },
-
 ];
 
 let player               = null;
@@ -65,33 +49,6 @@ window.setInterval(function(){
     testAssetSelection = document.getElementById('test-assets');
     testAssetDescription = document.getElementById('test-asset-description');
 
-    let opt;
-    assets.forEach(function(asset){
-      opt = document.createElement('option');
-      opt.label = asset.name;
-      opt.value = asset.name;
-      opt.innerText = asset.name;
-      testAssetSelection.appendChild(opt);
-    });
-    // select last asset by default
-    (opt || {}).selected = 'selected';
-
-    testAssetSelection.onchange = handleAssetSelection;
-    handleAssetSelection();
-
-    function handleAssetSelection() {
-      let asset = assets.find(function(elem){
-        return elem.name === testAssetSelection.value;
-      }) || assets[assets.length - 1];
-      frameRate = asset.frameRate;
-      frameDuration = 1 / frameRate;
-      adjustmentFactor = asset.adjustmentFactor;
-      // testAssetDescription.innerHTML = asset.description;
-      framesDroppedEachMinute = asset.framesDroppedEachMinute || 0;
-
-      // player && player.load(asset.source);
-      smtpeController && smtpeController.load(convertAsset(assets.indexOf(asset)));
-    }
 
     stepBackButton.onclick = function() {
       let stepSize = parseInt(stepSizeInput.value) || 1;
@@ -159,36 +116,27 @@ window.setInterval(function(){
     let errorField = document.querySelector('.smpte-error');
     errorField.style.display = 'none';
 
-    // validate SMTPE timecode
-    let isValidSMPTETimeCode = new RegExp(/(^(?:(?:[0-1][0-9]|[0-2][0-3]):)(?:[0-5][0-9]:){2}(?:[0-6][0-9])$)/);
-    if(!isValidSMPTETimeCode.test(smtpeSeekTime.value)) {
-      // invalid format, show error and do nothing
-      console.error(smtpeSeekTime.value + ' does not match a SMPTE timecode HH:MM:SS:FF');
-      errorField.innerHTML = 'Please enter a valid SMPTE timecode';
-      errorField.style.display = 'block';
-      return;
+    try {
+      smtpeController.seekToSMPTE(smtpeSeekTime.value);
     }
-    if(Number(smtpeSeekTime.value.split(':')[3]) >= frameRate) {
-      // frame portion of the input is higher than the FPS
-      errorField.innerHTML = 'Frame Number in SMPTE is higher than FPS: ' + frameRate;
+    catch(err) {
+      errorField.innerHTML = err;
       errorField.style.display = 'block';
-      return;
     }
-
-    smtpeController.seekToSMPTE(smtpeSeekTime.value);
   }
 
   function convertAsset(assetIdx) {
       const toConvert = assets[assetIdx];
       // name, sourceConfig, framesPerSecond, adjustmentFactor, framesDroppedAtFullMinute
-      return new AssetDescription(toConvert.name, toConvert.source, toConvert.frameRate, toConvert.adjustmentFactor, toConvert.framesDroppedEachMinute);
+      return new AssetDescription(toConvert.name, toConvert.source, toConvert.frameRate, toConvert.adjustmentFactor,
+        toConvert.framesDroppedEachMinute);
   }
 
   bitmovin.player("player").setup(conf).then(function (response) {
     smtpeController = new FrameAccurateControls(response, convertAsset(0));
+    smtpeController.load(convertAsset(0));
     player = response;
     console.log('player loaded');
-    handleAssetSelection();
 
     player.addEventHandler('onFullscreenEnter', function() {
       document.getElementById('seekingWrapper').className = 'overlay';
