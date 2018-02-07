@@ -1,10 +1,26 @@
-
+/**
+ * Class to Wrap the bitmovin player and take care of SMPTE <-> time conversions
+ */
 class FrameAccurateControls {
 
-  constructor(private player: any, private assetDescription: AssetDescription) {
+  /**
+   * Wrapped instance of the bitmovin player
+   */
+  private player: any;
+  /**
+   * Description of the loaded asset
+   */
+  private assetDescription: AssetDescription;
+
+  constructor(player: any, assetDescription: AssetDescription) {
+    this.player = player;
+    this.assetDescription = assetDescription;
   }
 
-  public load(asset: AssetDescription) {
+  /**
+   * Calls load on the player with asset.sourceConfig and updates the internal asset description
+   */
+  public load(asset: AssetDescription): Promise<void> {
     return this.player.load(asset.sourceConfig).then(() => {
       this.assetDescription = asset;
     }).catch((error) => {
@@ -13,6 +29,11 @@ class FrameAccurateControls {
     });
   }
 
+  /**
+   * Converts the given SMTPE timestamp to a time and calls seek on the wrapped player to the calculated time
+   * @param {string} smpteString a string in the form of HH:MM:SS:FF
+   * @throws {string} an error if the given SMPTE was invalid
+   */
   public seekToSMPTE(smpteString: string): void {
     try {
       const smpte = new SmpteTimestamp(smpteString, this.assetDescription);
@@ -27,14 +48,21 @@ class FrameAccurateControls {
     }
   }
 
+  /**
+   * Queries the time of the wrapped player and converts it to the SMPTE format
+   */
   public getCurrentSmpte(): string {
     const currentTime = this.player.getCurrentTime();
     return SmpteTimestamp.fromTimeWithAdjustments(currentTime, this.assetDescription).toString();
   }
 
-  public step(stepSize: number) {
+  /**
+   * Advances `stepSize` frames in the current video
+   * @param {number} stepSize number of frames to step, if negative will step to previous frames
+   */
+  public step(stepSize: number): void {
     const smpte = new SmpteTimestamp(this.getCurrentSmpte(), this.assetDescription);
-    if(smpte.minutes % 10 !== 0 && smpte.seconds === 0) {
+    if (smpte.minutes % 10 !== 0 && smpte.seconds === 0) {
       //  in the case of being around the dropped frame at step start we have to ignore the frameHoles
       smpte.addFrame(stepSize, false);
     } else {
@@ -44,15 +72,60 @@ class FrameAccurateControls {
   }
 }
 
+/**
+ * Information about the current asset needed for SMPTE adjustments
+ */
 class AssetDescription {
+
+  /**
+   * Name of the test asset
+   */
+  public name: string;
+  /**
+   * Source config to be loaded by the player
+   */
+  public sourceConfig: SourceConfig;
+  /**
+   * Number of frames per second
+   */
+  public framesPerSecond: number;
+  /**
+   * If the video has a non-integer frame number this value will be used to adjust the time, should be something
+   * around 1001/1000 in the non-integer case
+   */
+  public adjustmentFactor: number;
+  /**
+   * A video with 29.97 frames skips 2 frames at each minute which is not a muliple of 10, if frames are skipped
+   * this value should be non zero
+   */
+  public framesDroppedAtFullMinute: number;
+  /**
+   * Duration of a single frame in seconds
+   */
   public frameDuration: number;
+  /**
+   * Adjustment to seek into the middle of the frame to not get stuck on the previous ones
+   */
   public offsetToMidFrame: number;
-  constructor(public name: string, public sourceConfig: SourceConfig, public framesPerSecond: number,
-              public adjustmentFactor?: number, public framesDroppedAtFullMinute?: number) {
+
+  /**
+   *
+   * @param {string} name the name of the asset
+   * @param {SourceConfig} sourceConfig the source for the player to load
+   * @param {number} framesPerSecond number of frames in a second
+   * @param {number} adjustmentFactor should be 1 for integer frame numbers, otherwise Math.ceil(fps)/fps. Needed for
+   * adjustment of the player time
+   * @param {number} framesDroppedAtFullMinute default: 0, in 29.98fps videos 2 frames are dopped each minute
+   */
+  constructor(name: string, sourceConfig: SourceConfig, framesPerSecond: number, adjustmentFactor?: number,
+              framesDroppedAtFullMinute?: number) {
+    this.name = name;
+    this.sourceConfig = sourceConfig;
+
     if (adjustmentFactor == null) {
       this.adjustmentFactor = Math.ceil(framesPerSecond) / framesPerSecond;
     }
-    if(framesDroppedAtFullMinute == null) {
+    if (framesDroppedAtFullMinute == null) {
       if (framesPerSecond === 29.97 || framesPerSecond === 29.98) {
         this.framesDroppedAtFullMinute = 2;
       }
@@ -81,9 +154,7 @@ class SmpteTimestamp {
 
   public constructor(smtpeTimestamp: string, private assetDescription: AssetDescription) {
     if (smtpeTimestamp && SmpteTimestamp.validateTimeStamp(smtpeTimestamp, assetDescription.framesPerSecond)) {
-
       const parts: string[] = smtpeTimestamp.split(':');
-
       this.hours = Number(parts[0]);
       this.minutes = Number(parts[1]);
       this.seconds = Number(parts[2]);
