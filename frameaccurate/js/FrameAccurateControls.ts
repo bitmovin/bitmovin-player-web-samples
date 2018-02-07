@@ -121,6 +121,9 @@ class AssetDescription {
               framesDroppedAtFullMinute?: number) {
     this.name = name;
     this.sourceConfig = sourceConfig;
+    this.framesPerSecond = framesPerSecond;
+    this.adjustmentFactor = adjustmentFactor;
+    this.framesDroppedAtFullMinute = framesDroppedAtFullMinute;
 
     if (adjustmentFactor == null) {
       this.adjustmentFactor = Math.ceil(framesPerSecond) / framesPerSecond;
@@ -203,7 +206,7 @@ class SmpteTimestamp {
     return timeInSeconds;
   }
 
-  public toAdjustedTime() {
+  public toAdjustedTime(): number {
     // take dropped frames around every full minute (except for every 10minutes) into account
     if (this.assetDescription.framesDroppedAtFullMinute > 0) {
       let framesToAdd = this.minutes - Math.floor(this.minutes / 10);
@@ -217,7 +220,7 @@ class SmpteTimestamp {
     return targetTime;
   }
 
-  public static fromString(smtpeTimestamp: string, assetDescription: AssetDescription) {
+  public static fromString(smtpeTimestamp: string, assetDescription: AssetDescription): SmpteTimestamp {
     return new SmpteTimestamp(smtpeTimestamp, assetDescription);
   }
 
@@ -260,7 +263,7 @@ class SmpteTimestamp {
     return smtpe;
   }
 
-  public addFrame(framesToAdd: number, fixFrameHoles: boolean = true) {
+  public addFrame(framesToAdd: number, fixFrameHoles: boolean = true): void {
     this.frame += framesToAdd;
     let overflow;
     [this.frame, overflow] = SmpteTimestamp.fitIntoRange(this.frame, Math.ceil(this.assetDescription.framesPerSecond));
@@ -277,7 +280,7 @@ class SmpteTimestamp {
     }
   }
 
-  public addSeconds(secondsToAdd: number) {
+  public addSeconds(secondsToAdd: number): void {
     this.seconds += secondsToAdd;
     let overflow;
     [this.seconds, overflow] = SmpteTimestamp.fitIntoRange(this.seconds, 60);
@@ -286,7 +289,7 @@ class SmpteTimestamp {
     }
   }
 
-  public addMinute(minutesToAdd: number) {
+  public addMinute(minutesToAdd: number): void {
     this.minutes += minutesToAdd;
     let overflow;
     [this.minutes, overflow] = SmpteTimestamp.fitIntoRange(this.minutes, 60);
@@ -295,7 +298,7 @@ class SmpteTimestamp {
     }
   }
 
-  public addHour(hoursToAdd: number) {
+  public addHour(hoursToAdd: number): void {
     this.hours += hoursToAdd;
     if (this.hours < 0) {
       console.log('Cannot go further back');
