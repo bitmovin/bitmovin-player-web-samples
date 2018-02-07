@@ -168,7 +168,6 @@ class SmpteTimestamp {
   }
 
   public static validateTimeStamp(smtpeTimestamp: string, framesPerSecond: number): boolean {
-
     // validate SMTPE timecode
     let isValidSMPTETimeCode = new RegExp(/(^(?:(?:[0-1][0-9]|[0-2][0-3]):)(?:[0-5][0-9]:){2}(?:[0-6][0-9])$)/);
     if (!isValidSMPTETimeCode.test(smtpeTimestamp)) {
