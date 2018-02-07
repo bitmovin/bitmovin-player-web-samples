@@ -36,9 +36,9 @@ window.setInterval(function(){
   }
 }, 250);
 
-  function step(stepSize) {
-    smtpeController.step(stepSize);
-  }
+function step(stepSize) {
+  smtpeController.step(stepSize);
+}
 
 (function init() {
     stepSizeInput = document.getElementById('step_size_input');
