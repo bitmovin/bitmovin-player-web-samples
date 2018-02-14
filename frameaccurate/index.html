@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<!--
+*
+* Copyright (C) 2018, Bitmovin Inc, All Rights Reserved
+*
+* This source code and its use and distribution, is subject to the terms
+* and conditions of the applicable license agreement.
+*
+-->
+<html lang="en">
+<head>
+    <title>Bitmovin Demo</title>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
+    <link rel="icon" type="image/png" href="bit-fav.png">
+    <!-- Bitmovin player -->
+    <script type="text/javascript" src="https://bitmovin-a.akamaihd.net/bitmovin-player/stable/7/bitmovinplayer.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/bitmovin-demo.css">
+    <link rel="stylesheet" href="css/frameaccurate-demo.css">
+</head>
+<body>
+<div id="wrapper">
+
+    <div id="banner">
+        <div class="logo"><a href="https://bitmovin.com"><img src="bitmovin-logo.png"></a></div>
+        <div class="title"><h1 class="bitmovin-headline">Frame Accurate Seeking</h1></div>
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="content">
+
+            <div class="row">
+                <div class="col-md-offset-1 col-md-10 col-lg-offset-2 col-lg-8">
+                    <div id="player"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-offset-1 col-md-10 col-lg-offset-2 col-lg-8 text-center" id="bottom-container">
+                    <div id="seekingWrapper">
+                        <div class="commandWrapper">
+                            <div class="row">
+                                <div class="col-md-4 smpte-control">
+                                    <input id="step_back_button" type="button" value="<">
+                                    <label for="step_size_input">step</label>
+                                    <input id="step_size_input" type="number" value="1" min="1" max="1096">
+                                    <span id="frame_string">frame</span>
+                                    <input id="step_forward_button" type="button" value=">">
+                                </div>
+                                <div class="col-md-4 smpte-control">
+                                    <input id="seek_button" type="button" value="seek">
+                                        <label for="smtpe_input">to SMPTE:</label>
+                                    <input id="smtpe_input" type="text" value="00:00:30:00">
+                                </div>
+                                <div class="col-md-4 smpte-control smpte-display">
+                                    Current SMPTE: <span id="playerTime"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="smpte-error"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-offset-1 col-md-10 col-lg-offset-2 col-lg-8">
+                    <div class="controls-wrapper">
+                        <div class="row">
+                            <div class="col-xs-12 controls-header">
+                                <h3>Keyboard controls</h3>
+                                <h4>Only active when no input field has the focus</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="col-xs-4">
+                                    <div class="keyboard-button">SPACE</div>
+                                </div>
+                                <div class="col-xs-8 button-description">
+                                    Play / Pause
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="col-xs-4">
+                                    <div class="keyboard-button">LEFT</div>
+                                </div>
+                                <div class="col-xs-8 button-description">
+                                    Seek back <span class="stepSize">1</span> frame
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="col-xs-4">
+                                    <div class="keyboard-button">CTRL</div>
+                                    <div class="keyboard-button">LEFT</div>
+                                </div>
+                                <div class="col-xs-8 button-description">
+                                    Seek back <span class="stepSize_x_5">5</span> frames
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="col-xs-4">
+                                    <div class="keyboard-button">RIGHT</div>
+                                </div>
+                                <div class="col-xs-8 button-description">
+                                    Seek forward <span class="stepSize">1</span> frame
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="col-xs-4">
+                                    <div class="keyboard-button">CTRL</div>
+                                    <div class="keyboard-button">RIGHT</div>
+                                </div>
+                                <div class="col-xs-8 button-description">
+                                    Seek forward <span class="stepSize_x_5">5</span> frames
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="js/frameaccurate-demo.js"></script>
+<script type="text/javascript" src="js/FrameAccurateControls.js"></script>
+</body>
+</html>
