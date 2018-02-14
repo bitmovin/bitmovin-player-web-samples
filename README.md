@@ -17,7 +17,7 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
     * [eventConstants](events/eventConstants.html): Use event constants for registering event handlers at the player.
     * [ON_SEGMENT_REQUEST_FINISHED](events/onSegmentRequestFinished.html): Use ON_SEGMENT_REQUEST_FINISHED event to analyze which segment has been downloaded and implement custom workflows according to the HTTP status code.
 * [**frameaccurate**](frameaccurate/)
-    * [Frame Accurate Control](frameaccurate/js/FrameAccurateControls.ts): Bitmoinv Player Wrapper for SMTPE timestamp seeking + stepping
+    * [Frame Accurate Control](frameaccurate/js/FrameAccurateControls.ts): Bitmovin Player Wrapper for SMTPE timestamp seeking + stepping
 * [**keyboard**](keyboard/)
    * [keyboardSupport](keyboard/keyboardSupport.html): Keyboard shortcuts for the Bitmovin Player.
    * [keyboardCustom](keyboard/keyboardCustom.html): Custom keyboard shortcuts for the Bitmovin Player.
@@ -26,12 +26,16 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
    * [timelineMarkers](playerUi/timelineMarkers.html): Identify the differents parts of a stream by setting some markers over the timeline
 * [**playlist**](playlist/)
     * [simplePlaylist](playlist/simplePlaylist.html): Build a playlist with the Bitmovin HTML5 Player API.
+* [**requirejs-demo**](requirejs-demo/)
+    * [buildPlayerWithRequirejs](requirejs-demo/buildPlayerWithRequirejs.html): Build the Bitmovin HTML5 Player using requirejs.
 * [**streamRecovery**](streamRecovery/)
     * [liveStreamRecovery](streamRecovery/liveStreamRecovery.js): Automatically restart live streams if too many download errors happened e.g. to get over missing segments.
 * [**ssai**](ssai/)
     * [dfp](ssai/dfp/): Use Google DoubleClick for Server-side ad insertion (SSAI)
 * [**subtitles**](subtitles/)
     * [customSubtitleDisplay](subtitles/customSubtitleDisplay.js): Render subtitles using the ON_CUE_ENTER and ON_CUE_EXIT player events.
+* [**webpack-demo**](webpack-demo/)
+    * [buildPlayerWithWebpack](webpack-demo/buildPlayerWithWebpack.html): Build the Bitmovin HTML5 Player using webpack.
 
 ## Howto Install
 
