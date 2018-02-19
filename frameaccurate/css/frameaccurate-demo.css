@@ -66,6 +66,13 @@ h2, h3, label, h4, #frame_string, td, .smpte-display, .button-description {
     text-align: center;
 }
 
+#step_size_input {
+    width: 90px;
+}
+#smtpe_input {
+    width: 120px;
+}
+
 .keyboard-button {
     float: left;
     margin: 0 5px 5px 0;

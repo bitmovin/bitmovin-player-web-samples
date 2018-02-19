@@ -12,6 +12,7 @@ const assets = [
 ];
 
 let player = null;
+let playerContainer = null;
 let stepSizeInput = null;
 let stepBackButton = null;
 let stepForwardButton = null;
@@ -48,7 +49,22 @@ function step(stepSize) {
     smtpeSeekTime = document.getElementById('smtpe_input');
     testAssetSelection = document.getElementById('test-assets');
     testAssetDescription = document.getElementById('test-asset-description');
+    playerContainer = document.getElementById('player');
 
+    playerContainer.addEventListener('wheel', handleScroll);
+    playerContainer.addEventListener('DOMMouseScroll', handleScroll);
+
+    function handleScroll(ev) {
+      // only react to vertical scrolls
+      if (ev.deltaY === 0 || !smtpeController) {
+        return;
+      }
+      // as IE does not support Math.sign and we always want a number, use this approach
+      const direction = ev.deltaY > 0 ? 1 : -1;
+      smtpeController.step(direction * stepSizeInput.value);
+      // prevent scrolling the page when we step through the video
+      ev.preventDefault();
+    }
 
     stepBackButton.onclick = function() {
       let stepSize = parseInt(stepSizeInput.value) || 1;
@@ -116,13 +132,33 @@ function step(stepSize) {
     let errorField = document.querySelector('.smpte-error');
     errorField.style.display = 'none';
 
+    // allow numeric values
+    const targetSmpte = convertNumericSMPTE(smtpeSeekTime.value);
+
     try {
-      smtpeController.seekToSMPTE(smtpeSeekTime.value);
+      smtpeController.seekToSMPTE(targetSmpte);
     }
     catch(err) {
       errorField.innerHTML = err;
       errorField.style.display = 'block';
     }
+  }
+
+  function convertNumericSMPTE(smpteValue) {
+    if (isFinite(smpteValue)) {
+      const frames = smpteValue % 100;
+      smpteValue = Math.floor(smpteValue / 100);
+      const seconds = smpteValue % 100;
+      smpteValue = Math.floor(smpteValue / 100);
+      const minutes = smpteValue % 100;
+      const hours = Math.floor(smpteValue / 100);
+      smpteValue = padNum(hours) + ':' + padNum(minutes) + ':' + padNum(seconds) + ':' + padNum(frames);
+    }
+    return smpteValue;
+  }
+
+  function padNum(num) {
+    return num < 10 ? '0' + num : num;
   }
 
   function convertAsset(assetIdx) {
