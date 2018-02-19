@@ -146,10 +146,6 @@ function step(stepSize) {
 
   function convertNumericSMPTE(smpteValue) {
     if (isFinite(smpteValue)) {
-      const padNum = function(num){
-        return num < 10 ? '0' + num : num;
-      };
-
       const frames = smpteValue % 100;
       smpteValue = Math.floor(smpteValue / 100);
       const seconds = smpteValue % 100;
@@ -159,6 +155,10 @@ function step(stepSize) {
       smpteValue = padNum(hours) + ':' + padNum(minutes) + ':' + padNum(seconds) + ':' + padNum(frames);
     }
     return smpteValue;
+  }
+
+  function padNum(num) {
+    return num < 10 ? '0' + num : num;
   }
 
   function convertAsset(assetIdx) {
