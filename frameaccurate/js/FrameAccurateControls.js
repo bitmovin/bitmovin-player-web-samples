@@ -1,18 +1,50 @@
-var FrameAccurateControls = /** @class */ (function () {
-    function FrameAccurateControls(player, assetDescription) {
+/**
+ * Class to Wrap the bitmovin player and take care of SMPTE <-> time conversions
+ */
+var SmtpeController = /** @class */ (function () {
+    function SmtpeController(player, assetDescription) {
+        var _this = this;
+        /**
+         * In Firefox we have the fun behaviour, that play + pause leads to an incorrect video.currentTime (off by 1 frame
+         * most of the time). To reproduce try play + pause at some point in the video. Then save the current Time, seek
+         * somewhere else and then back to the previous current time ... you will see a different Frame.
+         * In order to avoid this mess, when we encounter play + pause we seek to the calculated SMPTE, quite the dirty hack
+         * but necessary.
+         */
+        this.playPauseHandler = function (event) {
+            if (event.type === 'onPlaying') {
+                _this.hasBeenPlaying = true;
+            }
+            else if (_this.hasBeenPlaying) {
+                _this.hasBeenPlaying = false;
+                _this.seekToSMPTE(_this.getCurrentSmpte());
+            }
+        };
         this.player = player;
         this.assetDescription = assetDescription;
+        player.addEventHandler('onPaused', this.playPauseHandler);
+        player.addEventHandler('onPlaying', this.playPauseHandler);
+        this.load(assetDescription);
     }
-    FrameAccurateControls.prototype.load = function (asset) {
+    /**
+     * Calls load on the player with asset.sourceConfig and updates the internal asset description
+     */
+    SmtpeController.prototype.load = function (asset) {
         var _this = this;
         return this.player.load(asset.sourceConfig).then(function () {
             _this.assetDescription = asset;
+            _this.hasBeenPlaying = false;
         }).catch(function (error) {
             console.error('Could not load asset: ' + JSON.stringify(asset.sourceConfig));
             throw error;
         });
     };
-    FrameAccurateControls.prototype.seekToSMPTE = function (smpteString) {
+    /**
+     * Converts the given SMTPE timestamp to a time and calls seek on the wrapped player to the calculated time
+     * @param {string} smpteString a string in the form of HH:MM:SS:FF
+     * @throws {string} an error if the given SMPTE was invalid
+     */
+    SmtpeController.prototype.seekToSMPTE = function (smpteString) {
         try {
             var smpte = new SmpteTimestamp(smpteString, this.assetDescription);
             var debugSmpte = smpte.toString();
@@ -25,11 +57,18 @@ var FrameAccurateControls = /** @class */ (function () {
             throw error;
         }
     };
-    FrameAccurateControls.prototype.getCurrentSmpte = function () {
+    /**
+     * Queries the time of the wrapped player and converts it to the SMPTE format
+     */
+    SmtpeController.prototype.getCurrentSmpte = function () {
         var currentTime = this.player.getCurrentTime();
         return SmpteTimestamp.fromTimeWithAdjustments(currentTime, this.assetDescription).toString();
     };
-    FrameAccurateControls.prototype.step = function (stepSize) {
+    /**
+     * Advances `stepSize` frames in the current video
+     * @param {number} stepSize number of frames to step, if negative will step to previous frames
+     */
+    SmtpeController.prototype.step = function (stepSize) {
         var smpte = new SmpteTimestamp(this.getCurrentSmpte(), this.assetDescription);
         if (smpte.minutes % 10 !== 0 && smpte.seconds === 0) {
             //  in the case of being around the dropped frame at step start we have to ignore the frameHoles
@@ -40,9 +79,21 @@ var FrameAccurateControls = /** @class */ (function () {
         }
         this.seekToSMPTE(smpte.toString());
     };
-    return FrameAccurateControls;
+    return SmtpeController;
 }());
+/**
+ * Information about the current asset needed for SMPTE adjustments
+ */
 var AssetDescription = /** @class */ (function () {
+    /**
+     *
+     * @param {string} name the name of the asset
+     * @param {SourceConfig} sourceConfig the source for the player to load
+     * @param {number} framesPerSecond number of frames in a second
+     * @param {number} adjustmentFactor should be 1 for integer frame numbers, otherwise Math.ceil(fps)/fps. Needed for
+     * adjustment of the player time
+     * @param {number} framesDroppedAtFullMinute default: 0, in 29.98fps videos 2 frames are dopped each minute
+     */
     function AssetDescription(name, sourceConfig, framesPerSecond, adjustmentFactor, framesDroppedAtFullMinute) {
         this.name = name;
         this.sourceConfig = sourceConfig;
@@ -69,7 +120,16 @@ var AssetDescription = /** @class */ (function () {
 var SmpteTimestamp = /** @class */ (function () {
     function SmpteTimestamp(smtpeTimestamp, assetDescription) {
         this.assetDescription = assetDescription;
-        if (smtpeTimestamp && SmpteTimestamp.validateTimeStamp(smtpeTimestamp, assetDescription.framesPerSecond)) {
+        if (smtpeTimestamp && isFinite(smtpeTimestamp)) {
+            var smpteValue = smtpeTimestamp;
+            this.frame = smpteValue % 100;
+            smpteValue = Math.floor(smpteValue / 100);
+            this.seconds = smpteValue % 100;
+            smpteValue = Math.floor(smpteValue / 100);
+            this.minutes = smpteValue % 100;
+            this.hours = Math.floor(smpteValue / 100);
+        }
+        else if (smtpeTimestamp && SmpteTimestamp.validateTimeStamp(smtpeTimestamp, assetDescription.framesPerSecond)) {
             var parts = smtpeTimestamp.split(':');
             this.hours = Number(parts[0]);
             this.minutes = Number(parts[1]);
@@ -130,8 +190,9 @@ var SmpteTimestamp = /** @class */ (function () {
         return new SmpteTimestamp(smtpeTimestamp, assetDescription);
     };
     SmpteTimestamp.fromTime = function (timestamp, assetDesc) {
+        // to get to the start of the actual frame... use this
         var tmp = timestamp;
-        var retVal = new SmpteTimestamp('00:00:00:00', assetDesc);
+        var retVal = new SmpteTimestamp(null, assetDesc);
         retVal.hours = Math.floor(tmp / 3600);
         tmp -= retVal.hours * 3600;
         retVal.minutes = Math.floor(tmp / 60);
@@ -145,7 +206,7 @@ var SmpteTimestamp = /** @class */ (function () {
         var time = timestamp / assetDesc.adjustmentFactor;
         var smtpe = SmpteTimestamp.fromTime(time, assetDesc);
         if (assetDesc.framesDroppedAtFullMinute > 0) {
-            var numMinutesWithDroppedFrames = smtpe.minutes;
+            var numMinutesWithDroppedFrames = smtpe.minutes + (smtpe.hours * 60);
             // no frames dropped at every 10 minutes
             numMinutesWithDroppedFrames -= Math.floor(smtpe.minutes / 10);
             var framesToAdd = numMinutesWithDroppedFrames * assetDesc.framesDroppedAtFullMinute;
@@ -219,3 +280,4 @@ var SmpteTimestamp = /** @class */ (function () {
     };
     return SmpteTimestamp;
 }());
+//# sourceMappingURL=FrameAccurateControls.js.map
