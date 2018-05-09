@@ -208,7 +208,7 @@ var SmpteTimestamp = /** @class */ (function () {
         if (assetDesc.framesDroppedAtFullMinute > 0) {
             var numMinutesWithDroppedFrames = smtpe.minutes + (smtpe.hours * 60);
             // no frames dropped at every 10 minutes
-            numMinutesWithDroppedFrames -= Math.floor(smtpe.minutes / 10);
+            numMinutesWithDroppedFrames -= Math.floor(numMinutesWithDroppedFrames / 10);
             var framesToAdd = numMinutesWithDroppedFrames * assetDesc.framesDroppedAtFullMinute;
             var minutesBefore = smtpe.minutes;
             smtpe.addFrame(framesToAdd, false);
@@ -280,4 +280,3 @@ var SmpteTimestamp = /** @class */ (function () {
     };
     return SmpteTimestamp;
 }());
-//# sourceMappingURL=FrameAccurateControls.js.map
