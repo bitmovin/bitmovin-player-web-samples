@@ -25,6 +25,11 @@ let smtpeController = null;
 
 let conf = {
   key: 'YOUR KEY HERE',
+  // the player normally has a safe-space at the end of a stream in which we can not seek, this tweak disables this handling
+  // and lets us step around the last seconds of the video
+  tweaks: {
+    seek_to_end_offset: 0,
+  },
 };
 
 let currentTimeDisplay = document.getElementById('playerTime');
@@ -132,33 +137,13 @@ function step(stepSize) {
     let errorField = document.querySelector('.smpte-error');
     errorField.style.display = 'none';
 
-    // allow numeric values
-    const targetSmpte = convertNumericSMPTE(smtpeSeekTime.value);
-
     try {
-      smtpeController.seekToSMPTE(targetSmpte);
+      smtpeController.seekToSMPTE(smtpeSeekTime.value);
     }
     catch(err) {
       errorField.innerHTML = err;
       errorField.style.display = 'block';
     }
-  }
-
-  function convertNumericSMPTE(smpteValue) {
-    if (isFinite(smpteValue)) {
-      const frames = smpteValue % 100;
-      smpteValue = Math.floor(smpteValue / 100);
-      const seconds = smpteValue % 100;
-      smpteValue = Math.floor(smpteValue / 100);
-      const minutes = smpteValue % 100;
-      const hours = Math.floor(smpteValue / 100);
-      smpteValue = padNum(hours) + ':' + padNum(minutes) + ':' + padNum(seconds) + ':' + padNum(frames);
-    }
-    return smpteValue;
-  }
-
-  function padNum(num) {
-    return num < 10 ? '0' + num : num;
   }
 
   function convertAsset(assetIdx) {
@@ -169,7 +154,7 @@ function step(stepSize) {
   }
 
   bitmovin.player("player").setup(conf).then(function (response) {
-    smtpeController = new FrameAccurateControls(response, convertAsset(0));
+    smtpeController = new SmtpeController(response, convertAsset(0));
     smtpeController.load(convertAsset(0));
     player = response;
     console.log('player loaded');

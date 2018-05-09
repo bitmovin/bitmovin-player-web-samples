@@ -1,7 +1,8 @@
 /**
  * Class to Wrap the bitmovin player and take care of SMPTE <-> time conversions
  */
-class FrameAccurateControls {
+
+class SmtpeController {
 
   /**
    * Wrapped instance of the bitmovin player
@@ -12,10 +13,34 @@ class FrameAccurateControls {
    */
   private assetDescription: AssetDescription;
 
+  /**
+   * Flag needed to detect playing -> pause transitions
+   */
+  private hasBeenPlaying: boolean;
+
   constructor(player: any, assetDescription: AssetDescription) {
     this.player = player;
     this.assetDescription = assetDescription;
+    player.addEventHandler('onPaused', this.playPauseHandler);
+    player.addEventHandler('onPlaying', this.playPauseHandler);
+    this.load(assetDescription);
   }
+
+  /**
+   * In Firefox we have the fun behaviour, that play + pause leads to an incorrect video.currentTime (off by 1 frame
+   * most of the time). To reproduce try play + pause at some point in the video. Then save the current Time, seek
+   * somewhere else and then back to the previous current time ... you will see a different Frame.
+   * In order to avoid this mess, when we encounter play + pause we seek to the calculated SMPTE, quite the dirty hack
+   * but necessary.
+   */
+  private playPauseHandler = (event: any) => {
+    if (event.type === 'onPlaying') {
+      this.hasBeenPlaying = true;
+    } else if (this.hasBeenPlaying) {
+      this.hasBeenPlaying = false;
+      this.seekToSMPTE(this.getCurrentSmpte());
+    }
+  };
 
   /**
    * Calls load on the player with asset.sourceConfig and updates the internal asset description
@@ -23,6 +48,7 @@ class FrameAccurateControls {
   public load(asset: AssetDescription): Promise<void> {
     return this.player.load(asset.sourceConfig).then(() => {
       this.assetDescription = asset;
+      this.hasBeenPlaying = false;
     }).catch((error) => {
       console.error('Could not load asset: ' + JSON.stringify(asset.sourceConfig));
       throw error;
@@ -154,10 +180,20 @@ class SmpteTimestamp {
   public seconds: number;
   public minutes: number;
   public hours: number;
+  private assetDescription: AssetDescription;
 
-  public constructor(smtpeTimestamp: string, private assetDescription: AssetDescription) {
-    if (smtpeTimestamp && SmpteTimestamp.validateTimeStamp(smtpeTimestamp, assetDescription.framesPerSecond)) {
-      const parts: string[] = smtpeTimestamp.split(':');
+  constructor(smtpeTimestamp: string | number, assetDescription: AssetDescription) {
+    this.assetDescription = assetDescription;
+    if (smtpeTimestamp && isFinite(smtpeTimestamp as number)) {
+      let smpteValue: number = smtpeTimestamp as number;
+      this.frame = smpteValue % 100;
+      smpteValue = Math.floor(smpteValue / 100);
+      this.seconds = smpteValue % 100;
+      smpteValue = Math.floor(smpteValue / 100);
+      this.minutes = smpteValue % 100;
+      this.hours = Math.floor(smpteValue / 100);
+    } else if (smtpeTimestamp && SmpteTimestamp.validateTimeStamp(smtpeTimestamp as string, assetDescription.framesPerSecond)) {
+      const parts: string[] = (smtpeTimestamp as string).split(':');
       this.hours = Number(parts[0]);
       this.minutes = Number(parts[1]);
       this.seconds = Number(parts[2]);
@@ -225,9 +261,10 @@ class SmpteTimestamp {
   }
 
   public static fromTime(timestamp: number, assetDesc: AssetDescription): SmpteTimestamp {
+    // to get to the start of the actual frame... use this
     let tmp = timestamp;
 
-    const retVal = new SmpteTimestamp('00:00:00:00', assetDesc);
+    const retVal = new SmpteTimestamp(null, assetDesc);
     retVal.hours = Math.floor(tmp / 3600);
     tmp -= retVal.hours * 3600;
 
@@ -247,9 +284,9 @@ class SmpteTimestamp {
     const smtpe = SmpteTimestamp.fromTime(time, assetDesc);
 
     if (assetDesc.framesDroppedAtFullMinute > 0) {
-      let numMinutesWithDroppedFrames: number = smtpe.minutes;
+      let numMinutesWithDroppedFrames: number = smtpe.minutes + (smtpe.hours * 60);
       // no frames dropped at every 10 minutes
-      numMinutesWithDroppedFrames -= Math.floor(smtpe.minutes / 10);
+      numMinutesWithDroppedFrames -= Math.floor(numMinutesWithDroppedFrames / 10);
 
       let framesToAdd = numMinutesWithDroppedFrames * assetDesc.framesDroppedAtFullMinute;
 
