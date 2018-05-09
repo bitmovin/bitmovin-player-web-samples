@@ -286,7 +286,7 @@ class SmpteTimestamp {
     if (assetDesc.framesDroppedAtFullMinute > 0) {
       let numMinutesWithDroppedFrames: number = smtpe.minutes + (smtpe.hours * 60);
       // no frames dropped at every 10 minutes
-      numMinutesWithDroppedFrames -= Math.floor(smtpe.minutes / 10);
+      numMinutesWithDroppedFrames -= Math.floor(numMinutesWithDroppedFrames / 10);
 
       let framesToAdd = numMinutesWithDroppedFrames * assetDesc.framesDroppedAtFullMinute;
 
