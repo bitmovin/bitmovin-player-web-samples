@@ -25,6 +25,11 @@ let smtpeController = null;
 
 let conf = {
   key: 'YOUR KEY HERE',
+  // the player normally has a safe-space at the end of a stream in which we can not seek, this tweak disables this handling
+  // and lets us step around the last seconds of the video
+  tweaks: {
+    seek_to_end_offset: 0,
+  },
 };
 
 let currentTimeDisplay = document.getElementById('playerTime');
