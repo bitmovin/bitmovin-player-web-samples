@@ -1,5 +1,6 @@
-var bitmovinplayer = require('./bitmovinplayer.js');
-var playerui       = require('./bitmovinplayer-ui.js');
+var bitmovinplayer = require('bitmovin-player');
+var playerui       = require('bitmovin-player-ui');
+require('bitmovin-player-ui/dist/css/bitmovinplayer-ui.min.css');
 
 if (location.protocol === 'file:') {
   document.getElementById('webserver-warning').style.display = 'block';
