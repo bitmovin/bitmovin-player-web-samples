@@ -177,7 +177,8 @@ var SmpteTimestamp = /** @class */ (function () {
     SmpteTimestamp.prototype.toAdjustedTime = function () {
         // take dropped frames around every full minute (except for every 10minutes) into account
         if (this.assetDescription.framesDroppedAtFullMinute > 0) {
-            var framesToAdd = this.minutes - Math.floor(this.minutes / 10);
+            var totalMinutes = this.hours * 60 + this.minutes;
+            var framesToAdd = totalMinutes - Math.floor(totalMinutes / 10);
             framesToAdd *= this.assetDescription.framesDroppedAtFullMinute;
             this.addFrame(-framesToAdd, false);
         }
