@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<!--
+*
+* Copyright (C) 2018, Bitmovin Inc, All Rights Reserved
+*
+* This source code and its use and distribution, is subject to the terms
+* and conditions of the applicable license agreement.
+*
+-->
+<html lang="en">
+<head>
+    <title>Bitmovin Demo</title>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
+    <link rel="icon" type="../image/png" href="../images/bit-fav.png">
+    <!-- Bitmovin Player -->
+    <script type="text/javascript"
+            src="//bitmovin-a.akamaihd.net/bitmovin-player/stable/7.8.2/bitmovinplayer.js"></script>
+    <script type="text/javascript"
+            src="//bitmovin-a.akamaihd.net/bitmovin-player/stable/7.8.2/bitmovinplayer-ui.js"></script>
+    <link rel="stylesheet"
+          href="//bitmovin-a.akamaihd.net/bitmovin-player/stable/7.8.2/bitmovinplayer-ui.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Open Sans', sans-serif;
+            color: #fff;
+            font-weight: 300;
+        }
+
+        body {
+            background: rgba(44, 131, 185, 1);
+            background: -moz-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+            background: -webkit-gradient(left top, right top, color-stop(0%, rgba(44, 131, 185, 1)), color-stop(100%, rgba(30, 171, 227, 1)));
+            background: -webkit-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+            background: -o-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+            background: -ms-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+            background: linear-gradient(to right, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2c83b9', endColorstr='#1eabe3', GradientType=1);
+        }
+
+        #wrapper {
+            background: url(../images/logo-bg-demopage.png);
+            height: 100vh;
+        }
+
+        #banner {
+            border-bottom: 1px solid #fff;
+            background-color: #1eabe3;
+            width: 100%
+        }
+
+        #banner h1 {
+            margin: 0;
+            padding: 30px;
+        }
+
+        .logo {
+            padding: 10px;
+            width: 25%;
+            min-width: 350px;
+            float: left;
+            margin: auto;
+        }
+
+        .title {
+            width: 75%;
+            white-space: nowrap;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        .content {
+            margin-bottom: 10em;
+        }
+
+        h1, h2, h3, p {
+            font-weight: 300;
+            text-align: center;
+            margin: 40px;
+        }
+
+        #webserver-warning {
+            border: 1px solid #fff;
+            padding: 10px;
+            width: 70%;
+            margin: auto;
+            font-weight: 400;
+            font-size: 0.8em;
+            background: #f69c2a;
+        }
+
+        #webserver-warning h1, #webserver-warning h2 {
+            font-weight: 400;
+        }
+
+        #player {
+            max-width: 900px;
+            width: 90%;
+            margin: auto;
+            -webkit-box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
+            box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
+        }
+
+        a {
+            color: #97d9ef;
+            font-weight: 400;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #fff;
+        }
+
+        @media (max-width: 800px) {
+            .logo {
+                width: 100%;
+            }
+
+            .title {
+                display: none;
+            }
+        }
+
+        /* styles for the audio track and subtitle settings */
+        .bmpui-ui-selectbox.bmpui-my-audio-track-selection-demo, .bmpui-ui-selectbox.bmpui-my-subtitle-selection-demo {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: transparent;
+            max-width: 24px;
+            min-width: 24px;
+        }
+        .bmpui-ui-selectbox.bmpui-my-audio-track-selection-demo:hover, .bmpui-ui-selectbox.bmpui-my-subtitle-selection-demo:hover {
+            filter: drop-shadow(0 0 1px #fff);
+        }
+        .bmpui-ui-selectbox.bmpui-my-audio-track-selection-demo:focus ::-ms-value, .bmpui-ui-selectbox.bmpui-my-subtitle-selection-demo:focus ::-ms-value {
+            display: none;
+        }
+        .bmpui-ui-selectbox.bmpui-my-audio-track-selection-demo::-ms-value, .bmpui-ui-selectbox.bmpui-my-subtitle-selection-demo::-ms-value {
+            display: none;
+        }
+        .bmpui-ui-selectbox.bmpui-my-audio-track-selection-demo::-ms-expand, .bmpui-ui-selectbox.bmpui-my-subtitle-selection-demo::-ms-expand {
+            border-radius: 5px;
+            display: none;
+            padding: 5px;
+        }
+        .bmpui-ui-selectbox.bmpui-my-audio-track-selection-demo {
+            /* nice looking images from us */
+            background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20id%3D%22Layer_1%22%20data-name%3D%22Layer%201%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20642%20595.28%22%20style%3D%22%22%20height%3D%22100%25%22%20width%3D%22100%25%22%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bfill%3A%23fff%3B%7D%3C%2Fstyle%3E%3C%2Fdefs%3E%3Ctitle%3EArtboard%201%3C%2Ftitle%3E%3Cpath%20class%3D%22cls-1%22%20d%3D%22M510.94%2C585%2C336.19%2C470H73.79c-33.08%2C0-60-29.25-60-65.21V76.65c0-35.95%2C26.91-65.19%2C60-65.19H566.85c33.09%2C0%2C60%2C29.24%2C60%2C65.19V404.76c0%2C36-26.92%2C65.21-60%2C65.21H518.79ZM73.79%2C55.59C65.2%2C55.59%2C58%2C65.23%2C58%2C76.65V404.76c0%2C11.42%2C7.25%2C21.08%2C15.84%2C21.08H349.4l122.66%2C80.73%2C5.51-80.73h89.28c8.61%2C0%2C15.86-9.66%2C15.86-21.08V76.65c0-11.42-7.25-21.06-15.86-21.06Z%22%2F%3E%3Cpath%20class%3D%22cls-1%22%20d%3D%22M320.44%2C341.46A14.91%2C14.91%2C0%2C0%2C1%2C311.85%2C355a14.68%2C14.68%2C0%2C0%2C1-6.36%2C1.43A14.92%2C14.92%2C0%2C0%2C1%2C296%2C353l-81.63-67.64h-43.5a14.94%2C14.94%2C0%2C0%2C1-14.93-14.95v-59.5a14.94%2C14.94%2C0%2C0%2C1%2C14.93-15h43.5L296%2C128.26a14.95%2C14.95%2C0%2C0%2C1%2C24.48%2C11.51Zm57.39-23.34c-.36%2C0-.71%2C0-1.07%2C0a14.92%2C14.92%2C0%2C0%2C1-10.56-4.36l-2-2a15%2C15%2C0%2C0%2C1-1.44-19.48%2C86.83%2C86.83%2C0%2C0%2C0-2.29-106.41%2C14.92%2C14.92%2C0%2C0%2C1%2C1-20l2-2a14.59%2C14.59%2C0%2C0%2C1%2C11.3-4.35A15%2C15%2C0%2C0%2C1%2C385.62%2C165a119.58%2C119.58%2C0%2C0%2C1%2C3.1%2C147.13%2C14.94%2C14.94%2C0%2C0%2C1-10.89%2C5.95Zm61.76%2C46.16a15%2C15%2C0%2C0%2C1-10.79%2C5.28h-.64a15%2C15%2C0%2C0%2C1-10.56-4.36l-2-2a15%2C15%2C0%2C0%2C1-.88-20.18%2C159.15%2C159.15%2C0%2C0%2C0-2.62-208%2C14.92%2C14.92%2C0%2C0%2C1%2C.58-20.43l2-2a14.56%2C14.56%2C0%2C0%2C1%2C11-4.4%2C15%2C15%2C0%2C0%2C1%2C10.74%2C5%2C191.79%2C191.79%2C0%2C0%2C1%2C3.14%2C251Zm0%2C0%22%2F%3E%3C%2Fsvg%3E");
+        }
+        .bmpui-ui-selectbox.bmpui-my-subtitle-selection-demo {
+            background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20id%3D%22Layer_1%22%20data-name%3D%22Layer%201%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20642%20595.28%22%20style%3D%22%22%20height%3D%22100%25%22%20width%3D%22100%25%22%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bfill%3A%23fff%3B%7D%3C%2Fstyle%3E%3C%2Fdefs%3E%3Ctitle%3EArtboard%201%3C%2Ftitle%3E%3Cpath%20class%3D%22cls-1%22%20d%3D%22M510.94%2C585%2C336.19%2C470H73.79c-33.08%2C0-60-29.25-60-65.21V76.65c0-35.95%2C26.91-65.19%2C60-65.19H566.85c33.09%2C0%2C60%2C29.24%2C60%2C65.19V404.76c0%2C36-26.92%2C65.21-60%2C65.21H518.79ZM73.79%2C55.59C65.2%2C55.59%2C58%2C65.23%2C58%2C76.65V404.76c0%2C11.42%2C7.25%2C21.08%2C15.84%2C21.08H349.4l122.66%2C80.73%2C5.51-80.73h89.28c8.61%2C0%2C15.86-9.66%2C15.86-21.08V76.65c0-11.42-7.25-21.06-15.86-21.06Z%22%2F%3E%3Crect%20class%3D%22cls-1%22%20x%3D%22115.62%22%20y%3D%22303.51%22%20width%3D%22136.06%22%20height%3D%2258.62%22%20rx%3D%2219.68%22%20ry%3D%2219.68%22%2F%3E%3Crect%20class%3D%22cls-1%22%20x%3D%22278.67%22%20y%3D%22303.51%22%20width%3D%22145.91%22%20height%3D%2258.62%22%20rx%3D%2219.68%22%20ry%3D%2219.68%22%2F%3E%3Crect%20class%3D%22cls-1%22%20x%3D%22450.37%22%20y%3D%22303.51%22%20width%3D%2262.63%22%20height%3D%2258.62%22%20rx%3D%2219.68%22%20ry%3D%2219.68%22%2F%3E%3C%2Fsvg%3E");
+        }
+        /* will be supported with the next player-ui version */
+        .bmpui-ui-selectbox.bmpui-my-subtitle-selection-demo.bmpui-subtitles-on {
+            background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20id%3D%22Layer_1%22%20data-name%3D%22Layer%201%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20642%20595.28%22%20style%3D%22%22%20height%3D%22100%25%22%20width%3D%22100%25%22%3E%3Cdefs%3E%3Cstyle%3E.cls-1%2C.cls-2%7Bfill%3A%2343ace5%3B%7D.cls-1%7Bopacity%3A0.3%3B%7D%3C%2Fstyle%3E%3C%2Fdefs%3E%3Ctitle%3EArtboard%201%3C%2Ftitle%3E%3Cpolygon%20class%3D%22cls-1%22%20points%3D%22595%2040.28%20595%20434.28%20495%20434.28%20481.69%20529.28%20343%20441.28%2043%20441.28%2043%2040.28%20595%2040.28%22%2F%3E%3Cpath%20class%3D%22cls-2%22%20d%3D%22M510.94%2C585%2C336.19%2C470H73.79c-33.08%2C0-60-29.25-60-65.21V76.65c0-35.95%2C26.91-65.19%2C60-65.19H566.85c33.09%2C0%2C60%2C29.24%2C60%2C65.19V404.76c0%2C36-26.92%2C65.21-60%2C65.21H518.79ZM73.79%2C55.59C65.2%2C55.59%2C58%2C65.23%2C58%2C76.65V404.76c0%2C11.42%2C7.25%2C21.08%2C15.84%2C21.08H349.4l122.66%2C80.73%2C5.51-80.73h89.28c8.61%2C0%2C15.86-9.66%2C15.86-21.08V76.65c0-11.42-7.25-21.06-15.86-21.06Z%22%2F%3E%3Crect%20class%3D%22cls-2%22%20x%3D%22115.62%22%20y%3D%22303.51%22%20width%3D%22136.06%22%20height%3D%2258.62%22%20rx%3D%2219.68%22%20ry%3D%2219.68%22%2F%3E%3Crect%20class%3D%22cls-2%22%20x%3D%22278.67%22%20y%3D%22303.51%22%20width%3D%22145.91%22%20height%3D%2258.62%22%20rx%3D%2219.68%22%20ry%3D%2219.68%22%2F%3E%3Crect%20class%3D%22cls-2%22%20x%3D%22450.37%22%20y%3D%22303.51%22%20width%3D%2262.63%22%20height%3D%2258.62%22%20rx%3D%2219.68%22%20ry%3D%2219.68%22%2F%3E%3C%2Fsvg%3E");
+        }
+
+
+    </style>
+</head>
+<body>
+<div id="wrapper">
+    <div id="banner">
+        <div class="logo"><img src="../images/bitmovin-logo.png"></div>
+        <div class="title"><h1>Preferred startup quality.</h1></div>
+        <div class="clear"></div>
+    </div>
+    <div class="container">
+        <h1>HTML5 Adaptive Streaming Player for MPEG-DASH & HLS</h1>
+        <h2>Your videos play everywhere with low startup delay, no buffering and in highest quality.</h2>
+        <div class="content">
+            <div class="player-wrapper">
+                <div id="player"></div>
+            </div>
+            <div class="description">
+                <p>For more information about the bitmovin player, please have a look at our online <a
+                        href="//bitmovin.com/support" target="_blank">Developer Section</a>.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    if (location.protocol === 'file:') {
+        document.getElementById('webserver-warning').style.display = 'block';
+    }
+    var player = bitmovin.player("player");
+
+    var conf = {
+        key: "YOUR-PLAYER-LICENSE-KEY",
+        source: {
+            dash: "https://bitdash-a.akamaihd.net/content/sintel/sintel.mpd",
+            hls: "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8",
+            poster: "https://bitmovin.com/wp-content/uploads/2016/06/sintel-poster.jpg",
+        },
+        style: {
+            // Disable built-in UI
+            // (instead we load the UI files ourselves and create the UI instance after the player setup)
+            us: false,
+        },
+    };
+
+    // Setup the player
+    player.setup(conf).then((player) => {
+        var subtitleOverlay = new bitmovin.playerui.SubtitleOverlay();
+
+        var settingsPanel = new bitmovin.playerui.SettingsPanel({
+            components: [
+                new bitmovin.playerui.SettingsPanelItem('Video Quality', new bitmovin.playerui.VideoQualitySelectBox()),
+                new bitmovin.playerui.SettingsPanelItem('Speed', new bitmovin.playerui.PlaybackSpeedSelectBox()),
+                new bitmovin.playerui.SettingsPanelItem('Audio Quality', new bitmovin.playerui.AudioQualitySelectBox()),
+            ],
+            hidden: true,
+        });
+
+        var subtitleListBox = new bitmovin.playerui.SubtitleListBox();
+        var subtitleSettingsPanel = new bitmovin.playerui.SettingsPanel({
+            components: [
+                new bitmovin.playerui.SettingsPanelItem(null, subtitleListBox),
+            ],
+            hidden: true,
+        });
+
+        var audioTrackListBox = new bitmovin.playerui.AudioTrackListBox();
+        var audioTrackSettingsPanel = new bitmovin.playerui.SettingsPanel({
+            components: [
+                new bitmovin.playerui.SettingsPanelItem(null, audioTrackListBox),
+            ],
+            hidden: true,
+        });
+
+        var controlBar = new bitmovin.playerui.ControlBar({
+            components: [
+                audioTrackSettingsPanel,
+                subtitleSettingsPanel,
+                settingsPanel,
+                new bitmovin.playerui.Container({
+                    components: [
+                        new bitmovin.playerui.PlaybackTimeLabel({ timeLabelMode: bitmovin.playerui.PlaybackTimeLabelMode.CurrentTime, hideInLivePlayback: true }),
+                        new bitmovin.playerui.SeekBar({ label: new bitmovin.playerui.SeekBarLabel() }),
+                        new bitmovin.playerui.PlaybackTimeLabel({ timeLabelMode: bitmovin.playerui.PlaybackTimeLabelMode.TotalTime, cssClasses: ['text-right'] }),
+                    ],
+                    cssClasses: ['controlbar-top'],
+                }),
+                new bitmovin.playerui.Container({
+                    components: [
+                        new bitmovin.playerui.PlaybackToggleButton(),
+                        new bitmovin.playerui.VolumeToggleButton(),
+                        new bitmovin.playerui.VolumeSlider(),
+                        new bitmovin.playerui.Spacer(),
+                        new bitmovin.playerui.PictureInPictureToggleButton(),
+                        new bitmovin.playerui.AirPlayToggleButton(),
+                        new bitmovin.playerui.CastToggleButton(),
+                        new bitmovin.playerui.VRToggleButton(),
+                        new bitmovin.playerui.SettingsToggleButton({
+                            settingsPanel: audioTrackSettingsPanel,
+                            cssClass: 'ui-audiotracksettingstogglebutton',
+                        }),
+                        new bitmovin.playerui.SettingsToggleButton({
+                            settingsPanel: subtitleSettingsPanel,
+                            cssClass: 'ui-subtitlesettingstogglebutton',
+                        }),
+                        new bitmovin.playerui.SettingsToggleButton({ settingsPanel: settingsPanel }),
+                        new bitmovin.playerui.FullscreenToggleButton(),
+                    ],
+                    cssClasses: ['controlbar-bottom'],
+                }),
+            ],
+        });
+
+        var uiContainer = new bitmovin.playerui.UIContainer({
+            components: [
+                subtitleOverlay,
+                new bitmovin.playerui.BufferingOverlay(),
+                new bitmovin.playerui.PlaybackToggleOverlay(),
+                new bitmovin.playerui.CastStatusOverlay(),
+                controlBar,
+                new bitmovin.playerui.TitleBar(),
+                new bitmovin.playerui.RecommendationOverlay(),
+                new bitmovin.playerui.Watermark(),
+                new bitmovin.playerui.ErrorMessageOverlay(),
+            ],
+            cssClasses: ['ui-skin-modern'],
+        });
+
+        // Create UI instance
+        var uiManager = new bitmovin.playerui.UIManager(player, uiContainer);
+    }, function (reason) {
+        console.log("Error while creating bitmovin player instance", reason);
+    });
+</script>
+</body>
+</html>
