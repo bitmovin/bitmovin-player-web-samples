@@ -8,164 +8,231 @@
     <link href='//fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'/>
 
     <!-- bitdash player -->
-    <script type="text/javascript" src="//bitmovin-a.akamaihd.net/bitmovin-player/stable/7/bitmovinplayer.js"></script>
+    <script type="text/javascript" src="//cdn.bitmovin.com/player/web/8.0.0-rc1/bitmovinplayer.js"></script>
     <script type="text/javascript" src="PlayerKeyboardControl.js"></script>
 
     <style>
-        figure {
+        body {
             margin: 0;
             padding: 0;
+            font-family: 'Open Sans', sans-serif;
+            color: #fff;
+            font-weight: 300;
         }
-        .container {
-            font-family: 'Dosis';
-            color:       white;
-            text-align:  center;
+
+        body {
+            background: rgba(44, 131, 185, 1);
+            background: -moz-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+            background: -webkit-gradient(left top, right top, color-stop(0%, rgba(44, 131, 185, 1)), color-stop(100%, rgba(30, 171, 227, 1)));
+            background: -webkit-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+            background: -o-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+            background: -ms-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+            background: linear-gradient(to right, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2c83b9', endColorstr='#1eabe3', GradientType=1);
         }
-        .container a {
-            color: white;
+
+        #wrapper {
+            background: url(../images/logo-bg-demopage.png);
+            height: 100vh;
         }
-        .container h1 {
-            font:          54px/66px 'Dosis';
-            margin-bottom: 22px;
-            line-height:   66px;
+
+        #banner {
+            border-bottom: 1px solid #fff;
+            background-color: #1eabe3;
+            width: 100%
         }
-        .container h2 {
-            font-weight:   normal;
-            margin-bottom: 36px;
-            line-height:   26px;
+
+        #banner h1 {
+            margin: 0;
+            padding: 30px;
         }
-        .player-wrapper {
-            width:        50%;
-            margin-right: auto;
-            margin-left:  auto;
-            box-shadow:   0 0 30px rgba(0,0,0,0.7);
+
+        .logo {
+            padding: 10px;
+            width: 25%;
+            min-width: 350px;
+            float: left;
+            margin: auto;
         }
-        #webserver-warning {
-            margin:           50px;
-            padding:          20px;
-            background-color: rgba(255,0,0,0.5);
-            display:          none;
+
+        .title {
+            width: 75%;
+            white-space: nowrap;
         }
+
+        .clear {
+            clear: both;
+        }
+
+        .content {
+            margin-bottom: 10em;
+        }
+
+        h1, h2, h3, p {
+            font-weight: 300;
+            text-align: center;
+            margin: 40px;
+        }
+
+        #player {
+            max-width: 900px;
+            width: 90%;
+            margin: auto;
+            -webkit-box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
+            box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
+        }
+
+        a {
+            color: #97d9ef;
+            font-weight: 400;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #fff;
+        }
+
+        @media (max-width: 800px) {
+            .logo {
+                width: 100%;
+            }
+
+            .title {
+                display: none;
+            }
+        }
+
         #keybindings {
+            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0.31);
             display: table;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 20px auto;
+            padding: 20px;
         }
+
         .key-binding {
             display: table-row;
         }
+
         .key-binding .keystroke, .key-binding .player-function {
             display: table-cell;
         }
+
         .key-binding .keystroke {
+            padding-right: 20px;
             font-style: italic;
-            padding-right: 15px;
         }
     </style>
 </head>
 <body background="http://bitdash-a.akamaihd.net/webpages/bitmovin/images/background.jpg">
 <div class="container">
-    <h1>HTML5 Adaptive Streaming Player for MPEG-DASH & HLS</h1>
-    <h2>Keyboard Control demo for the Bitmovin Player, use your keyboard to control video playback.</h2>
-
-    <div id="keybindings" class="">
-        <ul>
-            <li class="key-binding">
-                <div class="keystroke">space</div>
-                <div class="player-function">Play/Pause</div>
-            </li>
-            <li class="key-binding">
-                <div class="keystroke">m</div>
-                <div class="player-function">Mute/Unmute</div>
-            </li>
-            <li class="key-binding">
-                <div class="keystroke">f</div>
-                <div class="player-function">Enter fullscreen</div>
-            </li>
-            <li class="key-binding">
-                <div class="keystroke">esc</div>
-                <div class="player-function">Exit fullscreen</div>
-            </li>
-            <li class="key-binding">
-                <div class="keystroke">right</div>
-                <div class="player-function">Seek +5 Seconds</div>
-            </li>
-            <li class="key-binding">
-                <div class="keystroke">ctrl+right / command+right</div>
-                <div class="player-function">Seek +10 Seconds</div>
-            </li>
-            <li class="key-binding">
-                <div class="keystroke">left</div>
-                <div class="player-function">Seek -5 Seconds</div>
-            </li>
-            <li class="key-binding">
-                <div class="keystroke">ctrl+left / command+left</div>
-                <div class="player-function">Seek -10 seconds</div>
-            </li>
-            <li class="key-binding">
-                <div class="keystroke">up</div>
-                <div class="player-function">Volume +5</div>
-            </li>
-            <li class="key-binding">
-                <div class="keystroke">ctrl+up / command+up</div>
-                <div class="player-function">Volume +10</div>
-            </li>
-            <li class="key-binding">
-                <div class="keystroke">down</div>
-                <div class="player-function">Volume -5</div>
-            </li>
-            <li class="key-binding">
-                <div class="keystroke">ctrl+down / command+down</div>
-                <div class="player-function">Volume -10</div>
-            </li>
-        </ul>
-
-    </div>
-
-    <div id="webserver-warning">
-        <div class="ca-content">
-            <h1>Unsupported Protocol</h1>
-            <h2>This file has been loaded using the unsupported "file" protocol. Please use a <a href="http://wiki.selfhtml.org/wiki/Webserver/lokal" target="_blank">web server</a> and open this page using http or https.</h2>
+    <div id="wrapper">
+        <div id="banner">
+            <div class="logo"><img src="../images/bitmovin-logo.png"></div>
+            <div class="title"><h1>Keyboard Support</h1></div>
+            <div class="clear"></div>
         </div>
-    </div>
-    <div class="content">
-        <div class="player-wrapper">
-            <div id="player"></div>
-        </div>
-        <div class="description">
-            <p>For more information about the Bitmovin Adaptive Streaming Player, please have a look at our online <a href="https://bitmovin.com/support/" target="_blank">Developer Section</a>.</p>
+        <div class="container">
+            <h1>HTML5 Adaptive Streaming Player for MPEG-DASH & HLS</h1>
+            <h2>Your videos play everywhere with low startup delay, no buffering and in highest quality.</h2>
+
+
+            <div class="content">
+                <div class="player-wrapper">
+                    <div id="player"></div>
+                </div>
+                <h3>
+                    This demo overwrites the default handler for play/pause to bind it to P instead of space and adds a
+                    custom listener for
+                    alt+shift+z to stop the player. The rest of the controls is default.
+                </h3>
+                <div id="keybindings" class="">
+                    <ul>
+                        <li class="key-binding">
+                            <div class="keystroke">space</div>
+                            <div class="player-function">Play/Pause</div>
+                        </li>
+                        <li class="key-binding">
+                            <div class="keystroke">m</div>
+                            <div class="player-function">Mute/Unmute</div>
+                        </li>
+                        <li class="key-binding">
+                            <div class="keystroke">f</div>
+                            <div class="player-function">Enter fullscreen</div>
+                        </li>
+                        <li class="key-binding">
+                            <div class="keystroke">esc</div>
+                            <div class="player-function">Exit fullscreen</div>
+                        </li>
+                        <li class="key-binding">
+                            <div class="keystroke">right</div>
+                            <div class="player-function">Seek +5 Seconds</div>
+                        </li>
+                        <li class="key-binding">
+                            <div class="keystroke">ctrl+right / command+right</div>
+                            <div class="player-function">Seek +10 Seconds</div>
+                        </li>
+                        <li class="key-binding">
+                            <div class="keystroke">left</div>
+                            <div class="player-function">Seek -5 Seconds</div>
+                        </li>
+                        <li class="key-binding">
+                            <div class="keystroke">ctrl+left / command+left</div>
+                            <div class="player-function">Seek -10 seconds</div>
+                        </li>
+                        <li class="key-binding">
+                            <div class="keystroke">up</div>
+                            <div class="player-function">Volume +5</div>
+                        </li>
+                        <li class="key-binding">
+                            <div class="keystroke">ctrl+up / command+up</div>
+                            <div class="player-function">Volume +10</div>
+                        </li>
+                        <li class="key-binding">
+                            <div class="keystroke">down</div>
+                            <div class="player-function">Volume -5</div>
+                        </li>
+                        <li class="key-binding">
+                            <div class="keystroke">ctrl+down / command+down</div>
+                            <div class="player-function">Volume -10</div>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="description">
+                    <p>For more information about the bitmovin player, please have a look at our online <a
+                            href="//bitmovin.com/support" target="_blank">Developer Section</a>.</p>
+                </div>
+            </div>
+
         </div>
     </div>
 
 </div>
 <script type="text/javascript">
-  if (location.protocol === 'file:') {
-    document.getElementById('webserver-warning').style.display = 'block';
-  }
+    var conf = {
+        key: "YOUR-KEY-HERE",
+        events: {
+            ready: function () {
+                player.play();
+            }
+        },
+    };
+    var source = {
+        dash: "//bitdash-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd",
+        hls: "//bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
+    };
 
-  var conf = {
-    key:       "YOUR-KEY-HERE",
-    source: {
-      dash: "//bitdash-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd",
-      hls:  "//bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
-    },
-    events: {
-      onReady: function() {
-      player.play();
-      }
-    },
-  };
-  var player = bitmovin.player("player");
-  player.setup(conf).then(function(value) {
-    // Success
-    console.log("Successfully created bitdash player instance");
-  }, function(reason) {
-    // Error!
-    console.log("Error while creating bitdash player instance");
-  });
+    var player = new bitmovin.player.Player(document.getElementById("player"), conf);
+    player.load(source).then(function() {
+        console.log('Successfully loaded source');
+    }, function () {
+        console.log('Error while loading source');
+    });
 
-  // bind the keyboard control to the player instance
-  new PlayerKeyboardControl(player);
+    // bind the keyboard control to the player instance
+    new PlayerKeyboardControl(player);
 
 </script>
 </body>
