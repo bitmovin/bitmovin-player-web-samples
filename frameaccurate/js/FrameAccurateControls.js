@@ -12,7 +12,7 @@ var SmtpeController = /** @class */ (function () {
          * but necessary.
          */
         this.playPauseHandler = function (event) {
-            if (event.type === 'onPlaying') {
+            if (event.type === 'playing') {
                 _this.hasBeenPlaying = true;
             }
             else if (_this.hasBeenPlaying) {
@@ -22,8 +22,8 @@ var SmtpeController = /** @class */ (function () {
         };
         this.player = player;
         this.assetDescription = assetDescription;
-        player.addEventHandler('onPaused', this.playPauseHandler);
-        player.addEventHandler('onPlaying', this.playPauseHandler);
+        player.on('paused', this.playPauseHandler);
+        player.on('playing', this.playPauseHandler);
         this.load(assetDescription);
     }
     /**
@@ -221,6 +221,7 @@ var SmpteTimestamp = /** @class */ (function () {
     };
     SmpteTimestamp.prototype.addFrame = function (framesToAdd, fixFrameHoles) {
         if (fixFrameHoles === void 0) { fixFrameHoles = true; }
+        var _a;
         this.frame += framesToAdd;
         var overflow;
         _a = SmpteTimestamp.fitIntoRange(this.frame, Math.ceil(this.assetDescription.framesPerSecond)), this.frame = _a[0], overflow = _a[1];
@@ -233,25 +234,24 @@ var SmpteTimestamp = /** @class */ (function () {
                 this.addFrame(this.assetDescription.framesDroppedAtFullMinute, false);
             }
         }
-        var _a;
     };
     SmpteTimestamp.prototype.addSeconds = function (secondsToAdd) {
+        var _a;
         this.seconds += secondsToAdd;
         var overflow;
         _a = SmpteTimestamp.fitIntoRange(this.seconds, 60), this.seconds = _a[0], overflow = _a[1];
         if (overflow !== 0) {
             this.addMinute(overflow);
         }
-        var _a;
     };
     SmpteTimestamp.prototype.addMinute = function (minutesToAdd) {
+        var _a;
         this.minutes += minutesToAdd;
         var overflow;
         _a = SmpteTimestamp.fitIntoRange(this.minutes, 60), this.minutes = _a[0], overflow = _a[1];
         if (overflow !== 0) {
             this.addHour(overflow);
         }
-        var _a;
     };
     SmpteTimestamp.prototype.addHour = function (hoursToAdd) {
         this.hours += hoursToAdd;

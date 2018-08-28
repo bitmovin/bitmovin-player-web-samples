@@ -21,8 +21,8 @@ class SmtpeController {
   constructor(player: any, assetDescription: AssetDescription) {
     this.player = player;
     this.assetDescription = assetDescription;
-    player.addEventHandler('onPaused', this.playPauseHandler);
-    player.addEventHandler('onPlaying', this.playPauseHandler);
+    player.on('paused', this.playPauseHandler);
+    player.on('playing', this.playPauseHandler);
     this.load(assetDescription);
   }
 
@@ -34,7 +34,7 @@ class SmtpeController {
    * but necessary.
    */
   private playPauseHandler = (event: any) => {
-    if (event.type === 'onPlaying') {
+    if (event.type === 'playing') {
       this.hasBeenPlaying = true;
     } else if (this.hasBeenPlaying) {
       this.hasBeenPlaying = false;

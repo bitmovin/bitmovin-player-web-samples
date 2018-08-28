@@ -117,7 +117,7 @@ function step(stepSize) {
         // arrow keys, seek +/- 1frame
         let stepSize = parseInt(stepSizeInput.value) || 1;
         stepSize = ev.keyCode === 37 ? -stepSize : stepSize;
-        if (ev.ctrlKey === true) {
+        if (ev.altKey === true) {
           // seek 5 frame with control pressed
           stepSize *= 5;
         }
@@ -153,24 +153,23 @@ function step(stepSize) {
         toConvert.framesDroppedEachMinute);
   }
 
-  bitmovin.player("player").setup(conf).then(function (response) {
-    smtpeController = new SmtpeController(response, convertAsset(0));
-    smtpeController.load(convertAsset(0));
-    player = response;
+  var player = new bitmovin.player.Player(document.getElementById("player"), conf);
+
+  player.on('sourceloaded', function() {
     console.log('player loaded');
 
-    player.addEventHandler('onFullscreenEnter', function() {
+    player.on('fullscreenenter', function() {
       document.getElementById('seekingWrapper').className = 'overlay';
       document.getElementById('player').appendChild(document.getElementById('seekingWrapper'));
     });
 
-    player.addEventHandler('onFullscreenExit', function() {
+    player.on('fullscreenexit', function() {
       let seekingWrapper = document.getElementById('seekingWrapper');
       document.getElementById('player').removeChild(seekingWrapper);
       seekingWrapper.removeAttribute('class');
       document.getElementById('bottom-container').insertBefore(seekingWrapper, document.getElementById('bottom-container').firstChild);
     });
-  }, function (reason) {
-    console.error(reason);
   });
+
+  smtpeController = new SmtpeController(player, convertAsset(0));
 })();
