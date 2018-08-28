@@ -20,7 +20,7 @@
     <link rel="icon" type="../image/png" href="../images/bit-fav.png">
     <!-- Bitmovin Player -->
     <script type="text/javascript"
-            src="//bitmovin-a.akamaihd.net/bitmovin-player/stable/7.1/bitmovinplayer.js"></script>
+            src="//cdn.bitmovin.com/player/web/8.0.0-rc1/bitmovinplayer.js"></script>
     <script type="text/javascript" src="customSubtitleDisplay.js"></script>
     <style>
         body {
@@ -85,20 +85,6 @@
             margin: 40px;
         }
 
-        #webserver-warning {
-            border: 1px solid #fff;
-            padding: 10px;
-            width: 70%;
-            margin: auto;
-            font-weight: 400;
-            font-size: 0.8em;
-            background: #f69c2a;
-        }
-
-        #webserver-warning h1, #webserver-warning h2 {
-            font-weight: 400;
-        }
-
         #player {
             max-width: 900px;
             width: 90%;
@@ -152,39 +138,31 @@
 </div>
 <script type="text/javascript">
 
-    if (location.protocol === 'file:') {
-        document.getElementById('webserver-warning').style.display = 'block';
-    }
-
-    var playerId = 'player';
     var subtitleDisplay;
 
     var conf = {
         key: 'YOUR KEY HERE',
-        source: {
-            dash: '//bitdash-a.akamaihd.net/content/sintel/sintel.mpd',
-            hls: '//bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8'
-        },
-        style: {
-            width: '100%',
-            aspectratio: '16:9',
-            subtitlesHidden: true
-        }
+    };
+    var source = {
+        dash: '//bitdash-a.akamaihd.net/content/sintel/sintel.mpd',
+        hls: '//bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8'
     };
 
-    bitmovin.player(playerId).setup(conf).then(function (player) {
-        var playerFigure = document.getElementById(playerId).getElementsByTagName('figure')[0];
+    var player = new bitmovin.player.Player(document.getElementById('player'), conf);
+
+    player.load(source).then(function () {
+        var playerFigure = player.getContainer();
         subtitleDisplay = new CustomSubtitleDisplay(playerFigure);
-        player.addEventHandler('onCueEnter', subtitleDisplay.showCue);
-        player.addEventHandler('onCueExit', subtitleDisplay.hideCue);
-        player.addEventHandler('onAudioChange', subtitleDisplay.clear);
-        player.addEventHandler('onSubtitleChange', subtitleDisplay.clear);
-        player.addEventHandler('onSeek', subtitleDisplay.clear);
-        player.addEventHandler('onTimeShift', subtitleDisplay.clear);
-        player.addEventHandler('onPlayerResize', subtitleDisplay.updateFontSize);
-        console.log('Successfully created Bitmovin Player instance'); // Success!
-    }, function (reason) {
-        console.log('Error while creating Bitmovin Player instance'); // Error!
+        player.on('cueenter', subtitleDisplay.showCue);
+        player.on('cueexit', subtitleDisplay.hideCue);
+        player.on('audiochange', subtitleDisplay.clear);
+        player.on('subtitlechange', subtitleDisplay.clear);
+        player.on('seek', subtitleDisplay.clear);
+        player.on('timeshift', subtitleDisplay.clear);
+        player.on('playerresize', subtitleDisplay.updateFontSize);
+        console.log('Successfully loaded source');
+    }, function () {
+        console.log('Error while loading source');
     });
 
 </script>
