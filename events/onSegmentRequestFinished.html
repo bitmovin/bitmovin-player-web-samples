@@ -20,7 +20,7 @@
     <link rel="icon" type="../image/png" href="../images/bit-fav.png">
     <!-- Bitmovin Player -->
     <script type="text/javascript"
-            src="https://bitmovin-a.akamaihd.net/bitmovin-player/stable/7.1/bitmovinplayer.js"></script>
+            src="//cdn.bitmovin.com/player/web/8.0.0-rc1/bitmovinplayer.js"></script>
     <style>
         body {
             margin: 0;
@@ -84,20 +84,6 @@
             margin: 40px;
         }
 
-        #webserver-warning {
-            border: 1px solid #fff;
-            padding: 10px;
-            width: 70%;
-            margin: auto;
-            font-weight: 400;
-            font-size: 0.8em;
-            background: #f69c2a;
-        }
-
-        #webserver-warning h1, #webserver-warning h2 {
-            font-weight: 400;
-        }
-
         #player {
             max-width: 900px;
             width: 90%;
@@ -152,29 +138,27 @@
 <script type="text/javascript">
     var conf = {
         key: 'YOUR KEY HERE',
-        source: {
-            dash: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd",
-            hls: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8",
-            poster: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/poster.jpg"
-        },
         events: {
-            onSegmentRequestFinished: function (params) {
+            segmentrequestfinished: function (params) {
                 console.log(JSON.stringify(params));
-                if (!params.httpStatus == 200) {
+                if (params.httpStatus !== 200) {
                     window.alert(params.httpStatus + " HTTP error while downloading the last segment");
                 }
             }
         }
     };
 
-    var player = bitmovin.player("player");
+    var source = {
+        dash: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd",
+        poster: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/poster.jpg"
+    };
 
-    player.setup(conf).then(function (value) {
-        // Success
-        console.log("Successfully created Bitmovin Player instance");
-    }, function (reason) {
-        // Error!
-        console.log("Error while creating Bitmovin Player instance");
+    var player = new bitmovin.player.Player(document.getElementById("player"), conf);
+
+    player.load(source).then(function () {
+        console.log("Successfully loaded source");
+    }, function () {
+        console.log("Error while loading source");
     });
 
 </script>
