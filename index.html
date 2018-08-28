@@ -19,8 +19,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
     <link rel="icon" type="image/png" href="images/bit-fav.png">
     <!-- Bitmovin Player -->
-    <script type="text/javascript" src="//bitmovin-a.akamaihd.net/bitmovin-player/stable/7.1/bitmovinplayer.js">
-    </script>
+    <script src="//cdn.bitmovin.com/player/web/8.0.0-rc1/bitmovinplayer.js"></script>
     <style>
         body {
             margin: 0;
@@ -84,20 +83,6 @@
             margin: 40px;
         }
 
-        #webserver-warning {
-            border: 1px solid #fff;
-            padding: 10px;
-            width: 70%;
-            margin: auto;
-            font-weight: 400;
-            font-size: 0.8em;
-            background: #f69c2a;
-        }
-
-        #webserver-warning h1, #webserver-warning h2 {
-            font-weight: 400;
-        }
-
         #player {
             max-width: 900px;
             width: 90%;
@@ -151,32 +136,24 @@
 </div>
 <script type="text/javascript">
 
-    if (location.protocol === 'file:') {
-        document.getElementById('webserver-warning').style.display = 'block';
-    }
-
     var player;
 
     var conf = {
-        key: 'YOUR KEY HERE',
-        source: {
-            dash: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd',
-            hls: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8',
-            progressive: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/MI201109210084_mpeg-4_hd_high_1080p25_10mbits.mp4',
-            poster: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/poster.jpg'
-        },
-        style: {
-            width: '100%',
-            aspectratio: '16:9'
-        }
+        key: 'YOUR KEY HERE'
+    };
+    var source = {
+        dash: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd',
+        hls: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8',
+        progressive: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/MI201109210084_mpeg-4_hd_high_1080p25_10mbits.mp4',
+        poster: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/poster.jpg'
     };
 
-    player = bitmovin.player("player");
+    player = new bitmovin.player.Player(document.getElementById('player'), conf);
 
-    player.setup(conf).then(function (value) {
-        console.log('Successfully created Bitmovin Player instance'); // Success!
-    }, function (reason) {
-        console.log('Error while creating Bitmovin Player instance'); // Error!
+    player.load(source).then(function () {
+        console.log('Successfully loaded source'); // Success!
+    }, function () {
+        console.log('Error while loading source'); // Error!
     });
 </script>
 </body>
