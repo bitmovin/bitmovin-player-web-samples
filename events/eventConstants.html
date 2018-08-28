@@ -20,7 +20,7 @@
     <link rel="icon" type="../image/png" href="../images/bit-fav.png">
     <!-- Bitmovin Player -->
     <script type="text/javascript"
-            src="//bitmovin-a.akamaihd.net/bitmovin-player/stable/7.1/bitmovinplayer.js"></script>
+            src="//cdn.bitmovin.com/player/web/8.0.0-rc1/bitmovinplayer.js"></script>
 
     <style>
         body {
@@ -127,12 +127,13 @@
                 display: none;
             }
         }
-
-        #webserver-warning {
-            margin: 50px;
-            padding: 20px;
-            background-color: rgba(255, 0, 0, 0.5);
-            display: none;
+        #eventLog {
+            background-color: rgba(0, 0, 0, 0.65);
+            width: 50%;
+            height: 100px;
+            line-height: 100px;
+            margin: 20px auto;
+            border-radius: 10px;
         }
     </style>
 </head>
@@ -149,7 +150,9 @@
         <div class="content">
             <div class="player-wrapper">
                 <div id="player"></div>
-                <div id="eventLog" class="h1" align="center">TEST</div>
+                <div id="eventLog" align="center">
+                    TEST
+                </div>
             </div>
             <div class="description">
                 <p>For more information about the bitmovin player, please have a look at our online <a
@@ -160,29 +163,18 @@
 </div>
 <script type="text/javascript">
 
-    if (location.protocol === 'file:') {
-        document.getElementById('webserver-warning').style.display = 'block';
-    }
-
-    var watermark;
-    var playerId = 'player';
-
     var conf = {
-        key: 'YOUR KEY HERE',
-        source: {
-            dash: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd",
-            hls: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8",
-            poster: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/poster.jpg"
-        },
-        style: {
-            width: '100%',
-            aspectratio: '16:9',
-            subtitlesHidden: true
-        }
+        key: 'YOUR KEY HERE'
+    };
+
+    var source = {
+        dash: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd",
+        hls: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8",
+        poster: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/poster.jpg"
     };
 
     var logEventTypes = function () {
-        console.log('The Bitmovin HTML5 Player offers the following event constants:', bitmovin.player.EVENTS);
+        console.log('The Bitmovin HTML5 Player offers the following event constants:', bitmovin.player.Event);
     };
 
     var onPlay = function (event) {
@@ -193,15 +185,12 @@
         document.getElementById('eventLog').innerHTML = event.type + ' triggered';
     };
 
-    bitmovin.player(playerId).setup(conf).then(function (player) {
-        player.addEventHandler(bitmovin.player.EVENT.ON_PLAY, onPlay);
-        player.addEventHandler(bitmovin.player.EVENT.ON_PAUSED, onPause);
+    var player = new bitmovin.player.Player(document.getElementById('player'), conf);
+    logEventTypes();
+    player.on(bitmovin.player.Event.Play, onPlay);
+    player.on(bitmovin.player.Event.Paused, onPause);
 
-        console.log('Successfully created Bitmovin Player instance'); // Success!
-        logEventTypes();
-    }, function (reason) {
-        console.log('Error while creating Bitmovin Player instance'); // Error!
-    });
+    player.load(source);
 
 </script>
 </body>
