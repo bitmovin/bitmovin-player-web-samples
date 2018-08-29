@@ -27,7 +27,8 @@
  *
  ****************************************************************************/
 
-var PreferredStartupQuality = function (player, preferredStartupQualityBps, startupPhaseSeconds, conf) {
+var PreferredStartupQuality = function (preferredStartupQualityBps, startupPhaseSeconds, conf) {
+    var player;
     var availableQualities = null;
     var isInStartup = true;
     var startupTimerID;
@@ -56,7 +57,6 @@ var PreferredStartupQuality = function (player, preferredStartupQualityBps, star
 
             return availableQualities[availableQualities.length - 1].id;
         }
-
         return e.suggested;
     };
 
@@ -68,16 +68,18 @@ var PreferredStartupQuality = function (player, preferredStartupQualityBps, star
     
     conf.adaptation.desktop.onVideoAdaptation = onVideoAdaptation;
     conf.adaptation.mobile.onVideoAdaptation = onVideoAdaptation;
-    conf.events.onReady = onReady;
 
-    player.setup(conf).then(function (value) {
-        console.log('Successfully created Bitmovin Player instance'); // Success!
-    }, function (reason) {
-        console.log('Error while creating Bitmovin Player instance'); // Error!
+    player = new bitmovin.player.Player(document.getElementById("player"), conf);
+    player.on('sourceloaded', onReady);
+
+    player.load(conf.source).then(function() {
+        console.log('Successfully loaded source');
+    }, function () {
+        console.log('Error while loading source');
     });
 
     this.remove = function () {
-        player.removeEventHandler('onReady', onReady);
+        player.off('ready', onReady);
         clearTimeout(startupTimerID);
         isInStartup = true;
         availableQualities = null;
