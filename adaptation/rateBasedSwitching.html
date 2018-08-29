@@ -20,7 +20,7 @@
     <link rel="icon" type="../image/png" href="../images/bit-fav.png">
     <!-- Bitmovin Player -->
     <script type="text/javascript"
-            src="//bitmovin-a.akamaihd.net/bitmovin-player/stable/7.1/bitmovinplayer.js"></script>
+            src="//cdn.bitmovin.com/player/web/8.0.0-rc1/bitmovinplayer.js"></script>
     <script type="text/javascript" src="rateBasedSwitching.js"></script>
     <style>
         body {
@@ -133,7 +133,7 @@
 <div id="wrapper">
     <div id="banner">
         <div class="logo"><img src="../images/bitmovin-logo.png"></div>
-        <div class="title"><h1>Title of the demo goes here.</h1></div>
+        <div class="title"><h1>Rate Based Switching</h1></div>
         <div class="clear"></div>
     </div>
     <div class="container">
@@ -161,24 +161,20 @@
 
     var conf = {
         key: 'YOUR KEY HERE',
-        source: {
-            dash: 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
-        },
-        style: {
-            width: '100%',
-            aspectratio: '16:9'
-        },
         tweaks: {
             startup_threshold: 5
         }
     };
+    var source = {
+        dash: 'http://bitdash-a.akamaihd.net/content/sintel/sintel.mpd'
+    };
 
-    player = bitmovin.player("player");
+    player = new bitmovin.player.Player(document.getElementById("player"), conf);
 
-    player.setup(conf).then(function (value) {
-        console.log('Successfully created Bitmovin Player instance'); // Success!
-    }, function (reason) {
-        console.log('Error while creating Bitmovin Player instance'); // Error!
+    player.load(source).then(function() {
+        console.log('Successfully loaded source');
+    }, function () {
+        console.log('Error while loading source');
     });
 
     rateBasedSwitching = new RateBasedSwitching(player, 8, 1);

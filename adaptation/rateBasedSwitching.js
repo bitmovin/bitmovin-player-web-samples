@@ -32,7 +32,7 @@ var RateBasedSwitching = function (player, bufferSize, segmentLength) {
     var maxBufferLevel = null;
 
     function onDownloadFinished(event) {
-        if (event.downloadType === 'media' && event.url.indexOf('video') > -1 && event.url.indexOf('init.mp4') < 0) {
+        if (event.downloadType === 'media/video' && event.url.indexOf('video') > -1) {
             downloadRates.unshift((event.size * 8) / event.downloadTime);
             while (downloadRates.length > bufferSize) {
                 downloadRates.pop();
@@ -94,15 +94,15 @@ var RateBasedSwitching = function (player, bufferSize, segmentLength) {
         }
 
         var init = function () {
-            player.addEventHandler('onDownloadFinished', onDownloadFinished);
-            player.addEventHandler('onStallStared', resetBuffer);
-            player.addEventHandler('onVideoAdaptation', onVideoAdaptation);
+            player.on('downloadfinished', onDownloadFinished);
+            player.on('stallstared', resetBuffer);
+            player.on('videoadaptation', onVideoAdaptation);
         };
 
-        if (player.isReady()) {
+        if (player.getSource()) {
             init();
         } else {
-            player.addEventHandler('onReady', init);
+            player.on('sourceloaded', init);
         }
 
     })();
