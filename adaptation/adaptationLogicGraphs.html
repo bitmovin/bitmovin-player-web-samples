@@ -19,7 +19,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
     <link rel="icon" type="../image/png" href="../images/bit-fav.png">
     <!-- Bitmovin Player -->
-    <script type="text/javascript" src="//bitmovin-a.akamaihd.net/bitmovin-player/stable/7/bitmovinplayer.js"></script>
+    <script type="text/javascript" src="//cdn.bitmovin.com/player/web/8.0.0-rc1/bitmovinplayer.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="bitrateGraphs.js"></script>
     <style>
@@ -127,6 +127,7 @@
                 display: none;
             }
         }
+
         .charts {
             width: 80%;
             margin: 40px auto;
@@ -155,7 +156,7 @@
             <div class="charts">
                 <div id="curve_chart" align='right'></div>
                 <label for="maxBitrate">Max Bitrate (Mbps)</label>
-                <input type="text" name="MaxBitrate" id="maxBitrate" value="5" />
+                <input type="text" name="MaxBitrate" id="maxBitrate" value="5"/>
             </div>
             <div class="description">
                 <p>For more information about the bitmovin player, please have a look at our online <a
@@ -166,26 +167,26 @@
 </div>
 
 <script type="text/javascript">
-  if (location.protocol === "file:") {
-    document.getElementById("webserver-warning").style.display = "block";
-  }
-
-  var conf = {
-    key: "YourKEY",
-    source: {
-      dash: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd",
-      hls: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8",
-      progressive: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/MI201109210084_mpeg-4_hd_high_1080p25_10mbits.mp4",
-      poster: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/poster.jpg"
+    if (location.protocol === "file:") {
+        document.getElementById("webserver-warning").style.display = "block";
     }
-  };
 
-  var player = bitmovin.player("player");
-  var bitrateGraphs = new BitrateGraphs(player);
+    var conf = {
+        key: "YourKEY",
+    };
+    var source = {
+        dash: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd",
+        hls: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8",
+        progressive: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/MI201109210084_mpeg-4_hd_high_1080p25_10mbits.mp4",
+        poster: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/poster.jpg"
+    };
 
-  player.setup(conf).then(function() {
-    bitrateGraphs.init();
-  }, function(error) {
-    console.log(error);
-  });
+    var player = new bitmovin.player.Player(document.getElementById('player'), conf);
+    var bitrateGraphs = new BitrateGraphs(player);
+
+    player.load(source).then(function () {
+        bitrateGraphs.init();
+    }, function (error) {
+        console.log(error);
+    });
 </script>

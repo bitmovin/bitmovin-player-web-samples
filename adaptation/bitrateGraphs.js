@@ -43,24 +43,24 @@ BitrateGraphs.prototype.init = function() {
   google.charts.load('current', { 'packages': ['corechart'] });
   google.charts.setOnLoadCallback(this.drawLineChart.bind(_this));
 
-  this.player.addEventHandler('onDownloadFinished', function(data) {
-    if (data.downloadType === 'media' && data.mimeType.indexOf('video') >= 0 && data.size > 1000) {
+  this.player.on('downloadfinished', function(data) {
+    if (data.downloadType === 'media/video' && data.mimeType.indexOf('video') >= 0 && data.size > 1000) {
       _this.newValue({ throughput: Math.round(((data.size * 8) / data.downloadTime) / 1000) });
     }
   });
 
-  this.player.addEventHandler('onSegmentPlayback', function(data) {
+  this.player.on('segmentplayback', function(data) {
     _this.SEGMENT_DURATION = data.duration;
   });
 
-  this.player.addEventHandler('onTimeChanged', function(data) {
+  this.player.on('timechanged', function(data) {
     var time = parseFloat(data.time);
     var line = parseInt(time / _this.SEGMENT_DURATION) + 1 || 0;
     _this.dataset[line + 1][4] = _this.dataset[line + 1][2];
     _this.dataset[line + 1][3] = _this.player.getVideoBufferLength() / 10;
     _this.drawLineChart();
   });
-  this.player.addEventHandler('onSeek', function(data) {
+  this.player.on('seek', function(data) {
     if (data.position > data.seekTarget) {
       _this.dataset = [
         ['segmentNumber', 'Estimated throughput', 'Downloaded quality', 'Buffer Length (x10 seconds)', 'Played quality'],
