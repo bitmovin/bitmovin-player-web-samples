@@ -9,229 +9,237 @@
 -->
 <html lang="en">
 <head>
-  <title>Dynamically Limit the Bitrate</title>
-  <meta charset="UTF-8"/>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
-  <link rel="icon" type="image/png" href="images/bit-fav.png">
+    <title>Dynamically Limit the Bitrate</title>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
+    <link rel="icon" type="image/png" href="../images/bit-fav.png">
 
-  <script type="text/javascript" src="//bitmovin-a.akamaihd.net/bitmovin-player/stable/7.4/bitmovinplayer.js"></script>
+    <script type="text/javascript" src="//cdn.bitmovin.com/player/web/8.0.0-rc1/bitmovinplayer.js"></script>
 
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Open Sans', sans-serif;
-      color: #fff;
-      font-weight: 300;
-    }
-    body {
-      background: rgba(44, 131, 185, 1);
-      background: -moz-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
-      background: -webkit-gradient(left top, right top, color-stop(0%, rgba(44, 131, 185, 1)), color-stop(100%, rgba(30, 171, 227, 1)));
-      background: -webkit-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
-      background: -o-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
-      background: -ms-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
-      background: linear-gradient(to right, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
-      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2c83b9', endColorstr='#1eabe3', GradientType=1);
-    }
-    #wrapper {
-      background: url(images/logo-bg-demopage.png);
-      height: 100vh;
-    }
-    #banner {
-      border-bottom: 1px solid #fff;
-      background-color: #1eabe3;
-      width: 100%
-    }
-    #banner h1 {
-      margin: 0;
-      padding: 30px;
-    }
-    .logo {
-      padding: 10px;
-      width: 25%;
-      min-width: 350px;
-      float: left;
-      margin: auto;
-    }
-    .title {
-      width: 75%;
-      white-space: nowrap;
-    }
-    .clear {
-      clear: both;
-    }
-    .content {
-      margin-bottom: 10em;
-    }
-    h1, h2, h3, p {
-      font-weight: 300;
-      text-align: center;
-      margin: 40px;
-    }
-    #webserver-warning {
-      border: 1px solid #fff;
-      padding: 10px;
-      width: 70%;
-      margin: auto;
-      font-weight: 400;
-      font-size: 0.8em;
-      background: #f69c2a;
-    }
-    #webserver-warning h1, #webserver-warning h2 {
-      font-weight: 400;
-    }
-    #player {
-      max-width: 900px;
-      width: 90%;
-      margin: auto;
-      -webkit-box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
-      -moz-box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
-      box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
-    }
-    #bitrates {
-      margin: 15px auto;
-      width: 350px;
-    }
-    a {
-      color: #97d9ef;
-      font-weight: 400;
-      text-decoration: none;
-    }
-    a:hover {
-      color: #fff;
-    }
-    @media (max-width: 800px) {
-      .logo {
-        width: 100%;
-      }
-      .title {
-        display: none;
-      }
-    }
-  </style>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Open Sans', sans-serif;
+            color: #fff;
+            font-weight: 300;
+        }
+
+        body {
+            background: rgba(44, 131, 185, 1);
+            background: -moz-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+            background: -webkit-gradient(left top, right top, color-stop(0%, rgba(44, 131, 185, 1)), color-stop(100%, rgba(30, 171, 227, 1)));
+            background: -webkit-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+            background: -o-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+            background: -ms-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+            background: linear-gradient(to right, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2c83b9', endColorstr='#1eabe3', GradientType=1);
+        }
+
+        #wrapper {
+            background: url(../images/logo-bg-demopage.png);
+            height: 100vh;
+        }
+
+        #banner {
+            border-bottom: 1px solid #fff;
+            background-color: #1eabe3;
+            width: 100%
+        }
+
+        #banner h1 {
+            margin: 0;
+            padding: 30px;
+        }
+
+        .logo {
+            padding: 10px;
+            width: 25%;
+            min-width: 350px;
+            float: left;
+            margin: auto;
+        }
+
+        .title {
+            width: 75%;
+            white-space: nowrap;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        .content {
+            margin-bottom: 10em;
+        }
+
+        h1, h2, h3, p {
+            font-weight: 300;
+            text-align: center;
+            margin: 40px;
+        }
+
+        #player {
+            max-width: 900px;
+            width: 90%;
+            margin: auto;
+            -webkit-box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
+            box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
+        }
+
+        #bitrates {
+            margin: 15px auto;
+            width: 350px;
+        }
+
+        a {
+            color: #97d9ef;
+            font-weight: 400;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #fff;
+        }
+
+        @media (max-width: 800px) {
+            .logo {
+                width: 100%;
+            }
+
+            .title {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
 <div id="wrapper">
-  <div id="banner">
-    <div class="logo"><img src="../images/bitmovin-logo.png"></div>
-    <div class="title"><h1>Bitmovin HTML5 Player</h1></div>
-    <div class="clear"></div>
-  </div>
-  <div class="container">
-    <h1>HTML5 Adaptive Streaming Player for MPEG-DASH & HLS</h1>
-    <h2>Your videos play everywhere with low startup delay, no buffering and in highest quality.</h2>
-
-    <div class="content">
-      <div id="bitrates">
-        <label for="minBitrate">Min Bitrate (Kbps): </label><input type="text" name="MinBitrate" id="minBitrate" value="300" onchange="updateMinLimit(Number(this.value) * 1000)"/><br>
-        <label for="maxBitrate">Max Bitrate (Kbps): </label><input type="text" name="MaxBitrate" id="maxBitrate" value="3000" onchange="updateMaxLimit(Number(this.value) * 1000)"/>
-      </div>
-      <div class="player-wrapper">
-        <div id="player"></div>
-      </div>
-      <div class="description">
-        <p>For more information about the bitmovin player, please have a look at our online <a
-            href="//bitmovin.com/support" target="_blank">Developer Section</a>.</p>
-      </div>
+    <div id="banner">
+        <div class="logo"><img src="../images/bitmovin-logo.png"></div>
+        <div class="title"><h1>Dynamically Limit Bitrate</h1></div>
+        <div class="clear"></div>
     </div>
-  </div>
+    <div class="container">
+        <h1>HTML5 Adaptive Streaming Player for MPEG-DASH & HLS</h1>
+        <h2>Your videos play everywhere with low startup delay, no buffering and in highest quality.</h2>
+
+        <div class="content">
+            <div id="bitrates">
+                <label for="minBitrate">Min Bitrate (Kbps): </label><input type="text" name="MinBitrate" id="minBitrate"
+                                                                           value="300"
+                                                                           onchange="updateMinLimit(Number(this.value) * 1000)"/><br>
+                <label for="maxBitrate">Max Bitrate (Kbps): </label><input type="text" name="MaxBitrate" id="maxBitrate"
+                                                                           value="3000"
+                                                                           onchange="updateMaxLimit(Number(this.value) * 1000)"/>
+            </div>
+            <div class="player-wrapper">
+                <div id="player"></div>
+            </div>
+            <div class="description">
+                <p>For more information about the bitmovin player, please have a look at our online <a
+                        href="//bitmovin.com/support" target="_blank">Developer Section</a>.</p>
+            </div>
+        </div>
+    </div>
 </div>
 <script type="text/javascript">
-  if (location.protocol === 'file:') {
-    document.getElementById('webserver-warning').style.display = 'block';
-  }
 
-  var availableQualities;
-  var minLimit = 0;
-  var maxLimit = Infinity;
+    var availableQualities;
+    var minLimit = 0;
+    var maxLimit = Infinity;
 
-  function videoAdaptationHandler(e) {
-    var q = availableQualities[e.suggested];
-    if (q.bitrate < minLimit.quality.bitrate) {
-      // bitrate too small, use the lowest qualith with bitrate >= minLimit
-      return minLimit.quality.id;
-    } else if (q.bitrate > maxLimit.quality.bitrate) {
-      // bitrate too high, use the highest quality with bitrate <= maxLimit
-      return maxLimit.quality.id;
-    } else {
-      // use the automatically selected quality
-      return e.suggested;
+    function videoAdaptationHandler(e) {
+        var q = availableQualities[e.suggested];
+        if (q.bitrate < minLimit.quality.bitrate) {
+            console.log('bitrate too small, use the lowest qualith with bitrate >= minLimit');
+            return minLimit.quality.id;
+        } else if (q.bitrate > maxLimit.quality.bitrate) {
+            console.log('bitrate too high, use the highest quality with bitrate <= maxLimit');
+            return maxLimit.quality.id;
+        } else {
+            console.log('use the automatically selected quality');
+            return e.suggested;
+        }
     }
-  }
 
-  function updateMinLimit(limit) {
-    limit = Number(limit);
-    if (!isNaN(limit)) {
-      minLimit = { bitrate: limit };
-      var availQ = player.getAvailableVideoQualities().filter(function(elem) {
-        return elem.bitrate >= minLimit.bitrate;
-      });
-      if (availQ.length < 1) {
-        console.log('invalid limit, no quality left. Ingore limit');
-        return;
-      }
-      minLimit.quality = availQ.reduce(function(a, b) {
-        if (a.bitrate <= b.bitrate) { return a; }
-        return b;
-      });
+    function updateMinLimit(limit) {
+        limit = Number(limit);
+        if (!isNaN(limit)) {
+            minLimit = {bitrate: limit};
+            var availQ = player.getAvailableVideoQualities().filter(function (elem) {
+                return elem.bitrate >= minLimit.bitrate;
+            });
+            if (availQ.length < 1) {
+                console.log('invalid limit, no quality left. Ingore limit');
+                return;
+            }
+            minLimit.quality = availQ.reduce(function (a, b) {
+                if (a.bitrate <= b.bitrate) {
+                    return a;
+                }
+                return b;
+            });
 
-      console.log('updated min limit with ' + limit);
+            console.log('updated min limit with ' + limit);
+        }
     }
-  }
 
-  function updateMaxLimit(limit) {
-    limit = Number(limit);
-    if (!isNaN(limit)) {
-      maxLimit = { bitrate: limit };
-      var availQ = player.getAvailableVideoQualities().filter(function(elem) {
-        return elem.bitrate <= maxLimit.bitrate;
-      });
-      if (availQ.length < 1) {
-        console.log('invalid limit, no quality left. Ingore limit');
-        return;
-      }
-      maxLimit.quality = availQ.reduce(function(a, b) {
-        if (a.bitrate > b.bitrate) { return a; }
-        return b;
-      });
+    function updateMaxLimit(limit) {
+        limit = Number(limit);
+        if (!isNaN(limit)) {
+            maxLimit = {bitrate: limit};
+            var availQ = player.getAvailableVideoQualities().filter(function (elem) {
+                return elem.bitrate <= maxLimit.bitrate;
+            });
+            if (availQ.length < 1) {
+                console.log('invalid limit, no quality left. Ingore limit');
+                return;
+            }
+            maxLimit.quality = availQ.reduce(function (a, b) {
+                if (a.bitrate > b.bitrate) {
+                    return a;
+                }
+                return b;
+            });
 
-      console.log('updated max limit with ' + limit);
+            console.log('updated max limit with ' + limit);
+        }
     }
-  }
 
-  var conf = {
-    key: 'YOUR KEY HERE',
-    source: {
-      dash: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd',
-      hls: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8',
-      progressive: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/MI201109210084_mpeg-4_hd_high_1080p25_10mbits.mp4',
-      poster: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/poster.jpg'
-    },
-    adaptation: {
-      desktop: {
-        onVideoAdaptation: videoAdaptationHandler,
-        preload: false
-      },
-      mobile: {
-        onVideoAdaptation: videoAdaptationHandler,
-        preload: false
-      }
-    }
-  };
+    var conf = {
+        key: 'YOUR KEY HERE',
+        adaptation: {
+            desktop: {
+                onVideoAdaptation: videoAdaptationHandler,
+                preload: false
+            },
+            mobile: {
+                onVideoAdaptation: videoAdaptationHandler,
+                preload: false
+            }
+        }
+    };
+    var source = {
+        dash: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd',
+        hls: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8',
+        progressive: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/MI201109210084_mpeg-4_hd_high_1080p25_10mbits.mp4',
+        poster: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/poster.jpg'
+    };
 
-  var player = bitmovin.player("player");
+    var player = new bitmovin.player.Player(document.getElementById("player"), conf);
 
-  player.setup(conf).then(function (value) {
-    availableQualities = {};
-    player.getAvailableVideoQualities().forEach(function(q) {
-      availableQualities[q.id] = q;
+    player.load(source).then(function () {
+        availableQualities = {};
+        player.getAvailableVideoQualities().forEach(function (q) {
+            availableQualities[q.id] = q;
+        });
+        updateMinLimit(Number(document.querySelector('#minBitrate').value) * 1000);
+        updateMaxLimit(Number(document.querySelector('#maxBitrate').value) * 1000);
     });
-    updateMinLimit(Number(document.querySelector('#minBitrate').value) * 1000);
-    updateMaxLimit(Number(document.querySelector('#maxBitrate').value) * 1000);
-  });
 </script>
 </body>
 </html>
