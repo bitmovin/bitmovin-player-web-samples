@@ -27,20 +27,20 @@
  *
  ****************************************************************************/
 
-var LiveStreamRecovery = function (player, maxErrorCount) {
+var LiveStreamRecovery = function (player, source, maxErrorCount) {
     var consecutiveErrors = 0;
-    var userConfig = player.getConfig();
     var restarted = false;
 
-    player.addEventHandler('onStallStarted', function (data) {
-        if (consecutiveErrors > maxErrorCount) {
+    player.on('error', function () {
+        // consecutiveErrors++;
+        if (consecutiveErrors < maxErrorCount) {
             console.log('restarting stream');
-            player.load(userConfig.source);
+            player.load(source);
             restarted = true;
         }
     });
 
-    player.addEventHandler('onDownloadFinished', function (data) {
+    player.on('downloadfinished', function (data) {
         if (data.success === false) {
             consecutiveErrors++;
         } else {
@@ -48,7 +48,7 @@ var LiveStreamRecovery = function (player, maxErrorCount) {
         }
     });
 
-    player.addEventHandler('onReady', function (data) {
+    player.on('ready', function () {
         if (restarted === true) {
             player.play();
             restarted = false;
