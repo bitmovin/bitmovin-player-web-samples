@@ -12,99 +12,89 @@
 -->
 <html lang="en">
 <head>
-  <title>Bitmovin Demo</title>
-  <meta charset="UTF-8"/>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
-  <link rel="icon" type="../image/png" href="../images/bit-fav.png">
+    <title>Bitmovin Demo</title>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
+    <link rel="icon" type="../image/png" href="../images/bit-fav.png">
     <script type="text/javascript"
-            src="//bitmovin-a.akamaihd.net/bitmovin-player/stable/7.1/bitmovinplayer.js"></script>
-            <style>
-                body {
-                  margin: 0;
-                  padding: 0;
-                  font-family: 'Open Sans', sans-serif;
-                  color: #fff;
-                  font-weight: 300;
-                }
+            src="//cdn.bitmovin.com/player/web/8.0.0-rc1/bitmovinplayer.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Open Sans', sans-serif;
+            color: #fff;
+            font-weight: 300;
+        }
 
-                body {
-                  background: rgba(44, 131, 185, 1);
-                  background: -moz-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
-                  background: -webkit-gradient(left top, right top, color-stop(0%, rgba(44, 131, 185, 1)), color-stop(100%, rgba(30, 171, 227, 1)));
-                  background: -webkit-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
-                  background: -o-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
-                  background: -ms-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
-                  background: linear-gradient(to right, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
-                  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2c83b9', endColorstr='#1eabe3', GradientType=1);
-                }
+        body {
+            background: rgba(44, 131, 185, 1);
+            background: -moz-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+            background: -webkit-gradient(left top, right top, color-stop(0%, rgba(44, 131, 185, 1)), color-stop(100%, rgba(30, 171, 227, 1)));
+            background: -webkit-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+            background: -o-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+            background: -ms-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+            background: linear-gradient(to right, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2c83b9', endColorstr='#1eabe3', GradientType=1);
+        }
 
-                #wrapper {
-                  background: url(../images/logo-bg-demopage.png);
-                  height: 100vh;
-                }
+        #wrapper {
+            background: url(../images/logo-bg-demopage.png);
+            height: 100vh;
+        }
 
-                #banner {
-                  border-bottom: 1px solid #fff;
-                  background-color: #1eabe3;
-                  width: 100%
-                }
+        #banner {
+            border-bottom: 1px solid #fff;
+            background-color: #1eabe3;
+            width: 100%
+        }
 
-                #banner h1 {
-                  margin: 0;
-                  padding: 30px;
-                }
+        #banner h1 {
+            margin: 0;
+            padding: 30px;
+        }
 
-                .logo {
-                  padding: 10px;
-                  width: 25%;
-                  min-width: 350px;
-                  float: left;
-                  margin: auto;
-                }
+        .logo {
+            padding: 10px;
+            width: 25%;
+            min-width: 350px;
+            float: left;
+            margin: auto;
+        }
 
-                .title {
-                  width: 75%;
-                  white-space: nowrap;
-                }
+        .title {
+            width: 75%;
+            white-space: nowrap;
+        }
 
-                .clear {
-                  clear: both;
-                }
+        .clear {
+            clear: both;
+        }
 
-                .content {
-                  margin-bottom: 10em;
-                }
+        .content {
+            margin-bottom: 10em;
+        }
 
-                h1, h2, h3, p {
-                  font-weight: 300;
-                  text-align: center;
-                  margin: 40px;
-                }
+        h1, h2, h3, p {
+            font-weight: 300;
+            text-align: center;
+            margin: 40px;
+        }
 
-                #webserver-warning {
-                  border: 1px solid #fff;
-                  padding: 10px;
-                  width: 70%;
-                  margin: auto;
-                  font-weight: 400;
-                  font-size: 0.8em;
-                  background: #f69c2a;
-                }
-
-                #webserver-warning h1, #webserver-warning h2 {
-                  font-weight: 400;
-                }
-
-                #player {
-                  max-width: 900px;
-                  width: 90%;
-                  margin: auto;
-                  -webkit-box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
-                  -moz-box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
-                  box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
-                }
+        #player {
+            max-width: 900px;
+            width: 90%;
+            margin: auto;
+            -webkit-box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
+            box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
+        }
 
         .playback-stats {
             width: 50%;
@@ -115,6 +105,7 @@
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
             background-color: gray;
         }
+
         .playback-stats td {
             -webkit-transition: background-color 250ms ease;
             -moz-transition: background-color 250ms ease;
@@ -123,9 +114,11 @@
             transition: background-color 250ms ease;
             padding: 5px;
         }
+
         .active {
             background-color: #2eabe2;
         }
+
         .changed {
             -webkit-transition: color 100ms ease !important;
             -moz-transition: color 100ms ease !important;
@@ -134,15 +127,26 @@
             transition: color 100ms ease !important;
             color: #f3922b !important;
         }
+
         #playback-stats-wrapper-table {
             width: 100%;
-            height: auto;
+            /*height: auto;*/
             border-spacing: 0;
             border-collapse: collapse;
             margin-top: 5px;
             padding-bottom: 5px;
             border: 0 none;
         }
+
+        .player-row {
+            margin-top: 20px;
+            height: 400px;
+        }
+
+        .player-cell {
+            height: 100%;
+        }
+
         #playback-stats-wrapper-table div {
             -webkit-transition: color 1000ms ease;
             -moz-transition: color 1000ms ease;
@@ -150,84 +154,98 @@
             -ms-transition: color 1000ms ease;
             transition: color 1000ms ease;
         }
+
         #playback-stats-wrapper-table .active div {
             color: white;
         }
+
         #playback-stats-wrapper-table span {
             color: lightblue;
         }
+
         #playback-stats-wrapper-table .active span {
             color: white;
         }
+
         .playback-stats-cell {
             width: 50%;
             padding: 5px;
             margin: 0;
         }
+
         .playback-stats-row {
             width: 50%;
             padding: 0;
             margin: 0;
         }
+
+        .player-wrapper td {
+            /*height: 200px;*/
+        }
+
         .playback-stats h3 {
-    font-weight: normal;
-    text-transform: uppercase;
-    margin-bottom: 5px;
-    margin-top: 5px;
-    line-height: 26px;
-}
+            font-weight: normal;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            margin-top: 5px;
+            line-height: 26px;
+        }
 
-                a {
-                  color: #97d9ef;
-                  font-weight: 400;
-                  text-decoration: none;
-                }
+        a {
+            color: #97d9ef;
+            font-weight: 400;
+            text-decoration: none;
+        }
 
-                a:hover {
-                  color: #fff;
-                }
+        a:hover {
+            color: #fff;
+        }
 
-                @media (max-width: 800px) {
-                  .logo {
-                    width: 100%;
-                  }
+        @media (max-width: 800px) {
+            .logo {
+                width: 100%;
+            }
 
-                  .title {
-                    display: none;
-                  }
-                }
-              </style>
+            .title {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div id="wrapper">
-  <div id="banner">
-    <div class="logo"><img src="../images/bitmovin-logo.png"></div>
-    <div class="title"><h1>Title of the demo goes here.</h1></div>
-    <div class="clear"></div>
-  </div>
-<div class="container">
-    <h1>HTML5 Adaptive Streaming Player for MPEG-DASH & HLS</h1>
-    <h2>Your videos play everywhere with low startup delay, no buffering and in highest quality.</h2>
+<div id="wrapper">
+    <div id="banner">
+        <div class="logo"><img src="../images/bitmovin-logo.png"></div>
+        <div class="title"><h1>Region of Interest</h1></div>
+        <div class="clear"></div>
+    </div>
+    <div class="container">
+        <h1>HTML5 Adaptive Streaming Player for MPEG-DASH & HLS</h1>
+        <h2>Your videos play everywhere with low startup delay, no buffering and in highest quality.</h2>
         <div class="ca-content">
         </div>
     </div>
     <div class="content">
-      <div align='center'>
-        <table id="player-wrapper-table" class="player-wrapper">
-            <tr style="height: 50%; padding: 0; margin: 0;">
-                <td id="top-left-player" style="width: 50%; padding: 0; margin: 0;"></td>
-                <td id="top-right-player" style="width: 50%; padding: 0; margin: 0;"></td>
-            </tr>
-            <tr style="height: 50%; padding: 0; margin: 0;">
-                <td id="bottom-left-player" style="width: 50%; padding: 0; margin: 0;"></td>
-                <td id="bottom-right-player" style="width: 50%; padding: 0; margin: 0;"></td>
-            </tr>
-        </table>
-      </div>
+        <div class="row player-row">
+            <div class="col-md-5 col-md-offset-1 player-cell">
+                <div id="top-left-player"></div>
+            </div>
+            <div class="col-md-5 player-cell">
+                <div id="top-right-player"></div>
+            </div>
+        </div>
+        <div class="row player-row">
+            <div class="col-md-5 col-md-offset-1 player-cell">
+                <div id="bottom-left-player"></div>
+            </div>
+            <div class="col-md-5 player-cell">
+                <div id="bottom-right-player"></div>
+            </div>
+        </div>
         <div class="playback-stats">
             <h3>playback control</h3>
-            <button id="play" onclick="playPause('play')" disabled>play</button>
-            <button id="pause" onclick="playPause('pause')" disabled>pause</button>
+            <a id="play" class="btn btn-default" onclick="playPause('play')" disabled>play</a>
+            <a id="pause" class="btn btn-default" onclick="playPause('pause')" disabled>pause</a>
             <h3>playback stats</h3>
             <table id="playback-stats-wrapper-table">
                 <tr class="playback-stats-row">
@@ -272,11 +290,6 @@
 </div>
 <script type="text/javascript">
 
-    if (location.protocol === 'file:') {
-        document.getElementById('webserver-warning').style.display = 'block';
-    }
-
-    var playerWrapperTable = document.getElementById('player-wrapper-table');
     var topLeftPlayerWrapper = document.getElementById('top-left-player');
     var topRightPlayerWrapper = document.getElementById('top-right-player');
     var bottomLeftPlayerWrapper = document.getElementById('bottom-left-player');
@@ -325,19 +338,11 @@
 
     var config = {
         key: 'YOUR KEY HERE',
-        source: {
-            dash: '//bitdash-a.akamaihd.net/content/sintel/sintel.mpd',
-            hls: 'http://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8',
-            progressive: [
-                {url: 'http://bitdash-a.akamaihd.net/content/sintel/Sintel.mp4', type: 'video/mp4'},
-                {url: 'http://bitdash-a.akamaihd.net/content/sintel/Sintel.webm', type: 'video/webm'}
-            ]
-        },
+        ui: false,
         style: {
             width: '100%',
             height: '100%',
             playOverlay: false,
-            ux: false,
             mouse: false
         },
         playback: {
@@ -365,10 +370,14 @@
             max_buffer_level: 6
         }
     };
-
-    function setPlayerWrapperTableSize() {
-        playerWrapperTable.style.height = (playerWrapperTable.clientWidth / 2.35) + 'px';
-    }
+    var source = {
+        dash: '//bitdash-a.akamaihd.net/content/sintel/sintel.mpd',
+        hls: 'http://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8',
+        progressive: [
+            {url: 'http://bitdash-a.akamaihd.net/content/sintel/Sintel.mp4', type: 'video/mp4'},
+            {url: 'http://bitdash-a.akamaihd.net/content/sintel/Sintel.webm', type: 'video/webm'}
+        ]
+    };
 
     function getMinMaxVideoRepresentation() {
         if (players['top-left-player'] && (!maxVideoRepresentation || !minVideoRepresentation)) {
@@ -400,7 +409,7 @@
 
     function onPlay() {
         this.pause();
-        this.removeEventHandler('onPlay', onPlay);
+        this.off('playing', onPlay);
     }
 
     function onDownloadFinished(event) {
@@ -409,20 +418,22 @@
                 document.getElementById('play').removeAttribute('disabled');
                 document.getElementById('pause').removeAttribute('disabled');
             }
-            this.removeEventHandler('onDownloadFinished', onDownloadFinished);
+            this.off('downloadfinished', onDownloadFinished);
         }
     }
+
     function onVideoPlaybackQualityChanged(event) {
-        playerStats[this.getFigure().parentNode.id]['playback-representation'].innerHTML = event.targetQuality.id;
-        playerStats[this.getFigure().parentNode.id]['playback-representation'].className = 'changed';
+        playerStats[this.getContainer().id]['playback-representation'].innerHTML = event.targetQuality.id;
+        playerStats[this.getContainer().id]['playback-representation'].className = 'changed';
         setTimeout(function () {
-            playerStats[this.getFigure().parentNode.id]['playback-representation'].removeAttribute('class');
+            playerStats[this.getContainer().id]['playback-representation'].removeAttribute('class');
         }.bind(this), 300);
     }
 
     function onMouseEnter(event) {
         getMinMaxVideoRepresentation();
-        if (players.hasOwnProperty(event.target.getAttribute('id')) && players[event.target.getAttribute('id')]) {
+        console.log(event, players);
+        if (players.hasOwnProperty(event.target.getAttribute('id')) && players[event.target.getAttribute('id')] && maxVideoRepresentation) {
             players[event.target.getAttribute('id')].setVideoQuality(maxVideoRepresentation.id);
             playerStats[event.target.getAttribute('id')]['wrapper'].className = 'active';
             playerStats[event.target.getAttribute('id')]['chosen-representation'].className = 'changed';
@@ -448,39 +459,44 @@
 
     (function init() {
         var idx;
-        (window.onresize = setPlayerWrapperTableSize)();
         initializedPlayers = 0;
-
+        console.log('wrap', playerWrappers);
         for (idx = 0; idx < playerWrappers.length; idx++) {
             playerWrappers[idx].onmouseenter = onMouseEnter;
             playerWrappers[idx].onmouseleave = onMouseLeave;
         }
 
         var playerReady = function (player) {
-            players[player.getFigure().parentNode.id] = player;
+            players[player.getContainer().id] = player;
 
             if (player.isPlaying()) {
                 player.pause();
             } else {
-                player.addEventHandler('onPlay', onPlay);
+                player.on('playing', onPlay);
             }
-            player.addEventHandler('onDownloadFinished', onDownloadFinished);
-            player.addEventHandler('onVideoPlaybackQualityChanged', onVideoPlaybackQualityChanged);
-            player.addEventHandler('onPlaybackFinished', function () {
+            player.on('downloadfinished', onDownloadFinished);
+            player.on('videoplaybackqualitychanged', onVideoPlaybackQualityChanged);
+            player.on('playbackfinished', function () {
+                console.log('finished');
                 this.play();
             });
         };
 
-        var playerCreationFailed = function (reason) {
-            console.error('player could not be created');
-            console.error(reason);
-        };
+        var player1 = new bitmovin.player.Player(document.getElementById("top-left-player"), config);
+        player1.on('sourceloaded', playerReady(player1));
+        player1.load(source);
 
-        bitmovin.player('top-left-player').setup(config).then(playerReady, playerCreationFailed);
-        bitmovin.player('top-right-player').setup(config).then(playerReady, playerCreationFailed);
-        bitmovin.player('bottom-left-player').setup(config).then(playerReady, playerCreationFailed);
-        bitmovin.player('bottom-right-player').setup(config).then(playerReady, playerCreationFailed);
+        var player2 = new bitmovin.player.Player(document.getElementById("top-right-player"), config);
+        player2.on('sourceloaded', playerReady(player2));
+        player2.load(source);
 
+        var player3 = new bitmovin.player.Player(document.getElementById("bottom-left-player"), config);
+        player3.on('sourceloaded', playerReady(player3));
+        player3.load(source);
+
+        var player4 = new bitmovin.player.Player(document.getElementById("bottom-right-player"), config);
+        player4.on('sourceloaded', playerReady(player4));
+        player4.load(source);
     })();
 
 </script>
