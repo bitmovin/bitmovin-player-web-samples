@@ -20,7 +20,7 @@
     <link rel="icon" type="../image/png" href="../images/bit-fav.png">
     <!-- Bitmovin Player -->
     <script type="text/javascript"
-            src="//bitmovin-a.akamaihd.net/bitmovin-player/stable/7.1/bitmovinplayer.js"></script>
+            src="//cdn.bitmovin.com/player/web/8.0.0-rc1/bitmovinplayer.js"></script>
     <style>
         body {
             margin: 0;
@@ -84,23 +84,15 @@
             margin: 40px;
         }
 
-        #webserver-warning {
-            border: 1px solid #fff;
-            padding: 10px;
-            width: 70%;
-            margin: auto;
-            font-weight: 400;
-            font-size: 0.8em;
-            background: #f69c2a;
-        }
-
         #player .poster {
-            max-width: 100%;
-            max-height: 100%;
-        }
-
-        #webserver-warning h1, #webserver-warning h2 {
-            font-weight: 400;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 99999;
         }
 
         #player {
@@ -146,11 +138,15 @@
     .bmpui-ui-skin-modern .bmpui-ui-watermark {
         display: none;
     }
+
+    .bmpui-ui-skin-modern .bmpui-ui-errormessage-overlay {
+        display: none
+    }
 </style>
 <div id="wrapper">
     <div id="banner">
         <div class="logo"><img src="../images/bitmovin-logo.png"></div>
-        <div class="title"><h1>Title of the demo goes here.</h1></div>
+        <div class="title"><h1>Show Poster on Error</h1></div>
         <div class="clear"></div>
     </div>
     <div class="container">
@@ -159,7 +155,6 @@
         <div class="content">
             <div class="player-wrapper">
                 <div id="player"></div>
-                <div id="poster"></div>
             </div>
             <div class="description">
                 <p>For more information about the bitmovin player, please have a look at our online <a
@@ -169,40 +164,22 @@
     </div>
 </div>
 <script type="text/javascript">
-    if (location.protocol === 'file:') {
-        document.getElementById('webserver-warning').style.display = 'block';
-    }
 
     var errorHandler = function () {
-        if (conf.source.poster) {
+        if (source.poster) {
             var img = document.createElement('img');
             img.className = 'poster';
-            img.src = conf.source.poster;
+            img.src = '//bitdash-a.akamaihd.net/content/tos/poster_tos.jpg';
             document.getElementById('player').appendChild(img);
-            player.load({poster: img.src}).then(function () {
-                player.play();
-            });
         }
     };
 
     var conf = {
         key: 'YOUR KEY HERE',
-        source: {
-            dash: 'http://YOUR-DASH-STREAM.mpd',
-            hls: 'http://YOUR-HLS-STREAM.m3u8',
-            progressive: [{
-                url: 'http://YOUR-MP4.mp4',
-                type: 'video/mp4'
-            }, {
-                url: 'http://YOUR-WEBM.webm',
-                type: 'video/webm'
-            }],
-            poster: '//bitmovin-a.akamaihd.net/content/MI201109210084_1/poster.jpg'
-        },
         events: {
-            onError: function (errObj) {
+            error: function (errObj) {
                 switch (errObj.code) {
-                    case 2006:
+                    case 1400:
                     case 3006:
                     case 3023:
                     case 3024:
@@ -215,12 +192,25 @@
                 }
             }
         }
+
+    };
+    var source = {
+        dash: 'http://YOUR-DASH-STREAM.mpd',
+        hls: 'http://YOUR-HLS-STREAM.m3u8',
+        progressive: [{
+            url: 'http://YOUR-MP4.mp4',
+            type: 'video/mp4'
+        }, {
+            url: 'http://YOUR-WEBM.webm',
+            type: 'video/webm'
+        }],
+        poster: 'http://bitmovin-a.akamaihd.net/content/MI201109210084_1/poster.jpg'
     };
 
-    var player = bitmovin.player('player');
-    player.setup(conf).then(function (player) {
+    var player = new bitmovin.player.Player(document.getElementById('player'), conf);
+    player.load(source).then(function () {
         console.log('Successfully created Bitmovin Player instance'); // Success!
-    }, function (reason) {
+    }, function () {
         console.log('Error while creating Bitmovin Player instance'); // Error!
     });
 </script>
