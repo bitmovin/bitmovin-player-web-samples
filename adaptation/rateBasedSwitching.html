@@ -74,20 +74,6 @@
             margin: 40px;
         }
 
-        #webserver-warning {
-            border: 1px solid #fff;
-            padding: 10px;
-            width: 70%;
-            margin: auto;
-            font-weight: 400;
-            font-size: 0.8em;
-            background: #f69c2a;
-        }
-
-        #webserver-warning h1, #webserver-warning h2 {
-            font-weight: 400;
-        }
-
         #player {
             max-width: 900px;
             width: 90%;
@@ -140,10 +126,6 @@
     </div>
 </div>
 <script type="text/javascript">
-
-    if (location.protocol === 'file:') {
-        document.getElementById('webserver-warning').style.display = 'block';
-    }
 
     var player;
     var rateBasedSwitching;
