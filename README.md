@@ -21,9 +21,12 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
 * [**keyboard**](keyboard/)
    * [keyboardSupport](keyboard/keyboardSupport.html): Keyboard shortcuts for the Bitmovin Player.
    * [keyboardCustom](keyboard/keyboardCustom.html): Custom keyboard shortcuts for the Bitmovin Player.
+* [**mobile**](mobile/)
+   * [android MediaSessionAPI](mobile/androidMediaSessionAPI.html): Control playback via Android Notifications
 * [**playerUi**](playerUi/)
    * [customErrorMessage](playerUi/customErrorMessage.html): Display your own error messages within the Bitmovin HTML5 Player
    * [timelineMarkers](playerUi/timelineMarkers.html): Identify the differents parts of a stream by setting some markers over the timeline
+   * [separatedSubtitleAudioSettings](playerUi/separatedAudioSubtitleSettings.html): Extracted audio tracks and subtitle settings from the settings panel direct into the controlBar
    * [labeling](playerUi/labeling.html): Change Languages, Quality and Subtitles labels
 * [**playlist**](playlist/)
     * [simplePlaylist](playlist/simplePlaylist.html): Build a playlist with the Bitmovin HTML5 Player API.
