@@ -142,9 +142,9 @@
 
     var player = new bitmovin.player.Player(document.getElementById('player'), conf);
     player.load(source).then(function () {
-        console.log("Successfully created bitmovin player instance");
-    }, function (reason) {
-        console.log("Error while creating bitmovin player instance", reason);
+        console.log('Successfully loaded source');
+    }, function () {
+        console.log('Error while loading source');
     });
 </script>
 </body>
