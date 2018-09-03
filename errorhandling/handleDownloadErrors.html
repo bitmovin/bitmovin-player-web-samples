@@ -143,13 +143,12 @@
         },
         events: {
             downloadfinished: function (data) {
-                console.log('download fin', data);
                 if (data.downloadType === 'license' && streamStarted === false
                     && (data.httpStatus === 400 || data.httpStatus === 500)) {
                     if (restartCount < restartLimit) {
                         restartCount++;
                         triggerPlayOnRestart = true;
-                        this.load(conf.source);
+                        this.load(source);
                         console.warn('Reloaded player due to error loading DRM License');
                     } else {
                         console.warn('Could not load DRM License');
@@ -184,7 +183,7 @@
 
     player = new bitmovin.player.Player(document.getElementById("player"), conf);
     player.load(source).catch(function () {
-        console.error('Error setting up Bitmovin Player');
+        console.log('Error while loading source');
     });
 
 </script>
