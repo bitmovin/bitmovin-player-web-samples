@@ -168,11 +168,10 @@
         events: {
             error: function (errObj) {
                 switch (errObj.code) {
+                    case 1208:
+                    case 1209:
                     case 1400:
-                    case 3006:
-                    case 3023:
-                    case 3024:
-                    case 3028:
+                    case 1401:
                         errorHandler();
                         break;
                     default:
