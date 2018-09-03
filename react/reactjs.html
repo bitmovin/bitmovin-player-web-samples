@@ -134,6 +134,17 @@
             player: null,
         };
 
+        playerConfig = {
+            key: 'YOUR KEY HERE'
+        };
+
+        playerSource = {
+            dash: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd',
+            hls: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8',
+            progressive: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/MI201109210084_mpeg-4_hd_high_1080p25_10mbits.mp4',
+            poster: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/poster.jpg'
+        };
+
         componentDidMount() {
             this.setupPlayer();
         }
@@ -142,24 +153,9 @@
             this.destroyPlayer();
         }
 
-        playerConfig() {
-            return {
-                key: 'YOUR KEY HERE'
-            }
-        }
-
-        playerSource() {
-            return {
-                dash: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd',
-                hls: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8',
-                progressive: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/MI201109210084_mpeg-4_hd_high_1080p25_10mbits.mp4',
-                poster: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/poster.jpg'
-            }
-        }
-
         setupPlayer() {
             const player = new bitmovin.player.Player(document.getElementById('player'), this.playerConfig);
-            player.load(this.playerSource()).then(() => {
+            player.load(this.playerSource).then(() => {
                 this.setState({
                     ...this.state,
                     player
@@ -181,7 +177,7 @@
         }
 
         render() {
-            return <div id="player"></div>;
+            return <div id="player" />;
         }
     }
 
