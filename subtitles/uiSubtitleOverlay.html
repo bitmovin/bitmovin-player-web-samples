@@ -148,6 +148,13 @@
 
     var player = new bitmovin.player.Player(document.getElementById('player'), conf);
 
+    player.on('subtitleadded', function() {
+        // To demonstrate that the SubtitleOverlay is actually working, we select
+        // a subtitle track as soon as one is available
+        var firstSubtitle = player.subtitles.list()[0];
+        player.subtitles.enable(firstSubtitle.id);
+    });
+
     player.load(source).then(function () {
         // Create a custom UI structure with only the SubtitleOverlay
         var subtitleUI = new bitmovin.playerui.UIContainer({
@@ -160,15 +167,11 @@
         // Launch the UI
         var uiManager = new bitmovin.playerui.UIManager(player, subtitleUI);
 
-        // To demonstrate that the SubtitleOverlay is actually working, we select
-        // a subtitle track and start playback.
         // Due to the stripped down UI, we don't have a play button that the user
         // can press and thus programmatically trigger playback. This is considered
         // "autoplay" and might be blocked on some platforms, mostly on mobile
         // platforms. To increase the chances that it works, we muted the audio
         // in the player config.
-        var firstSubtitle = player.subtitles.list()[0];
-        player.subtitles.enable(firstSubtitle.id);
         player.play();
 
         console.log('Successfully created player instance');
