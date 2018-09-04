@@ -140,8 +140,8 @@
     var player = new bitmovin.player.Player(document.getElementById('player'), conf);
 
     player.load(source).then(function () {
-        var playerFigure = player.getContainer();
-        subtitleDisplay = new CustomSubtitleDisplay(playerFigure);
+        var playerContainer = player.getContainer();
+        subtitleDisplay = new CustomSubtitleDisplay(playerContainer);
         player.on('cueenter', subtitleDisplay.showCue);
         player.on('cueexit', subtitleDisplay.hideCue);
         player.on('audiochange', subtitleDisplay.clear);
