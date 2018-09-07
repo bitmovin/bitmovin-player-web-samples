@@ -1,5 +1,5 @@
-var bitmovinplayer = require('bitmovin-player');
-var playerui = require('bitmovin-player-ui');
+import Player from 'bitmovin-player';
+import { UIFactory } from 'bitmovin-player-ui';
 require('bitmovin-player-ui/dist/css/bitmovinplayer-ui.min.css');
 
 var conf = {
@@ -13,10 +13,10 @@ var source = {
     poster: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/poster.jpg'
 };
 
-var player = new bitmovinplayer.Player(document.getElementById('player'), conf);
+var player = new Player(document.getElementById('player'), conf);
 
 player.load(source).then(function () {
-    playerui.UIFactory.buildDefaultUI(player);
+    UIFactory.buildDefaultUI(player);
     console.log('Successfully loaded source');
 }, function () {
     console.log('Error while loading source');
