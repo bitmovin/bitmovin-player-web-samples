@@ -149,7 +149,7 @@
     };
 
     var logEventTypes = function () {
-        console.log('The Bitmovin HTML5 Player offers the following event constants:', bitmovin.player.Event);
+        console.log('The Bitmovin HTML5 Player offers the following event constants:', bitmovin.player.PlayerEvent);
     };
 
     var onPlay = function (event) {
@@ -162,8 +162,8 @@
 
     var player = new bitmovin.player.Player(document.getElementById('player'), conf);
     logEventTypes();
-    player.on(bitmovin.player.Event.Play, onPlay);
-    player.on(bitmovin.player.Event.Paused, onPause);
+    player.on(bitmovin.player.PlayerEvent.Play, onPlay);
+    player.on(bitmovin.player.PlayerEvent.Paused, onPause);
 
     player.load(source);
 
