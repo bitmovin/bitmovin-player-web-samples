@@ -16,7 +16,7 @@ var source = {
 var player = new bitmovinplayer.Player(document.getElementById('player'), conf);
 
 player.load(source).then(function () {
-    playerui.UIManager.Factory.buildDefaultUI(player);
+    playerui.UIFactory.buildDefaultUI(player);
     console.log('Successfully loaded source');
 }, function () {
     console.log('Error while loading source');
