@@ -15,7 +15,7 @@ var source = {
 
 var player = new Player(document.getElementById('player'), conf);
 
-UIFactory.buildDefaultUI(player, {});
+UIFactory.buildDefaultUI(player);
 player.load(source).then(function () {
     console.log('Successfully loaded source');
 }, function () {
