@@ -1,6 +1,7 @@
 /**
  * Class to Wrap the bitmovin player and take care of SMPTE <-> time conversions
  */
+const bitmovin = window.bitmovin;
 
 class SmtpeController {
 
@@ -21,8 +22,8 @@ class SmtpeController {
   constructor(player: any, assetDescription: AssetDescription) {
     this.player = player;
     this.assetDescription = assetDescription;
-    player.on('paused', this.playPauseHandler);
-    player.on('playing', this.playPauseHandler);
+    player.on(bitmovin.player.PlayerEvent.Paused, this.playPauseHandler);
+    player.on(bitmovin.player.PlayerEvent.Playing, this.playPauseHandler);
     this.load(assetDescription);
   }
 

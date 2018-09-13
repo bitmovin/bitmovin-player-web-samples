@@ -200,7 +200,7 @@ class PlayerKeyboardControl {
         this.enable(true);
 
         // destroy this together with the player
-        this.player.on('destroy', () => {
+        this.player.on(bitmovin.player.PlayerEvent.Destroy, () => {
             this.destroy();
         });
     }

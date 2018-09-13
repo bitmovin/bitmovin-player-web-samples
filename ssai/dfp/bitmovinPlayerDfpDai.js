@@ -5,7 +5,7 @@
  * This source code and its use and distribution, is subject to the terms
  * and conditions of the applicable license agreement.
  ****************************************************************************/
-
+const bitmovin = window.bitmovin;
 (function() {
   var player;
   var fallbackContent;
@@ -25,7 +25,7 @@
       onStreamEvent,
       false);
 
-    player.on('metadata', function(data) {
+    player.on(bitmovin.player.PlayerEvent.Metadata, function(data) {
       if (streamManager && data && data.metadataType === 'ID3') {
         streamManager.onTimedMetadata(data.metadata);
       }

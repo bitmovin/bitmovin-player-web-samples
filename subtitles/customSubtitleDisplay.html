@@ -142,13 +142,13 @@
     player.load(source).then(function () {
         var playerContainer = player.getContainer();
         subtitleDisplay = new CustomSubtitleDisplay(playerContainer);
-        player.on('cueenter', subtitleDisplay.showCue);
-        player.on('cueexit', subtitleDisplay.hideCue);
-        player.on('audiochange', subtitleDisplay.clear);
-        player.on('subtitlechange', subtitleDisplay.clear);
-        player.on('seek', subtitleDisplay.clear);
-        player.on('timeshift', subtitleDisplay.clear);
-        player.on('playerresize', subtitleDisplay.updateFontSize);
+        player.on(bitmovin.player.PlayerEvent.CueEnter, subtitleDisplay.showCue);
+        player.on(bitmovin.player.PlayerEvent.CueExit, subtitleDisplay.hideCue);
+        player.on(bitmovin.player.PlayerEvent.AudioChanged, subtitleDisplay.clear);
+        player.on(bitmovin.player.PlayerEvent.SubtitleEnabled, subtitleDisplay.clear);
+        player.on(bitmovin.player.PlayerEvent.Seek, subtitleDisplay.clear);
+        player.on(bitmovin.player.PlayerEvent.TimeShift, subtitleDisplay.clear);
+        player.on(bitmovin.player.PlayerEvent.PlayerResized, subtitleDisplay.updateFontSize);
         console.log('Successfully loaded source');
     }, function () {
         console.log('Error while loading source');

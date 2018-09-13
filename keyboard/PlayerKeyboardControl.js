@@ -158,7 +158,7 @@ var PlayerKeyboardControl = /** @class */ (function () {
         // this also registers the event listeners
         this.enable(true);
         // destroy this together with the player
-        this.player.on('destroy', function () {
+        this.player.on(bitmovin.player.PlayerEvent.Destroy, function () {
             _this.destroy();
         });
     }

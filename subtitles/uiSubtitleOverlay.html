@@ -148,7 +148,7 @@
 
     var player = new bitmovin.player.Player(document.getElementById('player'), conf);
 
-    player.on('subtitleadded', function() {
+    player.on(bitmovin.player.PlayerEvent.SubtitleAdded, function() {
         // To demonstrate that the SubtitleOverlay is actually working, we select
         // a subtitle track as soon as one is available
         var firstSubtitle = player.subtitles.list()[0];

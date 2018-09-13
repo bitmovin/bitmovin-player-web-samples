@@ -26,7 +26,7 @@
  * For more information, please refer to <http://unlicense.org>
  *
  ****************************************************************************/
-
+const bitmovin = window.bitmovin;
 var RateBasedSwitching = function (player, bufferSize, segmentLength) {
     var downloadRates = [];
     var maxBufferLevel = null;
@@ -94,15 +94,15 @@ var RateBasedSwitching = function (player, bufferSize, segmentLength) {
         }
 
         var init = function () {
-            player.on('downloadfinished', onDownloadFinished);
-            player.on('stallstared', resetBuffer);
-            player.on('videoadaptation', onVideoAdaptation);
+            player.on(bitmovin.player.PlayerEvent.DownloadFinished, onDownloadFinished);
+            player.on(bitmovin.player.PlayerEvent.StallStarted, resetBuffer);
+            player.on(bitmovin.player.PlayerEvent.VideoAdaptation, onVideoAdaptation);
         };
 
         if (player.getSource()) {
             init();
         } else {
-            player.on('sourceloaded', init);
+            player.on(bitmovin.player.PlayerEvent.SourceLoaded, init);
         }
 
     })();

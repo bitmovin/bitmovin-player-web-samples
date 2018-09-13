@@ -455,30 +455,30 @@
             if (player.isPlaying()) {
                 player.pause();
             } else {
-                player.on('playing', onPlay);
+                player.on(bitmovin.player.PlayerEvent.Playing, onPlay);
             }
-            player.on('downloadfinished', onDownloadFinished);
-            player.on('videoplaybackqualitychanged', onVideoPlaybackQualityChanged);
-            player.on('playbackfinished', function () {
+            player.on(bitmovin.player.PlayerEvent.DownloadFinished, onDownloadFinished);
+            player.on(bitmovin.player.PlayerEvent.VideoPlaybackQualityChanged, onVideoPlaybackQualityChanged);
+            player.on(bitmovin.player.PlayerEvent.PlaybackFinished, function () {
                 console.log('finished');
                 this.play();
             });
         };
 
         var player1 = new bitmovin.player.Player(document.getElementById("top-left-player"), config);
-        player1.on('sourceloaded', playerReady(player1));
+        player1.on(bitmovin.player.PlayerEvent.SourceLoaded, playerReady(player1));
         player1.load(source);
 
         var player2 = new bitmovin.player.Player(document.getElementById("top-right-player"), config);
-        player2.on('sourceloaded', playerReady(player2));
+        player2.on(bitmovin.player.PlayerEvent.SourceLoaded, playerReady(player2));
         player2.load(source);
 
         var player3 = new bitmovin.player.Player(document.getElementById("bottom-left-player"), config);
-        player3.on('sourceloaded', playerReady(player3));
+        player3.on(bitmovin.player.PlayerEvent.SourceLoaded, playerReady(player3));
         player3.load(source);
 
         var player4 = new bitmovin.player.Player(document.getElementById("bottom-right-player"), config);
-        player4.on('sourceloaded', playerReady(player4));
+        player4.on(bitmovin.player.PlayerEvent.SourceLoaded, playerReady(player4));
         player4.load(source);
     })();
 

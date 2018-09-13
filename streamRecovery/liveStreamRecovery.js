@@ -26,12 +26,12 @@
  * For more information, please refer to <http://unlicense.org>
  *
  ****************************************************************************/
-
+const bitmovin = window.bitmovin;
 var LiveStreamRecovery = function (player, source, maxErrorCount) {
     var consecutiveErrors = 0;
     var restarted = false;
 
-    player.on('error', function () {
+    player.on(bitmovin.player.PlayerEvent.Error, function () {
         // consecutiveErrors++;
         if (consecutiveErrors < maxErrorCount) {
             console.log('restarting stream');

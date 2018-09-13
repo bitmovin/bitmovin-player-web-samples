@@ -146,7 +146,7 @@
 
     var player = new bitmovin.player.Player(document.getElementById("player"), conf);
 
-    player.on('downloadfinished', onDownloadFinished);
+    player.on(bitmovin.player.PlayerEvent.DownloadFinished, onDownloadFinished);
     player.load(source).then(function() {
         console.log('Successfully loaded source');
     }, function () {

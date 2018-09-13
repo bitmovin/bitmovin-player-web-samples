@@ -1,6 +1,7 @@
 /**
  * Class to Wrap the bitmovin player and take care of SMPTE <-> time conversions
  */
+var bitmovin = window.bitmovin;
 var SmtpeController = /** @class */ (function () {
     function SmtpeController(player, assetDescription) {
         var _this = this;
@@ -22,8 +23,8 @@ var SmtpeController = /** @class */ (function () {
         };
         this.player = player;
         this.assetDescription = assetDescription;
-        player.on('paused', this.playPauseHandler);
-        player.on('playing', this.playPauseHandler);
+        player.on(bitmovin.player.PlayerEvent.Paused, this.playPauseHandler);
+        player.on(bitmovin.player.PlayerEvent.Playing, this.playPauseHandler);
         this.load(assetDescription);
     }
     /**

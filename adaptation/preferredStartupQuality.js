@@ -26,7 +26,7 @@
  * For more information, please refer to <http://unlicense.org>
  *
  ****************************************************************************/
-
+const bitmovin = window.bitmovin;
 var PreferredStartupQuality = function (preferredStartupQualityBps, startupPhaseSeconds, conf) {
     var player;
     var availableQualities = null;
@@ -70,7 +70,7 @@ var PreferredStartupQuality = function (preferredStartupQualityBps, startupPhase
     conf.adaptation.mobile.onVideoAdaptation = onVideoAdaptation;
 
     player = new bitmovin.player.Player(document.getElementById("player"), conf);
-    player.on('sourceloaded', onReady);
+    player.on(bitmovin.player.PlayerEvent.SourceLoaded, onReady);
 
     player.load(conf.source).then(function() {
         console.log('Successfully loaded source');
