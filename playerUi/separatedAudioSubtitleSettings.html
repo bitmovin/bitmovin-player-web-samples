@@ -9,11 +9,11 @@
     <link rel="icon" type="../image/png" href="../images/bit-fav.png">
     <!-- Bitmovin Player -->
     <script type="text/javascript"
-            src="https://bitmovin-a.akamaihd.net/bitmovin-player/staging/8/bitmovinplayer.js"></script>
+            src="//cdn.bitmovin.com/player/web/8/bitmovinplayer.js"></script>
     <script type="text/javascript"
-            src="https://bitmovin-a.akamaihd.net/bitmovin-player/staging/8/bitmovinplayer-ui.js"></script>
+            src="//cdn.bitmovin.com/player/web/8/bitmovinplayer-ui.js"></script>
     <link rel="stylesheet"
-          href="https://bitmovin-a.akamaihd.net/bitmovin-player/staging/8/bitmovinplayer-ui.css">
+          href="//cdn.bitmovin.com/player/web/8/bitmovinplayer-ui.css">
     <style>
         body {
             margin: 0;
@@ -110,6 +110,7 @@
             background-image: url(cc_symbol_selected.svg);
             background-size: contain;
         }
+
         .bmpui-ui-skin-modern .bmpui-ui-subtitlesettingstogglebutton.bmpui-off {
             background-image: url(cc_symbol.svg);
             background-size: contain;
@@ -164,51 +165,66 @@
     };
     var player = new bitmovin.player.Player(document.getElementById("player"), conf);
 
+    // Create UI instance
+    var uiManager = new bitmovin.playerui.UIManager(player, createUIContainer());
+
     // Setup the player
     player.load(source).then(() => {
-        var subtitleOverlay = new bitmovin.playerui.SubtitleOverlay();
+        console.log('Source loaded successful')
+    }, function () {
+        console.log('Error while loading source');
+    });
 
-        var settingsPanel = new bitmovin.playerui.SettingsPanel({
+    function createUIContainer() {
+        let subtitleOverlay = new bitmovin.playerui.SubtitleOverlay();
+
+        let settingsPanel = new bitmovin.playerui.SettingsPanel({
             components: [
-                new bitmovin.playerui.SettingsPanelItem('Video Quality', new bitmovin.playerui.VideoQualitySelectBox()),
-                new bitmovin.playerui.SettingsPanelItem('Speed', new bitmovin.playerui.PlaybackSpeedSelectBox()),
-                new bitmovin.playerui.SettingsPanelItem('Audio Quality', new bitmovin.playerui.AudioQualitySelectBox()),
+                new bitmovin.playerui.SettingsPanelPage({
+                    components: [
+                        new bitmovin.playerui.SettingsPanelItem('Video Quality', new bitmovin.playerui.VideoQualitySelectBox()),
+                        new bitmovin.playerui.SettingsPanelItem('Speed', new bitmovin.playerui.PlaybackSpeedSelectBox()),
+                        new bitmovin.playerui.SettingsPanelItem('Audio Quality', new bitmovin.playerui.AudioQualitySelectBox()),
+                    ],
+                }),
             ],
             hidden: true,
         });
 
-        var subtitleListBox = new bitmovin.playerui.SubtitleListBox();
-        var subtitleSettingsPanel = new bitmovin.playerui.SettingsPanel({
+        let subtitleListBox = new bitmovin.playerui.SubtitleListBox();
+        let subtitleSettingsPanel = new bitmovin.playerui.SettingsPanel({
             components: [
-                new bitmovin.playerui.SettingsPanelItem(null, subtitleListBox),
+                new bitmovin.playerui.SettingsPanelPage({
+                    components: [
+                        new bitmovin.playerui.SettingsPanelItem(null, subtitleListBox),
+                    ],
+                }),
             ],
             hidden: true,
         });
 
-        var audioTrackListBox = new bitmovin.playerui.AudioTrackListBox();
-        var audioTrackSettingsPanel = new bitmovin.playerui.SettingsPanel({
+        let audioTrackListBox = new bitmovin.playerui.AudioTrackListBox();
+        let audioTrackSettingsPanel = new bitmovin.playerui.SettingsPanel({
             components: [
-                new bitmovin.playerui.SettingsPanelItem(null, audioTrackListBox),
+                new bitmovin.playerui.SettingsPanelPage({
+                    components: [
+                        new bitmovin.playerui.SettingsPanelItem(null, audioTrackListBox),
+                    ],
+                }),
             ],
             hidden: true,
         });
 
-        var controlBar = new bitmovin.playerui.ControlBar({
+        let controlBar = new bitmovin.playerui.ControlBar({
             components: [
                 audioTrackSettingsPanel,
                 subtitleSettingsPanel,
                 settingsPanel,
                 new bitmovin.playerui.Container({
                     components: [
-                        new bitmovin.playerui.PlaybackTimeLabel({
-                            timeLabelMode: bitmovin.playerui.PlaybackTimeLabelMode.CurrentTime,
-                            hideInLivePlayback: true
-                        }),
-                        new bitmovin.playerui.SeekBar({label: new bitmovin.playerui.SeekBarLabel()}),
-                        new bitmovin.playerui.PlaybackTimeLabel({
-                            timeLabelMode: bitmovin.playerui.PlaybackTimeLabelMode.TotalTime,
-                            cssClasses: ['text-right']
-                        }),
+                        new bitmovin.playerui.PlaybackTimeLabel({ timeLabelMode: bitmovin.playerui.PlaybackTimeLabelMode.CurrentTime, hideInLivePlayback: true }),
+                        new bitmovin.playerui.SeekBar({ label: new bitmovin.playerui.SeekBarLabel() }),
+                        new bitmovin.playerui.PlaybackTimeLabel({ timeLabelMode: bitmovin.playerui.PlaybackTimeLabelMode.TotalTime, cssClasses: ['text-right'] }),
                     ],
                     cssClasses: ['controlbar-top'],
                 }),
@@ -230,7 +246,7 @@
                             settingsPanel: subtitleSettingsPanel,
                             cssClass: 'ui-subtitlesettingstogglebutton',
                         }),
-                        new bitmovin.playerui.SettingsToggleButton({settingsPanel: settingsPanel}),
+                        new bitmovin.playerui.SettingsToggleButton({ settingsPanel: settingsPanel }),
                         new bitmovin.playerui.FullscreenToggleButton(),
                     ],
                     cssClasses: ['controlbar-bottom'],
@@ -238,7 +254,7 @@
             ],
         });
 
-        var uiContainer = new bitmovin.playerui.UIContainer({
+        return new bitmovin.playerui.UIContainer({
             components: [
                 subtitleOverlay,
                 new bitmovin.playerui.BufferingOverlay(),
@@ -250,14 +266,8 @@
                 new bitmovin.playerui.Watermark(),
                 new bitmovin.playerui.ErrorMessageOverlay(),
             ],
-            cssClasses: ['ui-skin-modern'],
         });
-
-        // Create UI instance
-        var uiManager = new bitmovin.playerui.UIManager(player, uiContainer);
-    }, function () {
-        console.log('Error while loading source');
-    });
+    }
 </script>
 </body>
 </html>

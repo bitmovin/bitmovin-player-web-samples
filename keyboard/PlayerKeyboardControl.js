@@ -4,6 +4,7 @@
  * This source code and its use and distribution, is subject to the terms
  * and conditions of the applicable license agreement.
  ****************************************************************************/
+var bitmovin = window.bitmovin;
 /**
  * Default implementation of the KeyMap to Control the player
  */
@@ -31,15 +32,15 @@ var DefaultPlayerKeymap = /** @class */ (function () {
         };
         this.enter_fullscreen = {
             keyBinding: 'f', callback: function (player) {
-                if (!player.isFullscreen()) {
-                    player.enterFullscreen();
+                if (player.getViewMode() !== bitmovin.player.ViewMode.Fullscreen) {
+                    player.setViewMode(bitmovin.player.ViewMode.Fullscreen);
                 }
             }
         };
         this.exit_fullscreen = {
             keyBinding: 'esc', callback: function (player) {
-                if (player.isFullscreen()) {
-                    player.exitFullscreen();
+                if (player.getViewMode() === bitmovin.player.ViewMode.Fullscreen) {
+                    player.setViewMode(bitmovin.player.ViewMode.Inline);
                 }
             }
         };

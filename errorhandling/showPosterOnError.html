@@ -9,7 +9,7 @@
     <link rel="icon" type="../image/png" href="../images/bit-fav.png">
     <!-- Bitmovin Player -->
     <script type="text/javascript"
-            src="https://bitmovin-a.akamaihd.net/bitmovin-player/staging/8/bitmovinplayer.js"></script>
+            src="//cdn.bitmovin.com/player/web/8/bitmovinplayer.js"></script>
     <style>
         body {
             margin: 0;
@@ -170,6 +170,7 @@
                 switch (errObj.code) {
                     case 1208:
                     case 1209:
+                    case 1210:
                     case 1400:
                     case 1401:
                         errorHandler();

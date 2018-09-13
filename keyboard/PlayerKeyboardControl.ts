@@ -4,7 +4,7 @@
  * This source code and its use and distribution, is subject to the terms
  * and conditions of the applicable license agreement.
  ****************************************************************************/
-
+const bitmovin = window.bitmovin;
 /**
  * Default implementation of the KeyMap to Control the player
  */
@@ -29,15 +29,15 @@ class DefaultPlayerKeymap implements PlayerKeyMap {
     };
     enter_fullscreen = <KeyToFunctionBinding>{
         keyBinding: 'f', callback: (player: SupportedPlayerTypes) => {
-            if (!player.isFullscreen()) {
-                player.enterFullscreen();
+            if (player.getViewMode() !== bitmovin.player.ViewMode.Fullscreen) {
+                player.setViewMode(bitmovin.player.ViewMode.Fullscreen);
             }
         }
     };
     exit_fullscreen = <KeyToFunctionBinding>{
         keyBinding: 'esc', callback: (player: SupportedPlayerTypes) => {
-            if (player.isFullscreen()) {
-                player.exitFullscreen();
+            if (player.getViewMode() === bitmovin.player.ViewMode.Fullscreen) {
+                player.setViewMode(bitmovin.player.ViewMode.Inline);
             }
         }
     };

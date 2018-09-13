@@ -1,4 +1,4 @@
-import Player from 'bitmovin-player';
+import { Player } from 'bitmovin-player';
 import { UIFactory } from 'bitmovin-player-ui';
 require('bitmovin-player-ui/dist/css/bitmovinplayer-ui.min.css');
 
@@ -15,7 +15,7 @@ var source = {
 
 var player = new Player(document.getElementById('player'), conf);
 
-UIFactory.buildDefaultUI(player);
+UIFactory.buildDefaultUI(player, {});
 player.load(source).then(function () {
     console.log('Successfully loaded source');
 }, function () {

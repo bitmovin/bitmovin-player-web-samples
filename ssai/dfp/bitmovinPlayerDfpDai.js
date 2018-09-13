@@ -14,6 +14,7 @@
     player = bmPlayer;
     fallbackContent = fallbackAsset;
 
+    console.log(player.getVideoElement());
     var streamManager = new google.ima.dai.api.StreamManager(player.getVideoElement());
     streamManager.setClickElement(player.getContainer());
     streamManager.addEventListener(

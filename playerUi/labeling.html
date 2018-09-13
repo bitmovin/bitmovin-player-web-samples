@@ -9,7 +9,7 @@
     <link rel="icon" type="../image/png" href="../images/bit-fav.png">
     <!-- Bitmovin Player -->
     <script type="text/javascript"
-            src="https://bitmovin-a.akamaihd.net/bitmovin-player/staging/8/bitmovinplayer.js"></script>
+            src="//cdn.bitmovin.com/player/web/8/bitmovinplayer.js"></script>
 
     <style>
         body {
@@ -128,7 +128,6 @@
 <script type="text/javascript">
     var getQualityLabels = function (data) {
         if (!data.width) {
-            console.warn('not supported in this browser');
             return;
         }
         if (data.width >= 1920) {
@@ -144,7 +143,6 @@
 
     var getSubtitleLabels = function (data) {
         if (!data.label) {
-            console.warn('not supported in this browser');
             return;
         }
         var label = data.label.toUpperCase() + ' (SubtitleID: ' + data.id + ')';
@@ -156,7 +154,6 @@
 
     var getTrackLabels = function (data) {
         if (!data.mimeType) {
-            console.warn('not supported in this browser');
             return;
         }
         if (data.mimeType.indexOf('audio') >= 0) {

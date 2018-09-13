@@ -8,13 +8,13 @@
     <link href='//fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'/>
 
     <!-- Bitmovin Player -->
-    <script type="text/javascript" src="https://bitmovin-a.akamaihd.net/bitmovin-player/staging/8/bitmovinplayer.js"></script>
+    <script type="text/javascript" src="//cdn.bitmovin.com/player/web/8/bitmovinplayer.js"></script>
 
     <!-- Bitmovin Player UI -->
     <!-- This loads the whole UI script and styles for all UI components. For production
     it might make sense to strip out everything that is not needed to decrease the file sizes. -->
-    <link rel="stylesheet" href="https://bitmovin-a.akamaihd.net/bitmovin-player/staging/8/bitmovinplayer-ui.css">
-    <script type="text/javascript" src="https://bitmovin-a.akamaihd.net/bitmovin-player/staging/8/bitmovinplayer-ui.js"></script>
+    <link rel="stylesheet" href="//cdn.bitmovin.com/player/web/8/bitmovinplayer-ui.css">
+    <script type="text/javascript" src="//cdn.bitmovin.com/player/web/8/bitmovinplayer-ui.js"></script>
 
     <style>
         body {
@@ -160,8 +160,7 @@
         var subtitleUI = new bitmovin.playerui.UIContainer({
             components: [
                 new bitmovin.playerui.SubtitleOverlay(),
-            ],
-            cssClasses: ['ui-skin-modern'],
+            ]
         });
 
         // Launch the UI
