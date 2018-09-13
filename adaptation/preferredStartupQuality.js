@@ -79,7 +79,7 @@ var PreferredStartupQuality = function (preferredStartupQualityBps, startupPhase
     });
 
     this.remove = function () {
-        player.off('ready', onReady);
+        player.off(bitmovin.player.PlayerEvent.SourceLoaded, onReady);
         clearTimeout(startupTimerID);
         isInStartup = true;
         availableQualities = null;
