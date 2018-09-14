@@ -1,6 +1,7 @@
 /**
  * Class to Wrap the bitmovin player and take care of SMPTE <-> time conversions
  */
+const bitmovin = window.bitmovin;
 
 class SmtpeController {
 
@@ -21,8 +22,8 @@ class SmtpeController {
   constructor(player: any, assetDescription: AssetDescription) {
     this.player = player;
     this.assetDescription = assetDescription;
-    player.addEventHandler('onPaused', this.playPauseHandler);
-    player.addEventHandler('onPlaying', this.playPauseHandler);
+    player.on(bitmovin.player.PlayerEvent.Paused, this.playPauseHandler);
+    player.on(bitmovin.player.PlayerEvent.Playing, this.playPauseHandler);
     this.load(assetDescription);
   }
 
@@ -34,7 +35,7 @@ class SmtpeController {
    * but necessary.
    */
   private playPauseHandler = (event: any) => {
-    if (event.type === 'onPlaying') {
+    if (event.type === 'playing') {
       this.hasBeenPlaying = true;
     } else if (this.hasBeenPlaying) {
       this.hasBeenPlaying = false;

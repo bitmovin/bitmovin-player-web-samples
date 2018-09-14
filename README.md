@@ -28,6 +28,8 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
    * [timelineMarkers](playerUi/timelineMarkers.html): Identify the differents parts of a stream by setting some markers over the timeline
    * [separatedSubtitleAudioSettings](playerUi/separatedAudioSubtitleSettings.html): Extracted audio tracks and subtitle settings from the settings panel direct into the controlBar
    * [labeling](playerUi/labeling.html): Change Languages, Quality and Subtitles labels
+* [**react**](react/)
+    * [reactJs](react/reactjs.html): Using the Bitmovin Player within a react component
 * [**playlist**](playlist/)
     * [simplePlaylist](playlist/simplePlaylist.html): Build a playlist with the Bitmovin HTML5 Player API.
 * [**requirejs-demo**](requirejs-demo/)
@@ -38,6 +40,8 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
     * [dfp](ssai/dfp/): Use Google DoubleClick for Server-side ad insertion (SSAI)
 * [**subtitles**](subtitles/)
     * [customSubtitleDisplay](subtitles/customSubtitleDisplay.js): Render subtitles using the ON_CUE_ENTER and ON_CUE_EXIT player events.
+* [**vue**](vue)
+    * [vueJs](vue/vuejs.html): Using the Bitmovin Player within a vue.js component
 * [**webpack-demo**](webpack-demo/)
     * [buildPlayerWithWebpack](webpack-demo/buildPlayerWithWebpack.html): Build the Bitmovin HTML5 Player using webpack.
 

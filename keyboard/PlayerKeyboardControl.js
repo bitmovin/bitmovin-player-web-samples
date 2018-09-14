@@ -4,10 +4,11 @@
  * This source code and its use and distribution, is subject to the terms
  * and conditions of the applicable license agreement.
  ****************************************************************************/
+var bitmovin = window.bitmovin;
 /**
  * Default implementation of the KeyMap to Control the player
  */
-var DefaultPlayerKeymap = (function () {
+var DefaultPlayerKeymap = /** @class */ (function () {
     function DefaultPlayerKeymap() {
         this.toggle_play = {
             keyBinding: 'space', callback: function (player) {
@@ -31,15 +32,15 @@ var DefaultPlayerKeymap = (function () {
         };
         this.enter_fullscreen = {
             keyBinding: 'f', callback: function (player) {
-                if (!player.isFullscreen()) {
-                    player.enterFullscreen();
+                if (player.getViewMode() !== bitmovin.player.ViewMode.Fullscreen) {
+                    player.setViewMode(bitmovin.player.ViewMode.Fullscreen);
                 }
             }
         };
         this.exit_fullscreen = {
             keyBinding: 'esc', callback: function (player) {
-                if (player.isFullscreen()) {
-                    player.exitFullscreen();
+                if (player.getViewMode() === bitmovin.player.ViewMode.Fullscreen) {
+                    player.setViewMode(bitmovin.player.ViewMode.Inline);
                 }
             }
         };
@@ -124,7 +125,7 @@ var DefaultPlayerKeymap = (function () {
 /**
  * Class to control a given player instance via the keyboard
  */
-var PlayerKeyboardControl = (function () {
+var PlayerKeyboardControl = /** @class */ (function () {
     function PlayerKeyboardControl(wrappedPlayer, preventPageScroll, config) {
         if (preventPageScroll === void 0) { preventPageScroll = true; }
         var _this = this;
@@ -157,7 +158,7 @@ var PlayerKeyboardControl = (function () {
         // this also registers the event listeners
         this.enable(true);
         // destroy this together with the player
-        this.player.addEventHandler('onDestroy', function () {
+        this.player.on(bitmovin.player.PlayerEvent.Destroy, function () {
             _this.destroy();
         });
     }
@@ -227,7 +228,7 @@ var PlayerKeyboardControl = (function () {
 /**
  * Class to handle mappings from KeyboardEvent.keyCode to a string representation
  */
-var KeyboardEventMapper = (function () {
+var KeyboardEventMapper = /** @class */ (function () {
     function KeyboardEventMapper() {
     }
     /**
@@ -313,113 +314,112 @@ var KeyboardEventMapper = (function () {
     KeyboardEventMapper.isScrollKey = function (keyCode) {
         return KeyboardEventMapper.ScrollingKeys.hasOwnProperty('' + keyCode);
     };
+    KeyboardEventMapper.KeyBindingSeparator = ' / ';
+    KeyboardEventMapper.KeyCommandSeparator = '+';
+    /**
+     * keys which will represented as a modifier
+     */
+    KeyboardEventMapper.ModifyerKeys = {
+        16: 'shift',
+        17: 'ctrl',
+        18: 'alt',
+        20: 'capslock',
+        91: 'meta',
+        93: 'meta',
+        224: 'meta'
+    };
+    /**
+     * Special keys on the keyboard which are not modifiers
+     */
+    KeyboardEventMapper.ControlKeys = {
+        8: 'backspace',
+        9: 'tab',
+        13: 'enter',
+        19: 'pause',
+        27: 'esc',
+        32: 'space',
+        33: 'pageup',
+        34: 'pagedown',
+        35: 'end',
+        36: 'home',
+        37: 'left',
+        38: 'up',
+        39: 'right',
+        40: 'down',
+        44: 'print',
+        45: 'ins',
+        46: 'del',
+        145: 'scrolllock',
+        186: ';',
+        187: '=',
+        188: ',',
+        189: '-',
+        190: '.',
+        191: '/',
+        192: '`',
+        219: '[',
+        220: '\\',
+        221: ']',
+        222: '\''
+    };
+    /**
+     * Keys wich normally move the page
+     */
+    KeyboardEventMapper.ScrollingKeys = {
+        32: 'space',
+        33: 'pageup',
+        34: 'pagedown',
+        35: 'end',
+        36: 'home',
+        37: 'left',
+        38: 'up',
+        39: 'right',
+        40: 'down',
+    };
+    /**
+     * All number on the numblock an the keys surrounding it
+     */
+    KeyboardEventMapper.NumblockKeys = {
+        96: '0',
+        97: '1',
+        98: '2',
+        99: '3',
+        100: '4',
+        101: '5',
+        102: '6',
+        103: '7',
+        104: '8',
+        105: '9',
+        106: '*',
+        107: '+',
+        109: '-',
+        110: '.',
+        111: '/',
+        144: 'numlock'
+    };
+    /**
+     * F1 - F19
+     */
+    KeyboardEventMapper.F_Keys = {
+        112: 'F1',
+        113: 'F2',
+        114: 'F3',
+        115: 'F4',
+        116: 'F5',
+        117: 'F6',
+        118: 'F7',
+        119: 'F8',
+        120: 'F9',
+        121: 'F10',
+        122: 'F11',
+        123: 'F12',
+        124: 'F13',
+        125: 'F14',
+        126: 'F15',
+        127: 'F16',
+        128: 'F17',
+        129: 'F18',
+        130: 'F19',
+    };
     return KeyboardEventMapper;
 }());
-KeyboardEventMapper.KeyBindingSeparator = ' / ';
-KeyboardEventMapper.KeyCommandSeparator = '+';
-/**
- * keys which will represented as a modifier
- */
-KeyboardEventMapper.ModifyerKeys = {
-    16: 'shift',
-    17: 'ctrl',
-    18: 'alt',
-    20: 'capslock',
-    91: 'meta',
-    93: 'meta',
-    224: 'meta'
-};
-/**
- * Special keys on the keyboard which are not modifiers
- */
-KeyboardEventMapper.ControlKeys = {
-    8: 'backspace',
-    9: 'tab',
-    13: 'enter',
-    19: 'pause',
-    27: 'esc',
-    32: 'space',
-    33: 'pageup',
-    34: 'pagedown',
-    35: 'end',
-    36: 'home',
-    37: 'left',
-    38: 'up',
-    39: 'right',
-    40: 'down',
-    44: 'print',
-    45: 'ins',
-    46: 'del',
-    145: 'scrolllock',
-    186: ';',
-    187: '=',
-    188: ',',
-    189: '-',
-    190: '.',
-    191: '/',
-    192: '`',
-    219: '[',
-    220: '\\',
-    221: ']',
-    222: '\''
-};
-/**
- * Keys wich normally move the page
- */
-KeyboardEventMapper.ScrollingKeys = {
-    32: 'space',
-    33: 'pageup',
-    34: 'pagedown',
-    35: 'end',
-    36: 'home',
-    37: 'left',
-    38: 'up',
-    39: 'right',
-    40: 'down'
-};
-/**
- * All number on the numblock an the keys surrounding it
- */
-KeyboardEventMapper.NumblockKeys = {
-    96: '0',
-    97: '1',
-    98: '2',
-    99: '3',
-    100: '4',
-    101: '5',
-    102: '6',
-    103: '7',
-    104: '8',
-    105: '9',
-    106: '*',
-    107: '+',
-    109: '-',
-    110: '.',
-    111: '/',
-    144: 'numlock'
-};
-/**
- * F1 - F19
- */
-KeyboardEventMapper.F_Keys = {
-    112: 'F1',
-    113: 'F2',
-    114: 'F3',
-    115: 'F4',
-    116: 'F5',
-    117: 'F6',
-    118: 'F7',
-    119: 'F8',
-    120: 'F9',
-    121: 'F10',
-    122: 'F11',
-    123: 'F12',
-    124: 'F13',
-    125: 'F14',
-    126: 'F15',
-    127: 'F16',
-    128: 'F17',
-    129: 'F18',
-    130: 'F19'
-};
-//# sourceMappingURL=PlayerKeyboardControl.js.map

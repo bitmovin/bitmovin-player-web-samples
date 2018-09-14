@@ -5,7 +5,7 @@
  * This source code and its use and distribution, is subject to the terms
  * and conditions of the applicable license agreement.
  ****************************************************************************/
-
+const bitmovin = window.bitmovin;
 (function() {
   var player;
   var fallbackContent;
@@ -14,8 +14,9 @@
     player = bmPlayer;
     fallbackContent = fallbackAsset;
 
+    console.log(player.getVideoElement());
     var streamManager = new google.ima.dai.api.StreamManager(player.getVideoElement());
-    streamManager.setClickElement(player.getFigure());
+    streamManager.setClickElement(player.getContainer());
     streamManager.addEventListener(
       [google.ima.dai.api.StreamEvent.Type.LOADED,
         google.ima.dai.api.StreamEvent.Type.ERROR,
@@ -24,7 +25,7 @@
       onStreamEvent,
       false);
 
-    player.addEventHandler('onMetadata', function(data) {
+    player.on(bitmovin.player.PlayerEvent.Metadata, function(data) {
       if (streamManager && data && data.metadataType === 'ID3') {
         streamManager.onTimedMetadata(data.metadata);
       }
@@ -54,7 +55,7 @@
         if (fallbackContent) {
           loadSource(fallbackContent);
         } else {
-          player.fireEvent('onError', { message: 'Could not get a stream for assetKey' });
+          console.log('Could not get a stream for assetKey');
         }
         break;
       case google.ima.dai.api.StreamEvent.Type.AD_BREAK_STARTED:

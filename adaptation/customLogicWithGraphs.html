@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
     <link rel="icon" type="../image/png" href="../images/bit-fav.png">
     <!-- Bitmovin Player -->
-    <script type="text/javascript" src="//bitmovin-a.akamaihd.net/bitmovin-player/stable/7/bitmovinplayer.js"></script>
+    <script type="text/javascript" src="//cdn.bitmovin.com/player/web/8/bitmovinplayer.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="bitrateGraphs.js"></script>
     <style>
@@ -74,20 +74,6 @@
             margin: 40px;
         }
 
-        #webserver-warning {
-            border: 1px solid #fff;
-            padding: 10px;
-            width: 70%;
-            margin: auto;
-            font-weight: 400;
-            font-size: 0.8em;
-            background: #f69c2a;
-        }
-
-        #webserver-warning h1, #webserver-warning h2 {
-            font-weight: 400;
-        }
-
         #player {
             max-width: 900px;
             width: 90%;
@@ -145,7 +131,7 @@
             <div class="charts">
                 <div id="curve_chart" align='right'></div>
                 <label for="maxBitrate">Max Bitrate (Mbps)</label>
-                <input type="text" name="MaxBitrate" id="maxBitrate" value="5" />
+                <input type="text" name="MaxBitrate" id="maxBitrate" value="5"/>
             </div>
             <div class="description">
                 <p>For more information about the bitmovin player, please have a look at our online <a
@@ -156,165 +142,167 @@
 </div>
 
 <script type="text/javascript">
-  if (location.protocol === "file:") {
-    document.getElementById("webserver-warning").style.display = "block";
-  }
 
-  var isSeeking = false;
-  var isInBufferSeek = false;
-  var lastVideoQuality = null;
-  var availableVideoQualities, availableAudioQualities;
-  var videoDownloadCount = 0;
-  var bandwidthMeasurements = [];
+    var isSeeking = false;
+    var isInBufferSeek = false;
+    var lastVideoQuality = null;
+    var availableVideoQualities, availableAudioQualities;
+    var videoDownloadCount = 0;
+    var bandwidthMeasurements = [];
 
-  function getLowerVideoQuality(id) {
-    var currentIndex = availableVideoQualities.map(function(rep) {
-      return rep.id;
-    }).indexOf(id);
+    function getLowerVideoQuality(id) {
+        var currentIndex = availableVideoQualities.map(function (rep) {
+            return rep.id;
+        }).indexOf(id);
 
-    return availableVideoQualities[Math.max(0, currentIndex - 1)];
-  }
-
-  function getVideoQualityById(id) {
-    return availableVideoQualities.find(function(rep) {
-      return id === rep.id;
-    });
-  }
-
-  function getNearestAudioQuality(bandwidth) {
-    for (var i = availableAudioQualities.length - 1; i >= 0; i--) {
-      if (availableAudioQualities[i].bitrate <= bandwidth) {
-        return availableAudioQualities[i];
-      }
+        return availableVideoQualities[Math.max(0, currentIndex - 1)];
     }
 
-    return availableAudioQualities[0];
-  }
-
-  function calcAverageBandwidth() {
-    return Math.round(bandwidthMeasurements.reduce(function(acc, val) {
-      return acc + val;
-    }, 0) / bandwidthMeasurements.length) || 0;
-  }
-
-  var conf = {
-    key: "YourKEY",
-    source: {
-      dash: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd",
-      hls: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8",
-      progressive: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/MI201109210084_mpeg-4_hd_high_1080p25_10mbits.mp4",
-      poster: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/poster.jpg"
-    },
-    events: {
-      onReady: function() {
-        availableVideoQualities = player.getAvailableVideoQualities();
-        availableAudioQualities = player.getAvailableAudioQualities();
-      },
-      onSeek: function(evt) {
-        var bufferLevel = Math.min(player.getAudioBufferLength(), player.getVideoBufferLength());
-        // only do that if we seek outside of the buffer
-        if (evt.seekTarget > (evt.position + bufferLevel)) {
-          // save quality one below current, faster start after seek
-          var currentQuality = player.getDownloadedVideoData();
-          lastVideoQuality = getLowerVideoQuality(currentQuality.id);
-          console.info('ABR - set lastQuality on seek: ' + lastVideoQuality.id);
-        } else {
-          isInBufferSeek = true;
-        }
-
-        isSeeking = true;
-      },
-      onSeeked: function() {
-        if (isInBufferSeek) {
-          isInBufferSeek = false;
-          isSeeking = false;
-        }
-      },
-      onStallStarted: function() {
-        console.info('ABR - onStallStarted', {
-          video: player.getVideoBufferLength(),
-          audio: player.getAudioBufferLength()
+    function getVideoQualityById(id) {
+        return availableVideoQualities.find(function (rep) {
+            return id === rep.id;
         });
-        if (!isSeeking && lastVideoQuality) {
-          console.info('ABR - reset set lastQuality on stall');
-          lastVideoQuality = null;
-        }
-      },
-      onStallEnded: function() {
-        console.info('ABR - onStallEnded');
-        isSeeking = false;
-      },
-      onDownloadFinished: function(evt) {
-        if (evt.downloadType === 'media' && evt.mimeType.indexOf('video') > -1 && evt.size > 2000) {
-          videoDownloadCount++;
-
-          var measurement = (evt.size * 8) / evt.downloadTime;
-          console.info('ABR - BANDWIDTH', measurement, JSON.stringify(bandwidthMeasurements));
-          bandwidthMeasurements.push(measurement);
-          if (bandwidthMeasurements.length > 5) {
-            bandwidthMeasurements.shift();
-          }
-        }
-      }
-    },
-    adaptation: {
-      desktop: {
-        onVideoAdaptation: function(evt) {
-          var suggestedQuality = getVideoQualityById(evt.suggested);
-
-          if (isSeeking && lastVideoQuality) {
-            console.info('ABR - keep quality during seeking: ' + lastVideoQuality.id);
-            // return last quality during seeking
-            return lastVideoQuality.id;
-          }
-
-          if (lastVideoQuality && lastVideoQuality.bitrate > suggestedQuality.bitrate) {
-            console.info('ABR - onVideoAdaptation (override), ' + JSON.stringify({
-              id: lastVideoQuality.id,
-              bitrate: (lastVideoQuality.bitrate / 1000000).toFixed(2),
-              videoBuffer: player.getVideoBufferLength(),
-              audioBuffer: player.getAudioBufferLength()
-            }));
-            return lastVideoQuality.id;
-          } else if (lastVideoQuality) {
-            console.info('ABR - reset adaptation logic override');
-            // reset adaptation logic override
-            lastVideoQuality = null;
-          }
-
-          console.info('ABR - onVideoAdaptation (suggested), ' + JSON.stringify({
-            id: evt.suggested,
-            bitrate: (suggestedQuality.bitrate / 1000000).toFixed(2),
-            videoBuffer: player.getVideoBufferLength(),
-            audioBuffer: player.getAudioBufferLength()
-          }));
-          // return suggested quality ID
-          return evt.suggested;
-        },
-        onAudioAdaptation: function(evt) {
-          // choose audio quality on 10% of average bandwidth
-          var averageBandwidth = calcAverageBandwidth();
-          var selectedAudioQuality = getNearestAudioQuality(averageBandwidth * 0.1);
-
-          console.info('ABR - onAudioAdaptation ' + JSON.stringify({
-            bandwidth: averageBandwidth,
-            suggested: evt.suggested,
-            selected: selectedAudioQuality.id,
-            bitrate: selectedAudioQuality.bitrate
-          }));
-
-          return selectedAudioQuality.id;
-        }
-      }
     }
-  };
 
-  var player = bitmovin.player("player");
-  var bitrateGraphs = new BitrateGraphs(player);
+    function getNearestAudioQuality(bandwidth) {
+        for (var i = availableAudioQualities.length - 1; i >= 0; i--) {
+            if (availableAudioQualities[i].bitrate <= bandwidth) {
+                return availableAudioQualities[i];
+            }
+        }
 
-  player.setup(conf).then(function() {
-    bitrateGraphs.init();
-  }, function(error) {
-    console.log(error);
-  });
+        return availableAudioQualities[0];
+    }
+
+    function calcAverageBandwidth() {
+        return Math.round(bandwidthMeasurements.reduce(function (acc, val) {
+            return acc + val;
+        }, 0) / bandwidthMeasurements.length) || 0;
+    }
+
+    var conf = {
+        key: "YourKEY",
+        events: {
+            seek: function (evt) {
+                var bufferLevel = Math.min(player.getAudioBufferLength(), player.getVideoBufferLength());
+                // only do that if we seek outside of the buffer
+                if (evt.seekTarget > (evt.position + bufferLevel)) {
+                    // save quality one below current, faster start after seek
+                    var currentQuality = player.getDownloadedVideoData();
+                    lastVideoQuality = getLowerVideoQuality(currentQuality.id);
+                    console.info('ABR - set lastQuality on seek: ' + lastVideoQuality.id);
+                } else {
+                    isInBufferSeek = true;
+                }
+
+                isSeeking = true;
+            },
+            seeked: function () {
+                if (isInBufferSeek) {
+                    isInBufferSeek = false;
+                    isSeeking = false;
+                }
+            },
+            stallstarted: function () {
+                console.info('ABR - onStallStarted', {
+                    video: player.getVideoBufferLength(),
+                    audio: player.getAudioBufferLength()
+                });
+                if (!isSeeking && lastVideoQuality) {
+                    console.info('ABR - reset set lastQuality on stall');
+                    lastVideoQuality = null;
+                }
+            },
+            stallended: function () {
+                console.info('ABR - onStallEnded');
+                isSeeking = false;
+            },
+            downloadfinished: function (evt) {
+                if (evt.downloadType === 'media/video' && evt.mimeType.indexOf('video') > -1 && evt.size > 2000) {
+                    videoDownloadCount++;
+
+                    var measurement = (evt.size * 8) / evt.downloadTime;
+                    console.info('ABR - BANDWIDTH', measurement, JSON.stringify(bandwidthMeasurements));
+                    bandwidthMeasurements.push(measurement);
+                    if (bandwidthMeasurements.length > 5) {
+                        bandwidthMeasurements.shift();
+                    }
+                }
+            }
+        },
+        adaptation: {
+            desktop: {
+                onVideoAdaptation: function (evt) {
+                    // this gets called before `sourceLoaded` so we need to weak init
+                    // the availableAudioQualities & availableVideoQualities
+                    if (!availableVideoQualities) {
+                        availableVideoQualities = player.getAvailableVideoQualities();
+                    }
+                    if (!availableAudioQualities) {
+                        availableAudioQualities = player.getAvailableAudioQualities();
+                    }
+                    var suggestedQuality = getVideoQualityById(evt.suggested);
+
+                    if (isSeeking && lastVideoQuality) {
+                        console.info('ABR - keep quality during seeking: ' + lastVideoQuality.id);
+                        // return last quality during seeking
+                        return lastVideoQuality.id;
+                    }
+
+                    if (lastVideoQuality && lastVideoQuality.bitrate > suggestedQuality.bitrate) {
+                        console.info('ABR - onVideoAdaptation (override), ' + JSON.stringify({
+                            id: lastVideoQuality.id,
+                            bitrate: (lastVideoQuality.bitrate / 1000000).toFixed(2),
+                            videoBuffer: player.getVideoBufferLength(),
+                            audioBuffer: player.getAudioBufferLength()
+                        }));
+                        return lastVideoQuality.id;
+                    } else if (lastVideoQuality) {
+                        console.info('ABR - reset adaptation logic override');
+                        // reset adaptation logic override
+                        lastVideoQuality = null;
+                    }
+
+                    console.info('ABR - onVideoAdaptation (suggested), ' + JSON.stringify({
+                        id: evt.suggested,
+                        bitrate: (suggestedQuality.bitrate / 1000000).toFixed(2),
+                        videoBuffer: player.getVideoBufferLength(),
+                        audioBuffer: player.getAudioBufferLength()
+                    }));
+                    // return suggested quality ID
+                    return evt.suggested;
+                },
+                onAudioAdaptation: function (evt) {
+                    // choose audio quality on 10% of average bandwidth
+                    var averageBandwidth = calcAverageBandwidth();
+                    var selectedAudioQuality = getNearestAudioQuality(averageBandwidth * 0.1);
+
+                    console.info('ABR - onAudioAdaptation ' + JSON.stringify({
+                        bandwidth: averageBandwidth,
+                        suggested: evt.suggested,
+                        selected: selectedAudioQuality.id,
+                        bitrate: selectedAudioQuality.bitrate
+                    }));
+
+                    return selectedAudioQuality.id;
+                }
+            }
+        }
+    };
+
+    var source = {
+        dash: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd",
+        hls: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8",
+        progressive: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/MI201109210084_mpeg-4_hd_high_1080p25_10mbits.mp4",
+        poster: "//bitmovin-a.akamaihd.net/content/MI201109210084_1/poster.jpg"
+    };
+
+    var player = new bitmovin.player.Player(document.getElementById("player"), conf);
+    var bitrateGraphs = new BitrateGraphs(player);
+
+    player.load(source).then(function () {
+        bitrateGraphs.init();
+    }, function (error) {
+        console.log(error);
+    });
 </script>

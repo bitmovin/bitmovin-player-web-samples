@@ -9,7 +9,7 @@
     <link rel="icon" type="../image/png" href="../images/bit-fav.png">
     <!-- Bitmovin Player -->
     <script type="text/javascript"
-            src="//bitmovin-a.akamaihd.net/bitmovin-player/stable/7.1/bitmovinplayer.js"></script>
+            src="//cdn.bitmovin.com/player/web/8/bitmovinplayer.js"></script>
     <style>
         body {
             margin: 0;
@@ -73,20 +73,6 @@
             margin: 40px;
         }
 
-        #webserver-warning {
-            border: 1px solid #fff;
-            padding: 10px;
-            width: 70%;
-            margin: auto;
-            font-weight: 400;
-            font-size: 0.8em;
-            background: #f69c2a;
-        }
-
-        #webserver-warning h1, #webserver-warning h2 {
-            font-weight: 400;
-        }
-
         #player {
             max-width: 900px;
             width: 90%;
@@ -139,9 +125,6 @@
     </div>
 </div>
 <script type="text/javascript">
-    if (location.protocol === 'file:') {
-        document.getElementById('webserver-warning').style.display = 'block';
-    }
 
     var streamStarted = false;
     var restartCount = 0;
@@ -151,16 +134,6 @@
 
     var conf = {
         key: 'YOUR-KEY-HERE',
-        source: {
-            dash: "https://bitdash-a.akamaihd.net/content/art-of-motion_drm/mpds/11331.mpd",
-            drm: {
-                widevine: {
-                    LA_URL: "http://widevine-proxy.appspot.com/proxy",
-                    licenseRequestRetryDelay: 5000,
-                    maxLicenseRequestRetries: Infinity
-                }
-            }
-        },
         tweaks: {
             max_retries: Infinity,
             retry_delay: 1000,
@@ -169,13 +142,13 @@
             }
         },
         events: {
-            onDownloadFinished: function (data) {
+            downloadfinished: function (data) {
                 if (data.downloadType === 'license' && streamStarted === false
                     && (data.httpStatus === 400 || data.httpStatus === 500)) {
                     if (restartCount < restartLimit) {
                         restartCount++;
                         triggerPlayOnRestart = true;
-                        this.load(conf.source);
+                        this.load(source);
                         console.warn('Reloaded player due to error loading DRM License');
                     } else {
                         console.warn('Could not load DRM License');
@@ -183,28 +156,34 @@
                     }
                 }
             },
-            onTimeChanged: function (data) {
+            timechanged: function (data) {
                 streamStarted = true;
             },
-            onSourceUnloaded: function (data) {
+            sourceunloaded: function (data) {
                 streamStarted = false;
             },
-            onReady: function (data) {
+            ready: function (data) {
                 if (triggerPlayOnRestart) {
                     triggerPlayOnRestart = false;
                     this.play();
                 }
             }
-        },
-        style: {
-            width: '100%',
-            aspectratio: '16:9'
+        }
+    };
+    var source = {
+        dash: "https://bitdash-a.akamaihd.net/content/art-of-motion_drm/mpds/11331.mpd",
+        drm: {
+            widevine: {
+                LA_URL: "http://widevine-proxy.appspot.com/proxy",
+                licenseRequestRetryDelay: 5000,
+                maxLicenseRequestRetries: Infinity
+            }
         }
     };
 
-    player = bitmovin.player('player');
-    player.setup(conf).catch(function () {
-        console.error('Error setting up Bitmovin Player');
+    player = new bitmovin.player.Player(document.getElementById("player"), conf);
+    player.load(source).catch(function () {
+        console.log('Error while loading source');
     });
 
 </script>

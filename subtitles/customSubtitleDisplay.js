@@ -27,7 +27,7 @@
  *
  ****************************************************************************/
 
-function CustomSubtitleDisplay(figure) {
+function CustomSubtitleDisplay(container) {
     var subtitleArea;
     var defaultCellResolution = {
         rows: 15,
@@ -142,7 +142,7 @@ function CustomSubtitleDisplay(figure) {
         regionDiv.style.textAlign = 'center';
 
         updateFontSize = function () {
-            var fontSize = Math.round(figure.clientHeight / cellResolution.rows) + 'px';
+            var fontSize = Math.round(container.clientHeight / cellResolution.rows) + 'px';
             regionDiv.style.fontSize = fontSize;
             regionDiv.style.lineHeight = fontSize;
         };
@@ -249,11 +249,11 @@ function CustomSubtitleDisplay(figure) {
 
         addDefaultRegion();
 
-        var renderingElement = figure.getElementsByTagName('video')[0] || figure.getElementsByTagName('object')[0];
+        var renderingElement = container.getElementsByTagName('video')[0] || container.getElementsByTagName('object')[0];
         if (renderingElement && renderingElement.nextSibling) {
-            figure.insertBefore(subtitleArea, renderingElement.nextSibling);
+            container.insertBefore(subtitleArea, renderingElement.nextSibling);
         } else {
-            figure.appendChild(subtitleArea);
+            container.appendChild(subtitleArea);
         }
     };
     init();

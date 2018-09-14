@@ -26,13 +26,13 @@
  * For more information, please refer to <http://unlicense.org>
  *
  ****************************************************************************/
-
+const bitmovin = window.bitmovin;
 var RateBasedSwitching = function (player, bufferSize, segmentLength) {
     var downloadRates = [];
     var maxBufferLevel = null;
 
     function onDownloadFinished(event) {
-        if (event.downloadType === 'media' && event.url.indexOf('video') > -1 && event.url.indexOf('init.mp4') < 0) {
+        if (event.downloadType === 'media/video' && event.url.indexOf('video') > -1) {
             downloadRates.unshift((event.size * 8) / event.downloadTime);
             while (downloadRates.length > bufferSize) {
                 downloadRates.pop();
@@ -94,15 +94,15 @@ var RateBasedSwitching = function (player, bufferSize, segmentLength) {
         }
 
         var init = function () {
-            player.addEventHandler('onDownloadFinished', onDownloadFinished);
-            player.addEventHandler('onStallStared', resetBuffer);
-            player.addEventHandler('onVideoAdaptation', onVideoAdaptation);
+            player.on(bitmovin.player.PlayerEvent.DownloadFinished, onDownloadFinished);
+            player.on(bitmovin.player.PlayerEvent.StallStarted, resetBuffer);
+            player.on(bitmovin.player.PlayerEvent.VideoAdaptation, onVideoAdaptation);
         };
 
-        if (player.isReady()) {
+        if (player.getSource()) {
             init();
         } else {
-            player.addEventHandler('onReady', init);
+            player.on(bitmovin.player.PlayerEvent.SourceLoaded, init);
         }
 
     })();
