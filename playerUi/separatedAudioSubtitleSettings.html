@@ -176,6 +176,9 @@
             -webkit-filter: none;
         }
 
+        .bmpui-ui-skin-modern .bmpui-subtitle-customization-settings-panel-item {
+            text-align: center;
+        }
 
     </style>
 </head>
@@ -242,6 +245,25 @@
             hidden: true,
         });
 
+        var subtitleCustomizationSettingsPanel = new bitmovin.playerui.subtitlesettings.SubtitleSettingsPanel({
+            hidden: true,
+            overlay: subtitleOverlay,
+            settingsPanel: subtitleSettingsPanel,
+        });
+
+        var subtitleCustomizationOpenButton = new bitmovin.playerui.subtitlesettings.SubtitleSettingsOpenButton({
+            subtitleSettingsPanel: subtitleCustomizationSettingsPanel,
+            settingsPanel: subtitleSettingsPanel,
+        });
+
+        subtitleSettingsPanel.addComponent(
+            new bitmovin.playerui.SettingsPanelItem(
+                null,
+                new bitmovin.playerui.subtitlesettings.SubtitleSettingsLabel({ text: 'Settings', opener: subtitleCustomizationOpenButton }),
+                { cssClasses: ['subtitle-customization-settings-panel-item'] }
+            )
+        );
+
         var audioTrackListBox = new bitmovin.playerui.AudioTrackListBox();
         var audioTrackSettingsPanel = new bitmovin.playerui.SettingsPanel({
             components: [
@@ -254,6 +276,7 @@
             components: [
                 audioTrackSettingsPanel,
                 subtitleSettingsPanel,
+                subtitleCustomizationSettingsPanel,
                 settingsPanel,
                 new bitmovin.playerui.Container({
                     components: [
