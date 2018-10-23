@@ -180,6 +180,24 @@
             text-align: center;
         }
 
+        .bmpui-ui-skin-modern .bmpui-subtitle-customization-settings-panel-item .bmpui-customization-open-button .bmpui-label {
+            display: initial;
+        }
+
+        .bmpui-ui-skin-modern .bmpui-subtitle-customization-settings-panel-item .bmpui-customization-open-button {
+            background-image: none;
+            display: block;
+            font-size: .8em;
+            height: 100%;
+            min-width: 10em;
+            padding: .5em;
+            width: 100%;
+            filter: none;
+        }
+        .bmpui-ui-skin-modern .bmpui-subtitle-customization-settings-panel-item .bmpui-customization-open-button:hover {
+            background-color: rgba(31, 171, 226, .85)
+        }
+
     </style>
 </head>
 <body>
@@ -252,6 +270,8 @@
         });
 
         var subtitleCustomizationOpenButton = new bitmovin.playerui.subtitlesettings.SubtitleSettingsOpenButton({
+            cssClasses: ['customization-open-button'],
+            text: 'Settings',
             subtitleSettingsPanel: subtitleCustomizationSettingsPanel,
             settingsPanel: subtitleSettingsPanel,
         });
@@ -259,7 +279,7 @@
         subtitleSettingsPanel.addComponent(
             new bitmovin.playerui.SettingsPanelItem(
                 null,
-                new bitmovin.playerui.subtitlesettings.SubtitleSettingsLabel({ text: 'Settings', opener: subtitleCustomizationOpenButton }),
+                subtitleCustomizationOpenButton,
                 { cssClasses: ['subtitle-customization-settings-panel-item'] }
             )
         );
