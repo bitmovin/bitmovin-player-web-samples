@@ -126,6 +126,29 @@
             -webkit-filter: none;
         }
 
+        .bmpui-subtitle-customization-settings-panel-item {
+            text-align: center;
+        }
+
+        .bmpui-subtitle-customization-settings-panel-item .bmpui-customization-open-button .bmpui-label {
+            display: initial;
+        }
+
+        .bmpui-subtitle-customization-settings-panel-item .bmpui-customization-open-button {
+            background-image: none;
+            display: block;
+            font-size: .8em;
+            min-height: 15px;
+            height: 1.5em;
+            padding: .5em;
+            width: 100%;
+            filter: none;
+        }
+
+        .bmpui-subtitle-customization-settings-panel-item .bmpui-customization-open-button:hover {
+            background-color: rgba(31, 171, 226, .85)
+        }
+
     </style>
 </head>
 <body>
@@ -192,16 +215,39 @@
         });
 
         let subtitleListBox = new bitmovin.playerui.SubtitleListBox();
+
+        let subtitleListBoxSettingsPanelPage = new bitmovin.playerui.SettingsPanelPage({
+            components: [
+                new bitmovin.playerui.SettingsPanelItem(null, subtitleListBox),
+            ],
+        });
+
         let subtitleSettingsPanel = new bitmovin.playerui.SettingsPanel({
             components: [
-                new bitmovin.playerui.SettingsPanelPage({
-                    components: [
-                        new bitmovin.playerui.SettingsPanelItem(null, subtitleListBox),
-                    ],
-                }),
+                subtitleListBoxSettingsPanelPage,
             ],
             hidden: true,
+            pageTransitionAnimation: false,
         });
+
+        let subtitleSettingsPanelPage = new bitmovin.playerui.SubtitleSettingsPanelPage({
+            settingsPanel: subtitleSettingsPanel,
+            overlay: subtitleOverlay,
+        });
+
+        let subtitleSettingsOpenButton = new bitmovin.playerui.SettingsPanelPageOpenButton({
+            targetPage: subtitleSettingsPanelPage,
+            container: subtitleSettingsPanel,
+            text: 'Settings',
+            cssClasses: ['customization-open-button']
+        });
+
+        subtitleListBoxSettingsPanelPage.addComponent(
+            new bitmovin.playerui.SettingsPanelItem(null, subtitleSettingsOpenButton, {
+                cssClasses: ['subtitle-customization-settings-panel-item']
+            })
+        );
+        subtitleSettingsPanel.addComponent(subtitleSettingsPanelPage);
 
         let audioTrackListBox = new bitmovin.playerui.AudioTrackListBox();
         let audioTrackSettingsPanel = new bitmovin.playerui.SettingsPanel({
