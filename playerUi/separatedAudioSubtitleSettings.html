@@ -242,6 +242,24 @@
         },
     };
 
+    var subtitleSettingsToggleButton;
+
+    var handleSubtitleSettingsVisibility = function() {
+        // getAvailableSubtitles will always return at least one subtitle for turning subtitles off
+        if (player.getAvailableSubtitles().length > 1) {
+            subtitleSettingsToggleButton.show();
+        } else {
+            subtitleSettingsToggleButton.hide();
+        }
+    };
+
+    // Since the subtitleSettingsPanel will now always have at least one SettingsPanelItem (the subtitle customization
+    // settings button) the subtitleSettingsToggleButton will no longer auto-hide. So we need to handle this behaviour
+    // at our own here.
+    player.addEventHandler('onReady', handleSubtitleSettingsVisibility);
+    player.addEventHandler('onSubtitleAdded', handleSubtitleSettingsVisibility);
+    player.addEventHandler('onSubtitleRemoved', handleSubtitleSettingsVisibility);
+
     // Setup the player
     player.setup(conf).then((player) => {
         var subtitleOverlay = new bitmovin.playerui.SubtitleOverlay();
@@ -292,6 +310,11 @@
             hidden: true,
         });
 
+        subtitleSettingsToggleButton = new bitmovin.playerui.SettingsToggleButton({
+            settingsPanel: subtitleSettingsPanel,
+            cssClass: 'ui-subtitlesettingstogglebutton'
+        });
+
         var controlBar = new bitmovin.playerui.ControlBar({
             components: [
                 audioTrackSettingsPanel,
@@ -320,10 +343,7 @@
                             settingsPanel: audioTrackSettingsPanel,
                             cssClass: 'ui-audiotracksettingstogglebutton',
                         }),
-                        new bitmovin.playerui.SettingsToggleButton({
-                            settingsPanel: subtitleSettingsPanel,
-                            cssClass: 'ui-subtitlesettingstogglebutton',
-                        }),
+                        subtitleSettingsToggleButton,
                         new bitmovin.playerui.SettingsToggleButton({ settingsPanel: settingsPanel }),
                         new bitmovin.playerui.FullscreenToggleButton(),
                     ],
