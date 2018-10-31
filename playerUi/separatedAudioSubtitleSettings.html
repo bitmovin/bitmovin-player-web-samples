@@ -255,10 +255,10 @@
 
     // Since the subtitleSettingsPanel will now always have at least one SettingsPanelItem (the subtitle customization
     // settings button) the subtitleSettingsToggleButton will no longer auto-hide. So we need to handle this behaviour
-    // at our own here.
-    player.addEventHandler('onReady', handleSubtitleSettingsVisibility);
-    player.addEventHandler('onSubtitleAdded', handleSubtitleSettingsVisibility);
-    player.addEventHandler('onSubtitleRemoved', handleSubtitleSettingsVisibility);
+    // on our own here.
+    player.addEventHandler(player.EVENT.ON_READY, handleSubtitleSettingsVisibility);
+    player.addEventHandler(player.EVENT.ON_SUBTITLE_ADDED, handleSubtitleSettingsVisibility);
+    player.addEventHandler(player.EVENT.ON_SUBTITLE_REMOVED, handleSubtitleSettingsVisibility);
 
     // Setup the player
     player.setup(conf).then((player) => {
