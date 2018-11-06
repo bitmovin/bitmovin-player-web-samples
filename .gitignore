@@ -50,9 +50,9 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-### webpack-demo ###
-webpack-demo/node_modules
-webpack-demo/dist
+### igonore node modules and dist ###
+node_modules
+dist
 
 ### Intellij Patch ###
 *.iml
