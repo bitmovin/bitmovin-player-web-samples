@@ -9,6 +9,8 @@
     <link rel="icon" type="../image/png" href="../images/bit-fav.png">
     <!-- Bitmovin Player -->
     <script type="text/javascript" src="//cdn.bitmovin.com/player/web/8/bitmovinplayer.js"></script>
+    <script type="text/javascript" src="https://cdn.bitmovin.com/player/web/8/bitmovinplayer-ui.js"></script>
+    <link href="https://cdn.bitmovin.com/player/web/8/bitmovinplayer-ui.css" rel="stylesheet"/>
     <style>
         body {
             margin: 0;
@@ -124,30 +126,43 @@
     </div>
 </div>
 <script type="text/javascript">
-  var conf = {
+  var playerElement = document.querySelector('#player');
+  var playerConfiguration = {
     key: "YOUR-PLAYER-LICENSE-KEY",
+    ui: false,
   };
+
+  var uiConfig = {
+    metadata: {
+      markers: [
+        { time: 24, title: 'Salto on the edge' },
+        { time: 69, title: 'Interview - Marcus Gustafsson' },
+        { time: 105, title: 'Parcour rating explained' },
+        { time: 189, title: 'The winner is ...' },
+      ],
+    },
+  };
+
+  var player = new bitmovin.player.Player(playerElement, playerConfiguration);
+  var myUiManager = new bitmovin.playerui.UIFactory.buildDefaultUI(player, uiConfig);
+
   var sourceConfig = {
     title: "Bitmovin Player",
     description: "This demo showcases the possibility to define markers in the timeline, e.g. to highlight chapter beginnings, ads being played at a certain time, special parts in the content and more!",
     dash: "https://bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd",
     hls: "https://bitmovin-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8",
     progressive: "https://bitmovin-a.akamaihd.net/content/MI201109210084_1/MI201109210084_mpeg-4_hd_high_1080p25_10mbits.mp4",
-    markers: [
-      { time: 24, title: 'Salto on the edge' },
-      { time: 69, title: 'Interview - Marcus Gustafsson' },
-      { time: 105, title: 'Parcour rating explained' },
-      { time: 189, title: 'The winner is ...' },
-    ],
   };
 
-  var player = new bitmovin.player.Player(document.getElementById('player'), conf);
-
-  player.load(sourceConfig).then(function() {
-    console.log('Successfully loaded source');
-  }, function() {
-    console.log('Error while loading source');
-  });
+  player.load(sourceConfig).then(
+    function(value) {
+      console.log('Successfully created bitmovin player instance', player.version);
+    },
+    function(reason) {
+      console.log('Error while creating bitmovin player instance');
+    },
+  );
 </script>
 </body>
 </html>
+
