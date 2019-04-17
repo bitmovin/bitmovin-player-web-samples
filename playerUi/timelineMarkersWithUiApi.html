@@ -130,17 +130,16 @@
   var playerConfiguration = {
     key: "YOUR-PLAYER-LICENSE-KEY",
     ui: false,
-    events: {
-      ready: function() {
-        myUiManager.addTimelineMarker({ time: 24, title: 'Salto on the edge' });
-        myUiManager.addTimelineMarker({ time: 69, title: 'Interview - Marcus Gustafsson' });
-        myUiManager.addTimelineMarker({ time: 105, title: 'Parcour rating explained' });
-        myUiManager.addTimelineMarker({ time: 189, title: 'The winner is ...' });
-      },
-    },
   };
   var player = new bitmovin.player.Player(playerElement, playerConfiguration);
   var myUiManager = new bitmovin.playerui.UIFactory.buildDefaultUI(player);
+
+  player.on("ready", function() {
+    myUiManager.addTimelineMarker({ time: 24, title: 'Salto on the edge' });
+    myUiManager.addTimelineMarker({ time: 69, title: 'Interview - Marcus Gustafsson' });
+    myUiManager.addTimelineMarker({ time: 105, title: 'Parcour rating explained' });
+    myUiManager.addTimelineMarker({ time: 189, title: 'The winner is ...' });
+  });
 
   var sourceConfig = {
     title: "Bitmovin Player",
