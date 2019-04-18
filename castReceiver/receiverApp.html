@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <style>
+        body {
+            margin: 0;
+            background-color: black;
+            font-size: 14pt;
+        }
+
+        #player-wrapper {
+            height: 100%;
+            width: 100%;
+            position: fixed;
+        }
+
+        #app-status-overlay {
+            position: fixed;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            display: table;
+        }
+
+        #app-status-overlay-loading {
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        @keyframes app-status-overlay-loading-dot {
+            0% {
+                opacity: 1;
+            }
+            25% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 0;
+            }
+            75% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .app-status-overlay-loading-dot {
+            display: inline-block;
+            width: 2em;
+            height: 2em;
+            border-radius: 50%;
+            background-color: #777;
+            margin: 0.3em;
+            animation: app-status-overlay-loading-dot 4s ease-in infinite;
+        }
+
+        .app-status-overlay-loading-dot:nth-child(1) {
+            animation-delay: .25s;
+        }
+
+        .app-status-overlay-loading-dot:nth-child(2) {
+            animation-delay: .5s;
+        }
+
+        .app-status-overlay-loading-dot:nth-child(3) {
+            animation-delay: .75s;
+        }
+    </style>
+</head>
+<body>
+<div id="player-wrapper"></div>
+<div id="app-status-overlay">
+    <div id="app-status-overlay-loading">
+        <div class="app-status-overlay-loading-dot"></div>
+        <div class="app-status-overlay-loading-dot"></div>
+        <div class="app-status-overlay-loading-dot"></div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.bitmovin.com/player/web/8/bitmovinplayer-ui.css">
+<script type="text/javascript" src="https://cdn.bitmovin.com/player/web/8/bitmovinplayer-ui.js"></script>
+<script type="text/javascript" src="https://cdn.bitmovin.com/player/web/8/bitmovinplayer.js"></script>
+<script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.2/require.js" integrity="sha256-uvyqD81XGEqlTzEGkl+5L73IUlWTXtdLhfnUG5n3FbE="
+        crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdn.bitmovin.com/player/cast/8.1.0/bitmovinplayer-remotereceiver.js"></script>
+<script type="text/javascript">
+
+  // Hide app loading overlay
+  const hideStatusOverlay = () => {
+    document.getElementById('app-status-overlay').style.display = 'none';
+  };
+
+  window.onload = () => {
+
+    // Bitmovin Player configuration properties
+    const conf = {
+      key: 'YOUR-KEY-HERE',
+      tweaks: {
+        max_buffer_level: 20,
+      },
+      events: {},
+      ui: false,
+    };
+
+    // Instantiate a Bitmovin player
+    const player = new bitmovin.player.Player(document.getElementById('player-wrapper'), conf);
+
+    // Hide loading overlay when a source is loaded
+    player.on(bitmovin.player.PlayerEvent.SourceLoaded, hideStatusOverlay);
+
+    // Hide overlay when an error happens (avoids hidden errors during startup)
+    player.on(bitmovin.player.PlayerEvent.Error, hideStatusOverlay);
+
+    // Handler that takes properties from the remotecontrol.customReceiverConfig configuration for use within the receiver
+    require(['src/remotecontrol/GoogleCastRemoteControlReceiver', 'src/remotecontrol/WebSocketRemoteControlReceiver'], (gcr, wsr) => {
+      const googleCastRemoteControlReceiver = new gcr.GoogleCastRemoteControlReceiver(player);
+
+      googleCastRemoteControlReceiver.setCastMetadataListener((metadata) => {
+        switch (metadata.type) {
+          case 'customReceiverConfig':
+            const customReceiverConfig = metadata.data;
+            if (customReceiverConfig.receiverStylesheetUrl != null) {
+              const head = document.getElementsByTagName('head')[0];
+              const link = document.createElement('link');
+              link.rel = 'stylesheet';
+              link.type = 'text/css';
+              link.href = customReceiverConfig.receiverStylesheetUrl;
+              head.appendChild(link);
+            }
+            break;
+        }
+      })
+    });
+
+    // Load the built-in Bitmovin Cast Receiver UI
+    const uimanager = bitmovin.playerui.UIFactory.buildDefaultCastReceiverUI(player);
+  }
+</script>
+</body>
+</html>
