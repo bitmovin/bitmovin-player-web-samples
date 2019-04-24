@@ -121,7 +121,7 @@
     player.on(bitmovin.player.PlayerEvent.Error, hideStatusOverlay);
 
     // Handler that takes properties from the remotecontrol.customReceiverConfig configuration for use within the receiver
-    require(['src/remotecontrol/GoogleCastRemoteControlReceiver', 'src/remotecontrol/WebSocketRemoteControlReceiver'], (gcr, wsr) => {
+    require(['src/remotecontrol/GoogleCastRemoteControlReceiver'], (gcr) => {
       const googleCastRemoteControlReceiver = new gcr.GoogleCastRemoteControlReceiver(player);
 
       googleCastRemoteControlReceiver.setCastMetadataListener((metadata) => {
