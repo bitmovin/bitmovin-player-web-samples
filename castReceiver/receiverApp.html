@@ -120,10 +120,10 @@
     // Hide overlay when an error happens (avoids hidden errors during startup)
     player.on(bitmovin.player.PlayerEvent.Error, hideStatusOverlay);
 
-    // Handler that takes properties from the remotecontrol.customReceiverConfig configuration for use within the receiver
     require(['src/remotecontrol/GoogleCastRemoteControlReceiver'], (gcr) => {
       const googleCastRemoteControlReceiver = new gcr.GoogleCastRemoteControlReceiver(player);
 
+      // Handler that takes properties from the remotecontrol.customReceiverConfig configuration for use within the receiver
       googleCastRemoteControlReceiver.setCastMetadataListener((metadata) => {
         switch (metadata.type) {
           case 'customReceiverConfig':
