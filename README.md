@@ -47,7 +47,7 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
 * [**webpack-demo**](webpack-demo/)
     * [buildPlayerWithWebpack](webpack-demo/buildPlayerWithWebpack.html): Build the Bitmovin HTML5 Player using webpack.
 
-## Howto Install
+## How to Install
 
 1. Sign up for free at [https://dashboard.bitmovin.com/signup](https://dashboard.bitmovin.com/signup)
 2. Get your personal key from the [player licenses page](https://dashboard.bitmovin.com/player/licenses/)
