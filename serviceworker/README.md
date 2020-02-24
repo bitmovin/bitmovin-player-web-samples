@@ -7,5 +7,7 @@ This folder contains a sample page to test `ServiceWorker` support for Native HL
 - Run a simple http server, e.g, https://www.npmjs.com/package/http-server
 - Open `index.html` in browser
 
+## Points to note
 
-**Note: ServiceWorker only works for `localhost` and `https` protocol. So using `http` will not work**
+- ServiceWorker only works for `localhost` and `https` protocol. So using `http` will not work
+- ServiceWorker is to support event tracking for Native HLS playback i.e, Hls on Safari.
