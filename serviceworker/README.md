@@ -10,4 +10,4 @@ This folder contains a sample page to test `ServiceWorker` support for Native HL
 ## Points to note
 
 - ServiceWorker only works for `localhost` and `https` protocol. So using `http` will not work
-- ServiceWorker is to support event tracking for Native HLS playback i.e, Hls on Safari.
+- ServiceWorker enables support for event tracking for Native HLS playback i.e, Hls on Safari, without having duplicate manifest requests.
