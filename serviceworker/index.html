@@ -83,8 +83,9 @@
 
   bitmovin.player.Player.addModule(bitmovin.player['serviceworker-client'].default);
 
+  var player;
   unregisterAllServiceWorker().then(() => {
-    const player = window.player = new bitmovin.player.Player(document.getElementById('player'), conf);
+    player = new bitmovin.player.Player(document.getElementById('player'), conf);
 
     player.load(source).then(() => player.play());
   });
