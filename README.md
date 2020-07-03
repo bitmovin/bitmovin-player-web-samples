@@ -10,6 +10,8 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
     * [rateBasedSwitching](adaptation/rateBasedSwitching.js): Measuring the speed of downloads and select the quality accordingly.
 * [**castReceiver**](castReceiver/)
     * [receiverApp](castReceiver/receiverApp.html): Example of a custom receiver app.
+* [**castReceiver-v7**](castReceiver/)
+    * [receiverApp](castReceiver/receiverApp.html): Example of a custom receiver app based on Bitmovin Player v7. This is required for casting to receiver apps from Android & iOS Bitmovin Player v2 sender apps.
 * [**errorHandling**](errorhandling/)
     * [handleDownloadErrors](errorhandling/handleDownloadErrors.html): Custom retry logic for the case that files cannot be downloaded.
     * [showPosterOnError](errorhandling/showPosterOnError.html): Display a still image whenever an error occurs.
