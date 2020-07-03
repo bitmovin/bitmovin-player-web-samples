@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <style>
+        body {
+            margin: 0;
+            background-color: black;
+            font-size: 14pt;
+        }
+
+        #player-wrapper {
+            height: 100%;
+            width: 100%;
+            position: fixed;
+        }
+
+        #app-status-overlay {
+            position: fixed;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            display: table;
+        }
+
+        #app-status-overlay-loading {
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        @keyframes app-status-overlay-loading-dot {
+            0% {
+                opacity: 1;
+            }
+            5% {
+                opacity: 0;
+            }
+            20% {
+                opacity: 0;
+            }
+            25% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .app-status-overlay-loading-dot {
+            display: inline-block;
+            width: 2em;
+            height: 2em;
+            border-radius: 50%;
+            background-color: #777;
+            margin: 0.3em;
+            animation: app-status-overlay-loading-dot 4s ease-in infinite;
+        }
+
+        .app-status-overlay-loading-dot:nth-child(1) {
+            animation-delay: .25s;
+        }
+
+        .app-status-overlay-loading-dot:nth-child(2) {
+            animation-delay: .5s;
+        }
+
+        .app-status-overlay-loading-dot:nth-child(3) {
+            animation-delay: .75s;
+        }
+    </style>
+    <link rel="stylesheet" href="https://bitmovin-a.akamaihd.net/bitmovin-player/stable/7/bitmovinplayer-ui.css">
+</head>
+<body>
+<div id="player-wrapper"></div>
+<div id="app-status-overlay">
+    <div id="app-status-overlay-loading">
+        <div class="app-status-overlay-loading-dot"></div>
+        <div class="app-status-overlay-loading-dot"></div>
+        <div class="app-status-overlay-loading-dot"></div>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="https://bitmovin-a.akamaihd.net/bitmovin-analytics/stable/1.4.2/bitmovinanalytics.min.js"></script>
+<script type="text/javascript" src="https://bitmovin-a.akamaihd.net/bitmovin-player/stable/7/bitmovinplayer.js"></script>
+<script type="text/javascript" src="https://bitmovin-a.akamaihd.net/bitmovin-player/stable/7/bitmovinplayer-ui.js"></script>
+<script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.2/require.js" integrity="sha256-uvyqD81XGEqlTzEGkl+5L73IUlWTXtdLhfnUG5n3FbE="
+        crossorigin="anonymous"></script>
+<script type="text/javascript" src="bitmovinplayer-remotereceiver.js"></script>
+<script type="text/javascript">
+  var player, uimanager, analytics;
+
+  var hideStatusOverlay = () => {
+    document.getElementById('app-status-overlay').style.display = 'none';
+  };
+
+  window.onload = () => {
+    // Bitmovin Analytics configuration properties
+    const analyticsConf = {
+      debug: true,
+      cast: {
+        receiver: true
+      }
+    };
+
+    // Instantiate a Bitmovin Analytics
+    analytics = bitmovin.analytics(analyticsConf);
+
+    var conf = {
+      key: "YOUR-KEY",
+      tweaks: {
+        max_buffer_level: 20
+      },
+      style: {
+        ux: false
+      }
+    };
+
+    // Instantiate a Bitmovin Player
+    player = bitmovin.player('player-wrapper');
+
+    // Hide loading overlay when a source is loaded
+    player.addEventHandler(player.EVENT.ON_SOURCE_LOADED, hideStatusOverlay);
+
+    // Hide overlay when an error happens (avoids hidden errors during startup)
+    player.addEventHandler(player.EVENT.ON_ERROR, hideStatusOverlay);
+
+    player.addEventHandler(player.EVENT.ON_METADATA, (event) => {
+      switch (event.metadataType) {
+        case 'CAST':
+          switch (event.metadata.type) {
+            case 'customReceiverConfig':
+              var customReceiverConfig = event.metadata.data;
+
+              console.log('customReceiverConfig', customReceiverConfig);
+
+              if (customReceiverConfig.receiverStylesheetUrl != null) {
+                var head = document.getElementsByTagName('head')[0];
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.type = 'text/css';
+                link.href = customReceiverConfig.receiverStylesheetUrl;
+                head.appendChild(link);
+              }
+              break;
+          }
+          break;
+      }
+    });
+
+    player.setup(conf).then((player) => {
+      console.log('Successfully created Bitmovin player instance');
+
+      require([
+        'src/remotecontrol/GoogleCastRemoteControlReceiver',
+        'src/remotecontrol/WebSocketRemoteControlReceiver'
+      ], (gcr, wsr) => {
+        const googleCastRemoteControlReceiver = new gcr.GoogleCastRemoteControlReceiver(player);
+      });
+
+      // Load the built-in Bitmovin Cast Receiver UI
+      uimanager = bitmovin.playerui.UIManager.Factory.buildDefaultCastReceiverUI(player);
+    }).catch((error) => {
+      console.error('Error while creating Bitmovin player instance', error);
+    });
+
+    analytics.register(player);
+  }
+</script>
+</body>
+</html>
