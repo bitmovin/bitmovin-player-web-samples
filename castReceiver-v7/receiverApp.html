@@ -86,8 +86,6 @@
     </div>
 </div>
 
-
-<script type="text/javascript" src="https://bitmovin-a.akamaihd.net/bitmovin-analytics/stable/1.4.2/bitmovinanalytics.min.js"></script>
 <script type="text/javascript" src="https://bitmovin-a.akamaihd.net/bitmovin-player/stable/7/bitmovinplayer.js"></script>
 <script type="text/javascript" src="https://bitmovin-a.akamaihd.net/bitmovin-player/stable/7/bitmovinplayer-ui.js"></script>
 <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
@@ -95,24 +93,13 @@
         crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://bitmovin-a.akamaihd.net/bitmovin-player-cast/stable/7.6.0/bitmovinplayer-remotereceiver.js"></script>
 <script type="text/javascript">
-  var player, uimanager, analytics;
+  var player, uimanager;
 
   var hideStatusOverlay = () => {
     document.getElementById('app-status-overlay').style.display = 'none';
   };
 
   window.onload = () => {
-    // Bitmovin Analytics configuration properties
-    const analyticsConf = {
-      debug: true,
-      cast: {
-        receiver: true
-      }
-    };
-
-    // Instantiate a Bitmovin Analytics
-    analytics = bitmovin.analytics(analyticsConf);
-
     var conf = {
       key: "YOUR-KEY",
       tweaks: {
