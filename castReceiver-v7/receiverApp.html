@@ -145,10 +145,7 @@
     player.setup(conf).then((player) => {
       console.log('Successfully created Bitmovin player instance');
 
-      require([
-        'src/remotecontrol/GoogleCastRemoteControlReceiver',
-        'src/remotecontrol/WebSocketRemoteControlReceiver'
-      ], (gcr, wsr) => {
+      require(['src/remotecontrol/GoogleCastRemoteControlReceiver'], (gcr, wsr) => {
         const googleCastRemoteControlReceiver = new gcr.GoogleCastRemoteControlReceiver(player);
       });
 
