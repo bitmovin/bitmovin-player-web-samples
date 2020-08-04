@@ -30,6 +30,8 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
 * [**playerUi**](playerUi/)
    * [customErrorMessage](playerUi/customErrorMessage.html): Display your own error messages within the Bitmovin HTML5 Player
    * [timelineMarkers](playerUi/timelineMarkers.html): Identify the differents parts of a stream by setting some markers over the timeline
+   * [timelineMarkersLive](playerUi/timelineMarkersLive.html): Using timeline markers for live streams
+   * [timelineMarkersWithImages](playerUi/timelineMarkersWithImages.html): Passing imageUrl with timeline marker
    * [separatedSubtitleAudioSettings](playerUi/separatedAudioSubtitleSettings.html): Extracted audio tracks and subtitle settings from the settings panel direct into the controlBar
    * [labeling](playerUi/labeling.html): Change Languages, Quality and Subtitles labels
 * [**react**](react/)
