@@ -34,6 +34,7 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
    * [timelineMarkersWithImages](playerUi/timelineMarkersWithImages.html): Passing imageUrl with timeline marker
    * [separatedSubtitleAudioSettings](playerUi/separatedAudioSubtitleSettings.html): Extracted audio tracks and subtitle settings from the settings panel direct into the controlBar
    * [labeling](playerUi/labeling.html): Change Languages, Quality and Subtitles labels
+   * [customForwardRewindButtons](playerUi/customForwardRewindButtons.html): Custom Forward & Rewind Buttons
 * [**react**](react/)
     * [reactJs](react/reactjs.html): Using the Bitmovin Player within a react component
 * [**playlist**](playlist/)

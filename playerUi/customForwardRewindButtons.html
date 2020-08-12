@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <title>Bitmovin Demo</title>
+    <meta charset='UTF-8'/>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='width=device-width, initial-scale=1.0' name='viewport'>
+    <script src='https://cdn.bitmovin.com/player/web/8/bitmovinplayer.js' type='text/javascript'></script>
+    <script src='//cdn.bitmovin.com/player/web/8/bitmovinplayer-ui.js' type='text/javascript'></script>
+    <link href='//cdn.bitmovin.com/player/web/8/bitmovinplayer-ui.css' rel='stylesheet'>
+
+</head>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Open Sans', sans-serif;
+        color: #fff;
+        font-weight: 300;
+    }
+
+    body {
+        background: rgba(44, 131, 185, 1);
+        background: -moz-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+        background: -webkit-gradient(left top, right top, color-stop(0%, rgba(44, 131, 185, 1)), color-stop(100%, rgba(30, 171, 227, 1)));
+        background: -webkit-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+        background: -o-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+        background: -ms-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+        background: linear-gradient(to right, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2c83b9', endColorstr='#1eabe3', GradientType=1);
+    }
+
+    #wrapper {
+        background: url(../images/logo-bg-demopage.png);
+        height: 100vh;
+    }
+
+    #banner {
+        border-bottom: 1px solid #fff;
+        background-color: #1eabe3;
+        width: 100%
+    }
+
+    #banner h1 {
+        margin: 0;
+        padding: 30px;
+    }
+
+    .logo {
+        padding: 10px;
+        width: 25%;
+        min-width: 350px;
+        float: left;
+        margin: auto;
+    }
+
+    .title {
+        width: 75%;
+        white-space: nowrap;
+    }
+
+    .clear {
+        clear: both;
+    }
+
+    .content {
+        margin-bottom: 10em;
+    }
+
+    h1, h2, h3, p {
+        font-weight: 300;
+        text-align: center;
+        margin: 40px;
+    }
+
+    #player {
+        max-width: 900px;
+        width: 90%;
+        margin: auto;
+        -webkit-box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
+        box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
+    }
+
+    a {
+        color: #97d9ef;
+        font-weight: 400;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: #fff;
+    }
+
+    @media (max-width: 800px) {
+        .logo {
+            width: 100%;
+        }
+
+        .title {
+            display: none;
+        }
+    }
+
+    .bmpui-ui-rewindbutton {
+        background-image: url(rewind_button.svg);
+        background-size: contain;
+    }
+
+    .bmpui-ui-forwardbutton {
+        background-image: url(forward_button.svg);
+        background-size: contain;
+    }
+
+    .bmpui-ui-rewindbutton:hover, .bmpui-ui-forwardbutton:hover {
+        -webkit-filter: drop-shadow(0 0 1px #fff);
+        filter: drop-shadow(0 0 1px #fff);
+    }
+
+
+</style>
+<body>
+<div id='wrapper'>
+    <div id='banner'>
+        <div class='logo'><img src='../images/bitmovin-logo.png'></div>
+        <div class='title'><h1>Custom Forward & Rewind Buttons</h1></div>
+        <div class='clear'></div>
+    </div>
+    <div class='container'>
+        <h1>HTML5 Adaptive Streaming Player for MPEG-DASH & HLS</h1>
+        <h2>Your videos play everywhere with low startup delay, no buffering and in highest quality.</h2>
+        <div class='content'>
+            <div class='player-wrapper'>
+                <div id='player'></div>
+            </div>
+            <div class='description'>
+                <p>For more information about the bitmovin player, please have a look at our online <a
+                        href='//bitmovin.com/docs' target='_blank'>Documentation</a>.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script type='text/javascript'>
+    const config = {
+        key: 'YOUR-PLAYER-LICENSE-KEY',
+        // Disable built-in UI
+        ui: false,
+    };
+
+    let container = document.getElementById('player');
+    let player = new bitmovin.player.Player(container, config);
+    let source = {
+        title: 'Bitmovin Player',
+        description: 'This demo showcases how custom buttons can be defined by extending the default buttons',
+        dash: 'https://bitdash-a.akamaihd.net/content/sintel/sintel.mpd',
+        hls: 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8',
+        poster: 'https://bitmovin-a.akamaihd.net/content/sintel/poster.png',
+    };
+
+    // Create UI instance
+    let uiManager = new bitmovin.playerui.UIManager(player, createUIContainer());
+
+    // Setup the player
+    player.load(source).then(() => {
+        console.log('Load Success');
+    }, () => {
+        console.log('Error while loading source');
+    });
+
+    function createUIContainer() {
+        // seek interval in seconds
+        const interval = 20;
+
+        let rewindButton = new bitmovin.playerui.Button({cssClass: 'ui-rewindbutton bmpui-ui-button'});
+        rewindButton.onClick.subscribe(function () {
+            player.seek(Math.max(0, player.getCurrentTime() - interval));
+        });
+
+        let forwardButton = new bitmovin.playerui.Button({cssClass: 'ui-forwardbutton bmpui-ui-button'});
+        forwardButton.onClick.subscribe(function () {
+            player.seek(Math.min(player.getDuration(), player.getCurrentTime() + interval));
+        });
+
+        let subtitleOverlay = new bitmovin.playerui.SubtitleOverlay();
+
+        let mainSettingsPanelPage = new bitmovin.playerui.SettingsPanelPage({
+            components: [
+                new bitmovin.playerui.SettingsPanelItem('Video Quality', new bitmovin.playerui.VideoQualitySelectBox()),
+                new bitmovin.playerui.SettingsPanelItem('Speed', new bitmovin.playerui.PlaybackSpeedSelectBox()),
+                new bitmovin.playerui.SettingsPanelItem('Audio Quality', new bitmovin.playerui.AudioQualitySelectBox()),
+            ],
+        });
+
+        let settingsPanel = new bitmovin.playerui.SettingsPanel({
+            components: [
+                mainSettingsPanelPage,
+            ],
+            hidden: true,
+        });
+
+        let subtitleSettingsPanelPage = new bitmovin.playerui.SubtitleSettingsPanelPage({
+            settingsPanel: settingsPanel,
+            overlay: subtitleOverlay,
+        });
+
+        const subtitleSelectBox = new bitmovin.playerui.SubtitleSelectBox();
+
+        let subtitleSettingsOpenButton = new bitmovin.playerui.SettingsPanelPageOpenButton({
+            targetPage: subtitleSettingsPanelPage,
+            container: settingsPanel,
+            ariaLabel: 'Subtitles',
+            text: 'open',
+        });
+
+        mainSettingsPanelPage.addComponent(
+            new bitmovin.playerui.SettingsPanelItem(
+                new bitmovin.playerui.SubtitleSettingsLabel({
+                    text: 'Subtitles',
+                    opener: subtitleSettingsOpenButton,
+                }),
+                subtitleSelectBox,
+                {
+                    role: 'menubar',
+                },
+            ));
+
+        settingsPanel.addComponent(subtitleSettingsPanelPage);
+
+        let controlBar = new bitmovin.playerui.ControlBar({
+            components: [
+                settingsPanel,
+                new bitmovin.playerui.Container({
+                    components: [
+                        new bitmovin.playerui.PlaybackTimeLabel({
+                            timeLabelMode: bitmovin.playerui.PlaybackTimeLabelMode.CurrentTime,
+                            hideInLivePlayback: true
+                        }),
+                        new bitmovin.playerui.SeekBar({label: new bitmovin.playerui.SeekBarLabel()}),
+                        new bitmovin.playerui.PlaybackTimeLabel({
+                            timeLabelMode: bitmovin.playerui.PlaybackTimeLabelMode.TotalTime,
+                            cssClasses: ['text-right']
+                        }),
+                    ],
+                    cssClasses: ['controlbar-top'],
+                }),
+                new bitmovin.playerui.Container({
+                    components: [
+                        rewindButton,
+                        new bitmovin.playerui.PlaybackToggleButton(),
+                        forwardButton,
+                        new bitmovin.playerui.VolumeToggleButton(),
+                        new bitmovin.playerui.VolumeSlider(),
+                        new bitmovin.playerui.Spacer(),
+                        new bitmovin.playerui.PictureInPictureToggleButton(),
+                        new bitmovin.playerui.AirPlayToggleButton(),
+                        new bitmovin.playerui.CastToggleButton(),
+                        new bitmovin.playerui.VRToggleButton(),
+                        new bitmovin.playerui.SettingsToggleButton({settingsPanel: settingsPanel}),
+                        new bitmovin.playerui.FullscreenToggleButton(),
+                    ],
+                    cssClasses: ['controlbar-bottom'],
+                }),
+            ],
+        });
+
+        return new bitmovin.playerui.UIContainer({
+            components: [
+                subtitleOverlay,
+                new bitmovin.playerui.BufferingOverlay(),
+                new bitmovin.playerui.PlaybackToggleOverlay(),
+                new bitmovin.playerui.CastStatusOverlay(),
+                controlBar,
+                new bitmovin.playerui.TitleBar(),
+                new bitmovin.playerui.RecommendationOverlay(),
+                new bitmovin.playerui.Watermark(),
+                new bitmovin.playerui.ErrorMessageOverlay(),
+            ]
+        });
+    }
+</script>
+</body>
+</html>
