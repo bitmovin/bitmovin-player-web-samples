@@ -8,6 +8,7 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
     * [preferredStartupQuality](adaptation/preferredStartupQuality.js): Set a minimum startup quality for a specified amount of time before using the built-in adaptation logic again.
     * [regionOfInterest](adaptation/regionOfInterest.html): Multiple players with low quality and the active player (where the mouse is over) switches to better quality.
     * [rateBasedSwitching](adaptation/rateBasedSwitching.js): Measuring the speed of downloads and select the quality accordingly.
+* [**CAF Receiver**](https://github.com/bitmovin/bitmovin-player-caf-receiver): Example of a Chromecast Application Framework (CAF) receiver app, also known as cast receiver v3 SDK.
 * [**castReceiver**](castReceiver/)
     * [receiverApp](castReceiver/receiverApp.html): Example of a custom receiver app.
 * [**castReceiver-v7**](castReceiver/)
