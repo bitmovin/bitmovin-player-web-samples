@@ -1,7 +1,6 @@
 import React from 'react';
 import { Player } from 'bitmovin-player';
-
-import {UIFactory} from 'bitmovin-player/bitmovinplayer-ui';
+import { UIFactory } from 'bitmovin-player/bitmovinplayer-ui';
 import 'bitmovin-player/bitmovinplayer-ui.css';
 
 class BitmovinPlayer extends React.Component {

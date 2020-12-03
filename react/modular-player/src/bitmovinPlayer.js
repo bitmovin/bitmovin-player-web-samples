@@ -12,8 +12,7 @@ import SubtitlesModule from 'bitmovin-player/modules/bitmovinplayer-subtitles';
 import SubtitlesCEA608Module from 'bitmovin-player/modules/bitmovinplayer-subtitles-cea608';
 import PolyfillModule from 'bitmovin-player/modules/bitmovinplayer-polyfill';
 import StyleModule from 'bitmovin-player/modules/bitmovinplayer-style';
-
-import {UIFactory} from 'bitmovin-player/bitmovinplayer-ui';
+import { UIFactory } from 'bitmovin-player/bitmovinplayer-ui';
 import 'bitmovin-player/bitmovinplayer-ui.css';
 
 class BitmovinPlayer extends React.Component {
