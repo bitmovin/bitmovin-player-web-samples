@@ -19,7 +19,7 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
     * [switchQualityOnHttpStatusCode](errorhandling/switchQualityOnHttpStatusCode.html): Tweak the ABR behavior based on HTTP errors.
 * [**events**](events/)
     * [ON_DOWNLOAD_FINISHED](events/onDownloadFinished.html): Report download errors for live streams using the ON_DOWNLOAD_FINISHED player event.
-    * [eventConstants](events/eventConstants.html): Use event constants for registering event handlers at the player.
+    * [Metadata](events/Metadata.html): Get timed metadata from the stream using the `Metadata` event.
     * [ON_SEGMENT_REQUEST_FINISHED](events/onSegmentRequestFinished.html): Use ON_SEGMENT_REQUEST_FINISHED event to analyze which segment has been downloaded and implement custom workflows according to the HTTP status code.
 * [**frameaccurate**](frameaccurate/)
     * [Frame Accurate Control](frameaccurate/js/FrameAccurateControls.ts): Bitmovin Player Wrapper for SMTPE timestamp seeking + stepping
