@@ -9,7 +9,7 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
     * [regionOfInterest](adaptation/regionOfInterest.html): Multiple players with low quality and the active player (where the mouse is over) switches to better quality.
     * [rateBasedSwitching](adaptation/rateBasedSwitching.js): Measuring the speed of downloads and select the quality accordingly.
 * [**angular**](angular/)
-    * [buildPlayerWithNpm](angular/src/app/bitmovin-player): Using the Bitmovin NPM package
+    * [buildPlayerWithNpm](angular/src/app/bitmovin-player/bitmovin-player.component.ts): Using the Bitmovin NPM package
 * [**CAF Receiver**](https://github.com/bitmovin/bitmovin-player-caf-receiver): Example of a Chromecast Application Framework (CAF) receiver app, also known as cast receiver v3 SDK.
 * [**castReceiver**](castReceiver/)
     * [receiverApp](castReceiver/receiverApp.html): Example of a custom receiver app.
