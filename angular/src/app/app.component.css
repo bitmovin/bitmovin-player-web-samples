@@ -1,0 +1,72 @@
+
+#wrapper {
+  background: url(../assets/logo-bg-demopage.png);
+  height: 100vh;
+}
+
+#banner {
+  border-bottom: 1px solid #fff;
+  background-color: #1eabe3;
+  width: 100%
+}
+
+#banner h1 {
+  margin: 0;
+  padding: 30px;
+}
+
+.logo {
+  padding: 10px;
+  width: 25%;
+  min-width: 350px;
+  float: left;
+  margin: auto;
+}
+
+.title {
+  width: 75%;
+  white-space: nowrap;
+}
+
+.clear {
+  clear: both;
+}
+
+.content {
+  margin-bottom: 10em;
+}
+
+h1, h2, h3, p {
+  font-weight: 300;
+  text-align: center;
+  margin: 40px;
+}
+
+#player {
+  max-width: 900px;
+  width: 90%;
+  margin: auto;
+  -webkit-box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
+}
+
+a {
+  color: #97d9ef;
+  font-weight: 400;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #fff;
+}
+
+@media (max-width: 800px) {
+  .logo {
+    width: 100%;
+  }
+
+  .title {
+    display: none;
+  }
+}
