@@ -38,7 +38,7 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
    * [separatedSubtitleAudioSettings](playerUi/separatedAudioSubtitleSettings.html): Extracted audio tracks and subtitle settings from the settings panel direct into the controlBar
    * [labeling](playerUi/labeling.html): Change Languages, Quality and Subtitles labels
    * [customForwardRewindButtons](playerUi/customForwardRewindButtons.html): Custom Forward & Rewind Buttons
-   * [playbackControlsUIWithImaAds](playerUi/playbackControlsUIWithImaAds.html) : Adding playback controls UI during Ads playback with IMA SDK
+   * [playbackControlsUiWithImaAds](playerUi/playbackControlsUiWithImaAds.html) : Adding playback controls UI during Ads playback with IMA SDK
 * [**react**](react/)
     * [reactJs](react/reactjs.html): Using the Bitmovin Player within a react component
     * [buildPlayerWithBundledNpm](react/bundled-player/src/bitmovinPlayer.js): Using the Bitmovin Monolithic NPM package

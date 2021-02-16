@@ -128,21 +128,18 @@
 
 <script type="text/javascript">
   var conf = {
-    key: "YOUR-PLAYER-LICENSE-KEY",
+    key: 'YOUR-PLAYER-LICENSE-KEY',
     advertising: {
-        adBreaks: [
-        {
-            tag: {
-              url:
-              'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpostpod&cmsid=496&vid=short_onecue&correlator=',
-              type: 'vmap'
-            },
-        }
-        ],
+      adBreaks: [{
+          tag: {
+            url: 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpostpod&cmsid=496&vid=short_onecue&correlator=',
+            type: 'vmap'
+          },
+      }],
     },
     playback: {
       autoplay: true,
-      muted:true
+      muted: true
     },
   };
 
@@ -150,14 +147,12 @@
 
   // UI for IMA SDK
   // Create a separate UI manager that shows a custom UI for all ads
-  var imaUIManager= new bitmovin.playerui.UIManager(player, [{
+  var imaUIManager = new bitmovin.playerui.UIManager(player, [{
     ui: new bitmovin.playerui.UIContainer({
       userInteractionEventSource: document.getElementById('player'), // show controls on user interaction
-      //hideDelay: -1, // always show UI
       hideDelay: 3000, // hide controls in 3 second
       components: [
-        new bitmovin.playerui.Container({
-        }),
+        new bitmovin.playerui.Container({}),
         new bitmovin.playerui.ControlBar({
           components: [
             new bitmovin.playerui.Container({
@@ -169,8 +164,8 @@
               cssClasses: ['controlbar-bottom'],
             }),
           ],
-        cssClasses: ['adControlBar']
-      }),
+          cssClasses: ['adControlBar']
+        }),
       ],
       cssClasses: ['ui-skin-ads']
     }),
@@ -181,11 +176,11 @@
   }], {metadata: {}});
 
   var sourceConfig = {
-    title: "Bitmovin Player",
-    description: "This demo showcases the possibility to add playback controls UI during Ad playback!",
-    dash: "https://bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd",
-    hls: "https://bitmovin-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8",
-    progressive: "https://bitmovin-a.akamaihd.net/content/MI201109210084_1/MI201109210084_mpeg-4_hd_high_1080p25_10mbits.mp4",
+    title: 'Bitmovin Player',
+    description: 'This demo showcases the possibility to add playback controls UI during Ad playback!',
+    dash: 'https://bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd',
+    hls: 'https://bitmovin-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8',
+    progressive: 'https://bitmovin-a.akamaihd.net/content/MI201109210084_1/MI201109210084_mpeg-4_hd_high_1080p25_10mbits.mp4',
   };
 
   player.load(sourceConfig).then(function() {
