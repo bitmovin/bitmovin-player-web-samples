@@ -1,5 +1,5 @@
 # Bitmovin Adaptive Streaming Player for MPEG-DASH & HLS
-This showcases are build around the Bitmovin Adaptive Streaming Player, demonstrating usage and capabilities of the HTML5 based HLS and MPEG-DASH player.
+These examples are build around the Bitmovin Adaptive Streaming Player, demonstrating usage and capabilities of the HTML5 based HLS and MPEG-DASH player.
 
 **Table of Content**
 
@@ -98,8 +98,8 @@ Additional demos can be found in our [demo area](https://bitmovin.com/demos/). F
 
 ## Documentation & Release Notes
 
-+ **Android API Reference documentation** - You can find the latest one [here](https://bitmovin.com/docs/player/api-reference/web/web-sdk-api-reference-v8)
-+ **Android SDK Release Notes** can be found [here](https://bitmovin.com/docs/player/releases/web)
++ **Web API Reference documentation** - You can find the latest one [here](https://bitmovin.com/docs/player/api-reference/web/web-sdk-api-reference-v8)
++ **Web SDK Release Notes** can be found [here](https://bitmovin.com/docs/player/releases/web)
 
 ## Support
 If you have any questions or issues with this SDK or its examples, or you require other technical support for our services, please login to your Bitmovin Dashboard at https://bitmovin.com/dashboard and [create a new support case](https://bitmovin.com/dashboard/support/cases/create). Our team will get back to you as soon as possible :+1:
