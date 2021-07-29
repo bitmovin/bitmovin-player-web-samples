@@ -1,13 +1,8 @@
 {
   "name": "typescript",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
     "build": "esbuild index.ts --bundle --outfile=build/index.js"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "bitmovin-player": "^8.65.0"
   },
