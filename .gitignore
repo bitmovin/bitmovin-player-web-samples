@@ -135,3 +135,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# Generated files
+typescript/build
