@@ -27,7 +27,9 @@ These examples are build around the Bitmovin Adaptive Streaming Player, demonstr
   * [handleDownloadErrors](errorhandling/handleDownloadErrors.html): Custom retry logic for the case that files cannot be downloaded.
   * [showPosterOnError](errorhandling/showPosterOnError.html): Display a still image whenever an error occurs.
   * [switchQualityOnHttpStatusCode](errorhandling/switchQualityOnHttpStatusCode.html): Tweak the ABR behavior based on HTTP errors.
-  
+* [**Typescript**](typescript/)
+  * [buildWithEsbuildTsc](typescript/buildWithEsbuildTsc.html): Build a sample using Typescript, its `tsc` compiler and `esbuild`.
+
 ### Playback & Casting
 * [**CAF Receiver**](https://github.com/bitmovin/bitmovin-player-caf-receiver): Example of a Chromecast Application Framework (CAF) receiver app, also known as cast receiver v3 SDK.
 * [**castReceiver**](castReceiver/)
