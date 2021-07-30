@@ -4,7 +4,8 @@
     "build": "esbuild index.ts --bundle --outfile=build/index.js"
   },
   "dependencies": {
-    "bitmovin-player": "^8.65.0"
+    "bitmovin-player": "^8.65.0",
+    "bitmovin-player-ui": "^3.28.1"
   },
   "devDependencies": {
     "esbuild": "^0.12.15",

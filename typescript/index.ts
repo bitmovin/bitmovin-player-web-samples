@@ -12,8 +12,8 @@ import SubtitlesModule from 'bitmovin-player/modules/bitmovinplayer-subtitles';
 import SubtitlesCEA608Module from 'bitmovin-player/modules/bitmovinplayer-subtitles-cea608';
 import StyleModule from 'bitmovin-player/modules/bitmovinplayer-style';
 
-import { UIFactory } from 'bitmovin-player/bitmovinplayer-ui';
-import 'bitmovin-player/bitmovinplayer-ui.css';
+import { UIFactory } from 'bitmovin-player-ui';
+import 'bitmovin-player-ui/dist/css/bitmovinplayer-ui.css'
 
 Player.addModule(EngineBitmovinModule);
 Player.addModule(PolyfillModule);
