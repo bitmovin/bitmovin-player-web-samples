@@ -47,4 +47,4 @@ const source: SourceConfig = {
 };
 
 
-player.load(source).then(() => {});
+player.load(source);
