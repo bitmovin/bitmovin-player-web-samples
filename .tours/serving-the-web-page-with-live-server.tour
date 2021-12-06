@@ -1,0 +1,17 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Serving the web page with Live Server",
+  "steps": [
+    {
+      "title": "Installing Live Server for Visual Studio Code",
+      "description": "One easy way to server the web page with the Bitmovin Player is to use the Visual Studio Code extension [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer). If you do not have it install this extension and come back here."
+    },
+    {
+      "file": "gettingStarted/index.html",
+      "description": "After you have successfully installed the Live Server extension, you should see its icon in the status bar. Click on it. Go Live should open a browser for you which opens the `index.html` file you just edited.\n\n![Go Live](./gettingStarted/go-live.gif)",
+      "line": 53,
+      "title": "Start Live Server"
+    }
+  ],
+  "ref": "feature/oamm-83_codetour"
+}

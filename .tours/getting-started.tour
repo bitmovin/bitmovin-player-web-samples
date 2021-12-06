@@ -1,0 +1,43 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Preparing the web page for hosting the Bitmovin Player",
+  "steps": [
+    {
+      "title": "Introduction",
+      "description": "You came from https://bitmovin.com/docs/player/getting-started/web and now want to get the Bitmovin Player running on your machine?"
+    },
+    {
+      "description": "Login to the Bitmovin Dashboard, navigate to `Player` > `License`. Or just click [here](https://bitmovin.com/dashboard/player/licenses). Click on `default-licence`.\n\n![default-license](./gettingStarted/open-default-license.png)",
+      "title": "Open settings for default-license"
+    },
+    {
+      "title": "Prepare default-license to local testing",
+      "description": "Under `Domain / Package Names / Bundle Identifiers` enter `127.0.0.1`. Then press `Add`.\n\n![default-license](./gettingStarted/add-domain.png)"
+    },
+    {
+      "title": "Get the license key",
+      "description": "Now copy the Player license key into the clipboard. You will need it in the next step.\n\n![default-license](./gettingStarted/copy-clipboard.png)"
+    },
+    {
+      "file": "gettingStarted/index.html",
+      "description": "Copy your player license key here. So it replaces `<PLAYER_LICENSE_KEY>`. Save your changes.",
+      "line": 21,
+      "selection": {
+        "start": {
+          "line": 21,
+          "character": 15
+        },
+        "end": {
+          "line": 21,
+          "character": 35
+        }
+      },
+      "title": "Enter your player license key into the code"
+    },
+    {
+      "title": "Spin up a http server with node",
+      "description": "Now you just need to serve your modified `index.html` with a HTTP server. Use any tool you like."
+    }
+  ],
+  "ref": "feature/oamm-83_codetour"
+}
