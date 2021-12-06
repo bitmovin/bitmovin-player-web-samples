@@ -39,5 +39,6 @@
       "description": "Now you just need to serve your modified `index.html` with a HTTP server. Use any tool you like."
     }
   ],
-  "ref": "feature/oamm-83_codetour"
+  "ref": "feature/oamm-83_codetour",
+  "isPrimary": true
 }
