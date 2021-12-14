@@ -3,4 +3,4 @@ vscode:
     - vsls-contrib.codetour
 
 tasks:
- - command: codetour.startTour
+ - command: ./startCodeTour.js
