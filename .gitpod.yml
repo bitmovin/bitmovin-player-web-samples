@@ -1,4 +1,5 @@
 vscode:
   extensions:
     - vsls-contrib.codetour
+    - egomobile.vscode-powertools
     - synedra.auto-run-command
