@@ -3,5 +3,13 @@
         {
             "command": "codetour.startTour"
         }
-    ]
+    ],
+    "ego.power-tools": {
+        "startup": [
+            {
+                "type": "script",
+                "script": "my_startup.js"
+            }
+        ]
+    }
 }
