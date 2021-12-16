@@ -2,12 +2,3 @@ vscode:
   extensions:
     - vsls-contrib.codetour
     - synedra.auto-run-command
-
-tasks:
-  - name: vscode settings
-    init: |
-      mkdir -p "$PWD/.vscode";
-      cat << 'EOF' > "$PWD/.vscode/settings.json"
-      { "auto-run-command.rules": [ { "command": "codetour.startTour" } ] }
-      EOF
-      exit
