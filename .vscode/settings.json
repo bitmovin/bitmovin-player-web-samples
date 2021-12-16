@@ -1,0 +1,7 @@
+{
+    "auto-run-command.rules": [
+        {
+            "command": "codetour.startTour"
+        }
+    ]
+}
