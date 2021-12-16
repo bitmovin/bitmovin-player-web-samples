@@ -1,7 +1,7 @@
 vscode:
   extensions:
     - vsls-contrib.codetour
-    - gabrielgrinberg.auto-run-command
+    - synedra.auto-run-command
 
 tasks:
   - name: vscode settings
