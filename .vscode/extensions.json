@@ -1,6 +1,6 @@
 {
     "recommendations": [
         "vsls-contrib.codetour",
-        "egomobile.vscode-powertools"
+        "synedra.auto-run-command"
     ]
 }
