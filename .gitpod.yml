@@ -2,3 +2,4 @@ vscode:
   extensions:
     - vsls-contrib.codetour
     - synedra.auto-run-command
+    - ritwickdey.LiveServer
