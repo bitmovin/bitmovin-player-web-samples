@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bitmovin Demo</title>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
+  <link rel="icon" type="../image/png" href="../images/bit-fav.png">
+  <!-- Bitmovin Player -->
+  <script type="text/javascript" src="//cdn.bitmovin.com/player/web/8/bitmovinplayer.js"></script><
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript" src="../bitrateGraphs.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Open Sans', sans-serif;
+      color: #fff;
+      font-weight: 300;
+    }
+
+    body {
+      background: rgba(44, 131, 185, 1);
+      background: -moz-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+      background: -webkit-gradient(left top, right top, color-stop(0%, rgba(44, 131, 185, 1)), color-stop(100%, rgba(30, 171, 227, 1)));
+      background: -webkit-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+      background: -o-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+      background: -ms-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+      background: linear-gradient(to right, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2c83b9', endColorstr='#1eabe3', GradientType=1);
+    }
+
+    #wrapper {
+      background: url(../images/logo-bg-demopage.png);
+      height: 100vh;
+    }
+
+    #banner {
+      border-bottom: 1px solid #fff;
+      background-color: #1eabe3;
+      width: 100%
+    }
+
+    #banner h1 {
+      margin: 0;
+      padding: 30px;
+    }
+
+    .logo {
+      padding: 10px;
+      width: 25%;
+      min-width: 350px;
+      float: left;
+      margin: auto;
+    }
+
+    .title {
+      width: 75%;
+      white-space: nowrap;
+    }
+
+    .clear {
+      clear: both;
+    }
+
+    .content {
+      margin-bottom: 10em;
+    }
+
+    h1, h2, h3, p {
+      font-weight: 300;
+      text-align: center;
+      margin: 40px;
+    }
+
+    #player {
+      max-width: 900px;
+      width: 90%;
+      margin: auto;
+      -webkit-box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
+      -moz-box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
+      box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
+    }
+
+    a {
+      color: #97d9ef;
+      font-weight: 400;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #fff;
+    }
+
+    @media (max-width: 800px) {
+      .logo {
+        width: 100%;
+      }
+
+      .title {
+        display: none;
+      }
+    }
+
+    .charts {
+      width: 80%;
+      margin: 40px auto;
+    }
+
+    #curve_chart {
+      width: 100%;
+      height: auto;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Open Sans', sans-serif;
+      color: #fff;
+      font-weight: 300;
+    }
+
+    body {
+      background: rgba(44, 131, 185, 1);
+      background: -moz-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+      background: -webkit-gradient(left top, right top, color-stop(0%, rgba(44, 131, 185, 1)), color-stop(100%, rgba(30, 171, 227, 1)));
+      background: -webkit-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+      background: -o-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+      background: -ms-linear-gradient(left, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+      background: linear-gradient(to right, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2c83b9', endColorstr='#1eabe3', GradientType=1);
+    }
+
+    #wrapper {
+      background: url(logo-bg-demopage.png);
+      height: 100vh;
+    }
+
+    #banner {
+      border-bottom: 1px solid #fff;
+      background-color: #1eabe3;
+      width: 100%
+    }
+
+    #banner h1 {
+      margin: 0;
+      padding: 30px;
+    }
+
+    .logo {
+      padding: 10px 20px 10px 20px;
+      /*width: 20%;*/
+      /*min-width: 350px;*/
+      float: left;
+      margin: auto;
+    }
+
+    .logo img {
+      height: 80px;
+    }
+
+    .clear {
+      clear: both;
+    }
+
+    .container {
+      width: 95%;
+      margin: 1em auto;
+    }
+
+    h1 {
+      font-weight: 300;
+      text-align: center;
+      margin: 55px;
+    }
+
+    h2, h3 {
+      font-weight: 300;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    p {
+      font-weight: 300;
+      text-align: center;
+    }
+
+    #player-div {
+      width: 70%;
+      margin: auto;
+    }
+
+    .shadow {
+      -webkit-box-shadow: 0px 0px 56px 0px rgba(1, 0, 0, 0.75);
+      -moz-box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
+      box-shadow: 0px 0px 56px 0px rgba(0, 0, 0, 0.75);
+    }
+
+    .thick {
+      font-weight: bold;
+    }
+
+    a {
+      color: #97d9ef;
+      font-weight: 400;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #fff;
+    }
+
+    .logo > img {
+      max-height: 80px;
+    }
+
+    .metrics {
+      font-size: 18px;
+      margin: 1em 0
+      /*text-align: center;*/
+    }
+
+    @media (max-width: 800px) {
+      .logo {
+        width: 100%;
+      }
+
+      .title {
+        display: none;
+      }
+    }
+
+    .column {
+      float: left;
+      width: 50%;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+      padding: 0.1em 0;
+    }
+
+    .left {
+      width: 55%;
+    }
+
+    .right {
+      width: 40%;
+    }
+
+    .metrics .left {
+      width: 40%;
+    }
+
+    .metrics .right {
+      width: 60%;
+    }
+
+    .slidecontainer {
+      width: 80%;
+      margin: 3% 0;
+    }
+
+    .slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 8px;
+      border-radius: 5px;
+      background: #d3d3d3;
+      outline: none;
+      opacity: 0.7;
+      -webkit-transition: .2s;
+      transition: opacity .2s;
+    }
+
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .slider::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .latencycontrol {
+      margin-top: 10%;
+    }
+
+  </style>
+
+<body>
+<div id="wrapper">
+  <div id="banner">
+    <div class="logo"><img src="../images/bitmovin-logo.png"></div>
+    <div class="title"><h1>Low Latency in Bitmovin Player</h1></div>
+    <div class="clear"></div>
+  </div>
+
+
+  <div class="container">
+    <h1>HTML5 Adaptive Streaming Player, Configured for Low Latency</h1>
+    <h2 id="use_protocol">For MPEG-DASH & HLS</h2>
+    <div class="content">
+      <div class="player-wrapper">
+        <div id="player"></div>
+      </div>
+
+      <div class="row">
+        <div class="column left">
+          <div class="container">
+            <div class="content">
+              <div class="player-wrapper">
+                <div id="player-div" class="shadow"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column right metrics">
+          <div>
+            <div class="row thick">
+              <div class="column left">Current Player Latency</div>
+              <div class="column right"><span id="latency">-</span></div>
+            </div>
+            <div class="row">
+              <div class="column left">Wall-clock Time (UTC)</div>
+              <div class="column right"><span id="time">-</span></div>
+            </div>
+            <div class="row">
+              <div class="column left">Video Buffer</div>
+              <div class="column right"><span id="videoBufferLength">-</span></div>
+            </div>
+            <div class="row">
+              <div class="column left">Audio Buffer</div>
+              <div class="column right"><span id="audioBufferLength">-</span></div>
+            </div>
+            <div class="row">
+              <div class="column left">Latency Mode</div>
+              <div class="column right"><span id="latencyMode">idle</span></div>
+            </div>
+          </div>
+          <div class="latencycontrol">
+            <div>Target Latency: <span id="targetLatency">4</span></div>
+            <div class="slidecontainer">
+              <input type="range" min="0.5" max="8" value="4" step="0.1" class="slider" id="targetLatencySlider">
+              <div class="row">
+                <div class="column left">low</div>
+                <div class="column right" style="text-align: right">high</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="description">
+        <p>For more information about the Bitmovin player, please have a look at our online <a
+          href="//bitmovin.com/support" target="_blank">Developer Section</a>.</p>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>
+
+<script type="text/javascript">
+  var videoBufferDisplay = document.querySelector('#videoBufferLength');
+  var audioBufferDisplay = document.querySelector('#audioBufferLength');
+  var latencyModeDisplay = document.querySelector('#latencyMode');
+  var timeDisplay = document.querySelector('#time');
+  var latencyDisplay = document.querySelector('#latency');
+  var slider = document.querySelector('#targetLatencySlider');
+  var targetLatencyDisplay = document.querySelector('#targetLatency');
+
+  var url = new URL(location.href);
+
+  var targetLatency = 4;
+  var targetLatencyFromUrl = url.searchParams.get('latency');
+  if (targetLatencyFromUrl && !isNaN(Number(targetLatencyFromUrl))) {
+    targetLatency = targetLatencyFromUrl;
+  }
+  targetLatencyDisplay.innerText = String(targetLatency) + 's';
+
+  var videoOnly = false;
+
+  var setTargetLatencyAtPlayer = function() {
+    targetLatency = Number(slider.value);
+    player.lowlatency.setTargetLatency(targetLatency);
+  };
+
+  slider.oninput = setTargetLatencyAtPlayer;
+  slider.value = String(targetLatency);
+
+  var displayUpdateTimer;
+
+  var conf = {
+    key: "YourKEY",
+    playback: {
+      autoplay: true,
+      muted: false,
+    },
+    logs: {
+      //level: 'debug'
+    },
+    style: {},
+    events: {
+      targetlatencychanged: function(e) {
+        targetLatencyDisplay.innerText = e.to + 's';
+      },
+      latencymodechanged: function(e) {
+        latencyModeDisplay.innerText = e.to;
+      },
+      sourceloaded: function() {
+        displayUpdateTimer = setInterval(updateDisplay, 100)
+      },
+      sourceunloaded: function() {
+        clearInterval(displayUpdateTimer);
+      }
+    },
+    live: {
+      lowLatency: {
+        targetLatency: targetLatency,
+        catchup: {
+          playbackRateThreshold: 0.075,
+          seekThreshold: 5,
+          playbackRate: 1.1,
+        },
+        fallback: {
+          playbackRateThreshold: 0.075,
+          seekThreshold: 5,
+          playbackRate: 0.95,
+        },
+      },
+      synchronization: [{
+        method: 'httpiso',
+        serverUrl: 'https://time.akamai.com?ms&iso',
+      }],
+    },
+  };
+
+  dashUrl = "https://bitmovin-api-eu-west1-ci.s3.eu-west-1.amazonaws.com/output/encoding_test/doc/openapi/RtmpLiveEncodingLowLatency/stream.mpd";
+  hlsUrl = "https://bitmovin-api-eu-west1-ci.s3.eu-west-1.amazonaws.com/output/encoding_test/doc/openapi/RtmpLiveEncodingLowLatency/stream.m3u8";
+
+  var useURL = "dash"
+  if (url.searchParams.get('dashUrl')) {
+    dashUrl = url.searchParams.get('dashUrl');
+  }
+  if (url.searchParams.get('hlsUrl')) {
+    dashUrl = url.searchParams.get('hlsUrl');
+    useURL = "hls"
+  }
+  if (url.searchParams.has('dash')) {
+    useURL = "dash"
+  }
+  if (url.searchParams.has('hls')) {
+    useURL = "hls"
+  }
+
+  var source = {}
+  var protocolDisplay = document.querySelector('#use_protocol');
+  if (useURL=="dash") {
+    source.dash = dashUrl;
+    protocolDisplay.innerHTML = "Using DASH - Click to use <a href=\"?hls\">HLS</a>"
+  }
+  if (useURL=="hls") {
+    source.hls = hlsUrl;
+    protocolDisplay.innerHTML = "Using HLS - Click to use <a href=\"?dash\">DASH</a>"
+  }
+
+  function printBufferLevels() {
+    var videoBuffer = Math.round(player.getVideoBufferLength() * 100) / 100;
+    var audioBuffer = Math.round(player.getAudioBufferLength() * 100) / 100;
+
+    if (videoBuffer !== null) {
+      videoBufferDisplay.innerText = videoBuffer + 's';
+    }
+
+    if (audioBuffer !== null) {
+      audioBufferDisplay.innerText = audioBuffer + 's';
+    }
+  }
+
+  function updateDisplay() {
+    if (player) {
+      var currentLatency = player.lowlatency.getLatency();
+      latencyDisplay.innerText = Math.round(currentLatency * 1000) / 1000 + 's';
+      timeDisplay.innerText = (new Date()).toISOString().substr(11,10);
+      printBufferLevels();
+    }
+  }
+
+
+  var player = new bitmovin.player.Player(document.getElementById('player-div'), conf);
+  var bitrateGraphs = new BitrateGraphs(player);
+
+  player.load(source).then(function () {
+    console.log("Bitmovin Player successfully started")
+  }, function (error) {
+    console.log(error);
+  });
+</script>
+
