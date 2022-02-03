@@ -68,6 +68,7 @@ player.on(PlayerEvent.Playing, () => {
   }
 
   setMediaSessionMetadata();
+  setupMediaSessionActionHandlers();
   updatePositionState();
 });
 
@@ -109,6 +110,51 @@ player.load(assets[currentAssetIndex].sourceConfig);
 
 function setMediaSessionMetadata() {
   navigator.mediaSession.metadata = new MediaMetadata(assets[currentAssetIndex].mediaSessionMetadata);
+}
+
+function setupMediaSessionActionHandlers() {
+  const defaultSkipTime = 10;
+
+  const actionHandlers: {action: MediaSessionAction, handler: MediaSessionActionHandler}[] = [
+    {
+      action: 'seekbackward', 
+      handler: (details) => {
+        const skipTime = details.seekOffset || defaultSkipTime;
+        player.seek(Math.max(player.getCurrentTime() - skipTime, 0));
+        updatePositionState();
+      },
+    }, {
+      action: 'seekforward', 
+      handler: (details) => {
+        const skipTime = details.seekOffset || defaultSkipTime;
+        player.seek(Math.min(player.getCurrentTime() + skipTime, player.getDuration()))
+        updatePositionState();
+      },
+    }, {
+      action: 'seekto', 
+      handler: (details) => {
+        player.seek(details.seekTime);
+        updatePositionState();
+      },
+    }, {
+      action: 'play', 
+      handler: () => player.play(),
+    }, {
+      action: 'pause', 
+      handler: () => player.pause(),
+    }, {
+      action: 'stop',
+      handler: () => player.unload()
+    }
+  ];
+
+  for (const {action, handler} of actionHandlers) {
+    try {
+      navigator.mediaSession.setActionHandler(action, handler);
+    } catch (error) {
+      console.log(`The media session action '${action}' is not supported yet.`, error);
+    }
+  }
 }
 
 function updatePositionState() {
