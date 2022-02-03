@@ -47,6 +47,23 @@ const assets = [
         { src: 'resources/art-of-motion-512.jpeg', sizes: '512x512', type: 'image/jpg' },
       ]
     }
+  }, {
+    sourceConfig: {
+      title: 'Sintel',
+      hls: 'https://cdn.bitmovin.com/content/demos/4k/38e843e0-1998-11e9-8a92-c734cd79b4dc/manifest.m3u8',
+    },
+    mediaSessionMetadata: {
+      title: 'Sintel',
+      artist: 'Blender Open Source Project',
+      album: 'Durian',
+      artwork: [
+        { src: 'resources/tears-of-steel-96.jpeg',  sizes: '96x96',   type: 'image/jpg' },
+        { src: 'resources/tears-of-steel-128.jpeg', sizes: '128x128', type: 'image/jpg' },
+        { src: 'resources/tears-of-steel-192.jpeg', sizes: '192x192', type: 'image/jpg' },
+        { src: 'resources/tears-of-steel-256.jpeg', sizes: '256x256', type: 'image/jpg' },
+        { src: 'resources/tears-of-steel-512.jpeg', sizes: '512x512', type: 'image/jpg' },
+      ]
+    }
   }
 ];
 let currentAssetIndex = 0;
@@ -142,6 +159,27 @@ function setupMediaSessionActionHandlers() {
     }, {
       action: 'pause', 
       handler: () => player.pause(),
+    }, {
+      action: 'previoustrack',
+      handler: () => {
+        currentAssetIndex = Math.max(currentAssetIndex - 1, 0);
+        player.load(assets[currentAssetIndex].sourceConfig).then(() => player.play());
+      }
+    }, {
+      action: 'nexttrack',
+      handler: () => {
+        currentAssetIndex = Math.min(currentAssetIndex + 1, assets.length - 1);
+        player.load(assets[currentAssetIndex].sourceConfig).then(() => player.play());
+    
+        if (currentAssetIndex >= assets.length - 1) {
+          try {
+            // Unset the 'nexttrack' action handler at the end of a playlist.
+            navigator.mediaSession.setActionHandler('nexttrack', null);
+          } catch (error) {
+            console.log(`The media session action 'nexttrack' is not supported yet.`);
+          }
+        }
+      }
     }, {
       action: 'stop',
       handler: () => player.unload()
