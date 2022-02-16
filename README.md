@@ -56,6 +56,8 @@ This showcases are build around the Bitmovin Adaptive Streaming Player, demonstr
     * [vueJs](vue/vuejs.html): Using the Bitmovin Player within a vue.js component
 * [**webpack-demo**](webpack-demo/)
     * [buildPlayerWithWebpack](webpack-demo/buildPlayerWithWebpack.html): Build the Bitmovin HTML5 Player using webpack.
+* [**webapi-pip**](webapi-pip/)
+    * [pictureInPicture](webapi-pip/index.html): Integrate the Bitmovin HTML5 Player with the Picture-In-Picture(PiP) Web Api
 
 ## How to Install
 
