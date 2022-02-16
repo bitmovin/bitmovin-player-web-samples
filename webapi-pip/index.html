@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <!-- Bitmovin player modules -->
+    <script type="text/javascript" src="https://cdn.bitmovin.com/player/web/8/modules/bitmovinplayer-core.js"></script>
+    <script type="text/javascript"
+        src="https://cdn.bitmovin.com/player/web/8/modules/bitmovinplayer-polyfill.js"></script>
+    <script type="text/javascript"
+        src="https://cdn.bitmovin.com/player/web/8/modules/bitmovinplayer-engine-bitmovin.js"></script>
+    <script type="text/javascript"
+        src="https://cdn.bitmovin.com/player/web/8/modules/bitmovinplayer-engine-native.js"></script>
+    <script type="text/javascript"
+        src="https://cdn.bitmovin.com/player/web/8/modules/bitmovinplayer-mserenderer.js"></script>
+    <script type="text/javascript" src="https://cdn.bitmovin.com/player/web/8/modules/bitmovinplayer-abr.js"></script>
+    <script type="text/javascript" src="https://cdn.bitmovin.com/player/web/8/modules/bitmovinplayer-drm.js"></script>
+    <script type="text/javascript"
+        src="https://cdn.bitmovin.com/player/web/8/modules/bitmovinplayer-container-mp4.js"></script>
+    <script type="text/javascript"
+        src="https://cdn.bitmovin.com/player/web/8/modules/bitmovinplayer-container-ts.js"></script>
+    <script type="text/javascript" src="https://cdn.bitmovin.com/player/web/8/modules/bitmovinplayer-xml.js"></script>
+    <script type="text/javascript" src="https://cdn.bitmovin.com/player/web/8/modules/bitmovinplayer-dash.js"></script>
+    <script type="text/javascript" src="https://cdn.bitmovin.com/player/web/8/modules/bitmovinplayer-hls.js"></script>
+    <script type="text/javascript"
+        src="https://cdn.bitmovin.com/player/web/8/modules/bitmovinplayer-crypto.js"></script>
+    <script type="text/javascript" src="https://cdn.bitmovin.com/player/web/8/modules/bitmovinplayer-style.js"></script>
+    <script type="text/javascript" src="https://cdn.bitmovin.com/player/web/8/modules/bitmovinplayer-tizen.js"></script>
+    <script type="text/javascript" src="https://cdn.bitmovin.com/player/web/8/modules/bitmovinplayer-ui.js"></script>
+
+    <script type="text/javascript" src="js/console-to-ws.js"></script>
+</head>
+<button id="pipButtonElement">CLICK me to toggle PIP</button><div id="log" style="color: red;"></div>
+<br></br>
+<div id="my-player">
+    <video id="videoElement"></video>
+</div>
+
+<script>
+    // add all necessary (and loaded) modules to the player core
+    bitmovin.player.core.Player.addModule(window.bitmovin.player.polyfill.default);
+    bitmovin.player.core.Player.addModule(window.bitmovin.player['engine-bitmovin'].default);
+    bitmovin.player.core.Player.addModule(window.bitmovin.player['engine-native'].default);
+    bitmovin.player.core.Player.addModule(window.bitmovin.player['container-mp4'].default);
+    bitmovin.player.core.Player.addModule(window.bitmovin.player['container-ts'].default);
+    bitmovin.player.core.Player.addModule(window.bitmovin.player.mserenderer.default);
+    bitmovin.player.core.Player.addModule(window.bitmovin.player.abr.default);
+    bitmovin.player.core.Player.addModule(window.bitmovin.player.drm.default);
+    bitmovin.player.core.Player.addModule(window.bitmovin.player.xml.default);
+    bitmovin.player.core.Player.addModule(window.bitmovin.player.dash.default);
+    bitmovin.player.core.Player.addModule(window.bitmovin.player.hls.default);
+    bitmovin.player.core.Player.addModule(window.bitmovin.player.crypto.default);
+    bitmovin.player.core.Player.addModule(window.bitmovin.player.style.default);
+    bitmovin.player.core.Player.addModule(window.bitmovin.player.tizen.default);
+    bitmovin.player.core.Player.addModule(window.bitmovin.player.ui.default);
+
+    var APP_ID = 'com.bitmovin'
+    var config = {
+        "key": "---YOUR-KEY-HERE---",
+        playback: {
+            autoplay: true,
+            muted: true
+        },
+        events: {
+            error: function (errObj) {
+                switch (errObj.code) {
+                    default:
+                        console.error('error', errObj);
+                        break;
+                }
+            }
+        },
+    }
+
+    var source = {
+        dash: 'https://bitmovin-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd',
+    };
+
+    var container = document.getElementById('my-player');
+    var player = new bitmovin.player.core.Player(container, config);
+    var videoElement = document.getElementById("videoElement")
+
+    player.setVideoElement(videoElement);
+
+    player.load(source).then(
+        function () {
+            console.log('Successfully created Bitmovin Player instance');
+        },
+        function (reason) {
+            console.log('Error while creating Bitmovin Player instance');
+        }
+    );
+
+    var pipButtonElement = document.getElementById("pipButtonElement");
+    pipButtonElement.addEventListener('click', async function () {
+        try {
+            if (videoElement !== document.pictureInPictureElement) {
+                await videoElement.requestPictureInPicture();
+            } else {
+                await document.exitPictureInPicture();
+            }
+        }
+        catch (error) {
+            logElement = document.getElementById("log");
+            if (!('pictureInPictureEnabled' in document)) {
+                logElement.innerHTML = 'The Picture-in-Picture Web API is not available; Try using Chrome / Safari.';
+            }
+            else if (!document.pictureInPictureEnabled) {
+                logElement.innerHTML = 'The Picture-in-Picture Web API is disabled. Try using Chrome / Safari.';
+            }
+            else {
+                console.log('' + error);
+            }
+        }
+    });
+</script>
+</html>
