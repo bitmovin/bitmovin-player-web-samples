@@ -1,4 +1,4 @@
-var playerConfig = {
+const playerConfig = {
   // this license key is only for the tutorial examples
   key: "29ba4a30-8b5e-4336-a7dd-c94ff3b25f30",
   advertising: {
@@ -27,6 +27,6 @@ const source = {
 // By default Bitmovin Player uses IMA Advertising Module so this activates Bitmovin Advertising Module to give you more control
 bitmovin.player.Player.addModule(window.bitmovin.player['advertising-bitmovin'].default);
 
-var player = new bitmovin.player.Player(document.getElementById('player'), playerConfig);
+const player = new bitmovin.player.Player(document.getElementById('player'), playerConfig);
 
 player.load(source);
