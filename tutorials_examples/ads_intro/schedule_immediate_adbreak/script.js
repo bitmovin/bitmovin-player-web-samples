@@ -1,19 +1,7 @@
 var playerConfig = {
   // this license key is only for the tutorial examples
   key: "29ba4a30-8b5e-4336-a7dd-c94ff3b25f30",
-  advertising: {
-    adBreaks: [
-      {
-        tag: {
-          type: 'vast',
-          // More Ad Samples can be found here:
-          // https://developers.google.com/interactive-media-ads/docs/sdks/html5/client-side/tags
-          url:
-            'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&correlator='
-        }
-      }
-    ]
-  }
+  advertising: {}
 };
 
 const source = {
@@ -30,3 +18,27 @@ bitmovin.player.Player.addModule(window.bitmovin.player['advertising-bitmovin'].
 var player = new bitmovin.player.Player(document.getElementById('player'), playerConfig);
 
 player.load(source);
+
+function scheduleImmediateAdBreak() {
+  // Current playback position of the main content
+  var currentTime = player.getCurrentTime();
+  player.ads.schedule({
+    tag: {
+      url: 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&correlator=',
+      type: 'vast'
+    },
+    id: 'Ad',
+    position: currentTime,
+  });
+}
+
+// Use a button to schedule an ad whenever its clicked
+var scheduleBtn = document.getElementById('scheduleBtn');
+skipBtn.addEventListener('click', function () {
+  scheduleImmediateAdBreak();
+});
+// Use this later in the code to let the user skip the current ad
+var skipBtn = document.getElementById('skipButton');
+skipBtn.addEventListener('click', function () {
+  player.ads.skip();
+});
