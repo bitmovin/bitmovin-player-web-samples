@@ -1,19 +1,7 @@
 var playerConfig = {
   // this license key is only for the tutorial examples
   key: "29ba4a30-8b5e-4336-a7dd-c94ff3b25f30",
-  advertising: {
-    adBreaks: [
-      {
-        tag: {
-          type: 'vast',
-          // More Ad Samples can be found here:
-          // https://developers.google.com/interactive-media-ads/docs/sdks/html5/client-side/tags
-          url:
-            'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&correlator='
-        }
-      }
-    ]
-  }
+  advertising: { }
 };
 
 const source = {
@@ -30,3 +18,26 @@ bitmovin.player.Player.addModule(window.bitmovin.player['advertising-bitmovin'].
 var player = new bitmovin.player.Player(document.getElementById('player'), playerConfig);
 
 player.load(source);
+
+function scheduleImmediateAdBreak() {
+  // Current playback position of the main content
+  var currentTime = player.getCurrentTime();
+  player.ads.schedule({
+    tag: {
+      url: 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&correlator=',
+      type: 'vast'
+    },
+    id: 'Ad',
+    position: currentTime,
+  });
+}
+// Observe player `TimeChanged` event and schedule the immediate `AdBreak` when it reached the threshold
+var timePlayed = 0;
+player.on('timechanged', function(event) {
+  if (counter >= 15) {
+    scheduleImmediateAdBreak();
+    counter = 0;
+  } else {
+    counter = event.time;
+  }
+});
