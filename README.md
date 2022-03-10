@@ -78,6 +78,16 @@ These examples are build around the Bitmovin Adaptive Streaming Player, demonstr
     * [Frame Accurate Control](frameaccurate/js/FrameAccurateControls.ts): Bitmovin Player Wrapper for SMTPE timestamp seeking + stepping
 * [**streamRecovery**](streamRecovery/)
     * [liveStreamRecovery](streamRecovery/liveStreamRecovery.js): Automatically restart live streams if too many download errors happened e.g. to get over missing segments.
+* [**ssai**](ssai/)
+    * [dfp](ssai/dfp/): Use Google DoubleClick for Server-side ad insertion (SSAI)
+* [**subtitles**](subtitles/)
+    * [customSubtitleDisplay](subtitles/customSubtitleDisplay.js): Render subtitles using the ON_CUE_ENTER and ON_CUE_EXIT player events.
+* [**vue**](vue)
+    * [vueJs](vue/vuejs.html): Using the Bitmovin Player within a vue.js component
+* [**webpack-demo**](webpack-demo/)
+    * [buildPlayerWithWebpack](webpack-demo/buildPlayerWithWebpack.html): Build the Bitmovin HTML5 Player using webpack.
+* [**webapi-pip**](webapi-pip/)
+    * [pictureInPicture](webapi-pip/index.html): Integrate the Bitmovin HTML5 Player with the Picture-In-Picture(PiP) Web Api
 * [**Media Session API**](media-session-api/index.ts): Leverage the browser's Media Session API to show the user in system notifications what's being played and control the player from there.
 
 
