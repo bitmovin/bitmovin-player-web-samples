@@ -45,6 +45,7 @@ These examples are build around the Bitmovin Adaptive Streaming Player, demonstr
 ### Advertising
 * [**ssai**](ssai/)
   * [dfp](ssai/dfp/): Use Google DoubleClick for Server-side ad insertion (SSAI)
+  * [Yospace](ssai/yospace/): Use Yospace for Server-side ad insertion
 
 ### UI/UX & Subtitles
 * [**playerUi**](playerUi/)
