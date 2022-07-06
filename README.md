@@ -80,7 +80,8 @@ These examples are build around the Bitmovin Adaptive Streaming Player, demonstr
 * [**streamRecovery**](streamRecovery/)
     * [liveStreamRecovery](streamRecovery/liveStreamRecovery.js): Automatically restart live streams if too many download errors happened e.g. to get over missing segments.
 * [**ssai**](ssai/)
-    * [dfp](ssai/dfp/): Use Google DoubleClick for Server-side ad insertion (SSAI)
+    * [Google AdManager](ssai/dfp/): Use Google AdManager for Server-side ad insertion (SSAI)
+    * [Yospace](ssai/yospace/): Use Yospace for Server-side ad insertion
 * [**subtitles**](subtitles/)
     * [customSubtitleDisplay](subtitles/customSubtitleDisplay.js): Render subtitles using the ON_CUE_ENTER and ON_CUE_EXIT player events.
 * [**vue**](vue)
