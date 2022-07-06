@@ -4,7 +4,7 @@
     "build": "esbuild index.ts --bundle --outfile=build/index.js"
   },
   "dependencies": {
-    "@bitmovin/player-integration-yospace": "^2.0.0-a.0",
+    "@bitmovin/player-integration-yospace": "^2.0.0",
     "@yospace/admanagement-sdk": "^3.4.0",
     "bitmovin-player": "^8.87.0",
     "bitmovin-player-ui": "^3.28.1"
