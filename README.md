@@ -59,6 +59,7 @@ These examples are build around the Bitmovin Adaptive Streaming Player, demonstr
   * [playbackControlsUiWithImaAds](playerUi/playbackControlsUiWithImaAds.html) : Adding playback controls UI during Ads playback with IMA SDK
 * [**subtitles**](subtitles/)
   * [customSubtitleDisplay](subtitles/customSubtitleDisplay.js): Render subtitles using the ON_CUE_ENTER and ON_CUE_EXIT player events.
+  * [uiSubtitleOverlay](subtitles/uiSubtitleOverlay.html): Use only the SubtitleOverlay from the [Bitmovin Player UI](https://github.com/bitmovin/bitmovin-player-ui) but not the rest of the UI.
 
 ### UI Frameworks
 * [**angular**](angular/)
