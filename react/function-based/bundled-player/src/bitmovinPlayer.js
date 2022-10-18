@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { Player } from 'bitmovin-player';
 import { UIFactory } from 'bitmovin-player/bitmovinplayer-ui';
 import 'bitmovin-player/bitmovinplayer-ui.css';
@@ -16,8 +16,7 @@ function BitmovinPlayer() {
     hls: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8',
     poster: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/poster.jpg'
   };
-  const playerDiv = React.createRef();
-
+  const playerDiv = useRef();
 
   useEffect(() => {
     function setupPlayer() {
