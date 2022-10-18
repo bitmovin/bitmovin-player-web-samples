@@ -10,7 +10,8 @@ class BitmovinPlayer extends React.Component {
   };
 
   playerConfig = {
-    key: 'YOUR KEY HERE'
+    key: 'YOUR KEY HERE',
+    ui: false
   };
 
   playerSource = {

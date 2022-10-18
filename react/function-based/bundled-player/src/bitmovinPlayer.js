@@ -8,7 +8,8 @@ function BitmovinPlayer() {
   const [player, setPlayer] = useState(null);
 
   const playerConfig = {
-    key: 'YOUR KEY HERE'
+    key: 'YOUR KEY HERE',
+    ui: false
   };
 
   const playerSource = {
