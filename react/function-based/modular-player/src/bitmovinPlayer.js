@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Player } from 'bitmovin-player/modules/bitmovinplayer-core';
 import EngineBitmovinModule from 'bitmovin-player/modules/bitmovinplayer-engine-bitmovin';
 import MseRendererModule from 'bitmovin-player/modules/bitmovinplayer-mserenderer';
@@ -12,78 +12,64 @@ import SubtitlesModule from 'bitmovin-player/modules/bitmovinplayer-subtitles';
 import SubtitlesCEA608Module from 'bitmovin-player/modules/bitmovinplayer-subtitles-cea608';
 import PolyfillModule from 'bitmovin-player/modules/bitmovinplayer-polyfill';
 import StyleModule from 'bitmovin-player/modules/bitmovinplayer-style';
-import { UIFactory } from 'bitmovin-player/bitmovinplayer-ui';
+import {UIFactory} from 'bitmovin-player/bitmovinplayer-ui';
 import 'bitmovin-player/bitmovinplayer-ui.css';
 
-class BitmovinPlayer extends React.Component {
+function BitmovinPlayer() {
 
-    state = {
-        player: null,
-    };
+  const [player, setPlayer] = useState(null);
 
-    playerConfig = {
-        key: 'YOUR KEY HERE'
-    };
+  const playerConfig = {
+    key: 'YOUR KEY HERE'
+  };
 
-    playerSource = {
-        dash: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd',
-        hls: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8',
-        poster: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/poster.jpg'
-    };
+  const playerSource = {
+    dash: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd',
+    hls: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8',
+    poster: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/poster.jpg'
+  };
+  const playerDiv = React.createRef();
 
-    constructor(props) {
-        super(props);
-        this.playerDiv = React.createRef();
+
+  useEffect(() => {
+    function setupPlayer() {
+      Player.addModule(EngineBitmovinModule);
+      Player.addModule(MseRendererModule);
+      Player.addModule(HlsModule);
+      Player.addModule(XmlModule);
+      Player.addModule(DashModule);
+      Player.addModule(AbrModule);
+      Player.addModule(ContainerTSModule);
+      Player.addModule(ContainerMp4Module);
+      Player.addModule(SubtitlesModule);
+      Player.addModule(SubtitlesCEA608Module);
+      Player.addModule(PolyfillModule);
+      Player.addModule(StyleModule);
+
+      const playerInstance = new Player(playerDiv.current, playerConfig);
+      UIFactory.buildDefaultUI(playerInstance);
+      playerInstance.load(playerSource).then(() => {
+        setPlayer(playerInstance)
+        console.log('Successfully loaded source');
+      }, () => {
+        console.log('Error while loading source');
+      });
     }
 
-    componentDidMount() {
-        this.setupPlayer();
-    }
+    setupPlayer();
 
-    componentWillUnmount() {
-        this.destroyPlayer();
-    }
-
-    setupPlayer() {
-        Player.addModule(EngineBitmovinModule);
-        Player.addModule(MseRendererModule);
-        Player.addModule(HlsModule);
-        Player.addModule(XmlModule);
-        Player.addModule(DashModule);
-        Player.addModule(AbrModule);
-        Player.addModule(ContainerTSModule);
-        Player.addModule(ContainerMp4Module);
-        Player.addModule(SubtitlesModule);
-        Player.addModule(SubtitlesCEA608Module);
-        Player.addModule(PolyfillModule);
-        Player.addModule(StyleModule);
-
-        const player = new Player(this.playerDiv.current, this.playerConfig);
-        UIFactory.buildDefaultUI(player);
-        player.load(this.playerSource).then(() => {
-            this.setState({
-                ...this.state,
-                player
-            });
-            console.log('Successfully loaded source');
-        }, () => {
-            console.log('Error while loading source');
-        });
-    }
-
-    destroyPlayer() {
-        if (this.state.player != null) {
-            this.state.player.destroy();
-            this.setState({
-                ...this.state,
-                player: null
-            });
+    return () => {
+      function destroyPlayer() {
+        if (player != null) {
+          player.destroy();
+          setPlayer(null);
         }
+      }
+      destroyPlayer();
     }
+  }, [])
 
-    render() {
-        return <div id='player' ref={this.playerDiv}/>;
-    }
+  return <div id='player' ref={playerDiv}/>;
 }
 
 export default BitmovinPlayer;
