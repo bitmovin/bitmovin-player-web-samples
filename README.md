@@ -66,8 +66,8 @@ These examples are build around the Bitmovin Adaptive Streaming Player, demonstr
   * [buildPlayerWithNpm](angular/src/app/bitmovin-player/bitmovin-player.component.ts): Using the Bitmovin NPM package
 * [**react**](react/)
   * [reactJs](react/reactjs.html): Using the Bitmovin Player within a react component
-  * [buildPlayerWithBundledNpm](react/bundled-player/src/bitmovinPlayer.js): Using the Bitmovin Monolithic NPM package
-  * [buildPlayerWithModularNpm](react/modular-player/src/bitmovinPlayer.js): Using the Bitmovin Modular NPM package
+  * [buildPlayerWithBundledNpm](react/class-based/bundled-player/src/bitmovinPlayer.js): Using the Bitmovin Monolithic NPM package
+  * [buildPlayerWithModularNpm](react/class-based/modular-player/src/bitmovinPlayer.js): Using the Bitmovin Modular NPM package
 * [**vue**](vue)
   * [vueJs](vue/vuejs.html): Using the Bitmovin Player within a vue.js component
   
