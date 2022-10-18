@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import { Player } from 'bitmovin-player/modules/bitmovinplayer-core';
+import {Player} from 'bitmovin-player/modules/bitmovinplayer-core';
 import EngineBitmovinModule from 'bitmovin-player/modules/bitmovinplayer-engine-bitmovin';
 import MseRendererModule from 'bitmovin-player/modules/bitmovinplayer-mserenderer';
 import HlsModule from 'bitmovin-player/modules/bitmovinplayer-hls';
@@ -64,6 +64,7 @@ function BitmovinPlayer() {
           setPlayer(null);
         }
       }
+
       destroyPlayer();
     }
   }, [])

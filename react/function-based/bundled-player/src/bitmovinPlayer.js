@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
-import { Player } from 'bitmovin-player';
-import { UIFactory } from 'bitmovin-player/bitmovinplayer-ui';
+import {Player} from 'bitmovin-player';
+import {UIFactory} from 'bitmovin-player/bitmovinplayer-ui';
 import 'bitmovin-player/bitmovinplayer-ui.css';
 
 function BitmovinPlayer() {
@@ -39,6 +39,7 @@ function BitmovinPlayer() {
           setPlayer(null);
         }
       }
+
       destroyPlayer();
     }
   }, [])
