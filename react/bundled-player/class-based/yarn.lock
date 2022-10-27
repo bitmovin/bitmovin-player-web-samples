@@ -2640,11 +2640,6 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-bitmovin-player-ui@^3.0.1:
-  version "3.20.0"
-  resolved "https://registry.yarnpkg.com/bitmovin-player-ui/-/bitmovin-player-ui-3.20.0.tgz#56624672efc9b7ee4e772e54555496254ca0d4b0"
-  integrity sha512-Uq4BdexfNmAvjDfxGAY5pdoRjvh7SodQHmoJTis2wZ14YSDCZgXvUEtHB+tj2hotDp95HmL7EXH5KahzZIbgWg==
-
 bitmovin-player@^8.0.0:
   version "8.49.0"
   resolved "https://registry.yarnpkg.com/bitmovin-player/-/bitmovin-player-8.49.0.tgz#9d1829b931eeaa4373c4427622cb685048ff9fc9"
