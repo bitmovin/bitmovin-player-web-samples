@@ -137,9 +137,6 @@ $color-primary: #fff !default;
             margin: auto;
 
             > .#{$prefix}-seekbar {
-              > .#{$prefix}-seekbar-backdrop {
-                // background-color: red
-              }
               > .#{$prefix}-seekbar-bufferlevel {
                 background-color: grey;
               }
