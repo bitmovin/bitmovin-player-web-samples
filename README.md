@@ -56,6 +56,7 @@ These examples are build around the Bitmovin Adaptive Streaming Player, demonstr
   * [**TV UI**](playerUi/tv)
     * [disney](playerUi/tv/disney/index.html): Customized TV UI in the style of Disney Plus 
     * [netflix](playerUi/tv/netflix/index.html): Customized TV UI in the style of Netflix 
+    * [youtube](playerUi/tv/youtube/index.html): Customized TV UI in the style of Youtube 
 * [**subtitles**](subtitles/)
   * [customSubtitleDisplay](subtitles/customSubtitleDisplay.js): Render subtitles using the ON_CUE_ENTER and ON_CUE_EXIT player events.
   * [uiSubtitleOverlay](subtitles/uiSubtitleOverlay.html): Use only the SubtitleOverlay from the [Bitmovin Player UI](https://github.com/bitmovin/bitmovin-player-ui) but not the rest of the UI.
