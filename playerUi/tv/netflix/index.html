@@ -152,7 +152,13 @@
         const seekBar = new bitmovin.playerui.SeekBar({ label: new bitmovin.playerui.SeekBarLabel() });
         const playbackToggleButton = new bitmovin.playerui.PlaybackToggleButton();
         const replayButton = new bitmovin.playerui.ReplayButton();
-        // const nextButton = new bitmovin.playerui.NextButton();
+        const nextButton = new bitmovin.playerui.Button({
+          cssClasses: ['ui-nextbutton', 'ui-button'],
+          text: 'Next',
+        });
+        nextButton.onClick.subscribe(function() {
+          // TOOD: Load your next source here using `player.load(sourceConfig)`
+        })
         const optionsLabel = new bitmovin.playerui.Label({
           text: 'OPTIONS',
           cssClass: 'ui-label-options',
@@ -185,7 +191,7 @@
                   components: [
                     closeButton,
                     replayButton,
-                    // nextButton,
+                    nextButton,
                     new bitmovin.playerui.MetadataLabel({
                       content: bitmovin.playerui.MetadataLabelContent.Title,
                     }),
