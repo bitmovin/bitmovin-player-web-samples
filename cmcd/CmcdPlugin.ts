@@ -1,3 +1,14 @@
+/**
+ * Collect CMCD data from the Bitmovin Player and add them to the network requests.
+ * 
+ * Limitations:
+ * - Range requests aren't supported
+ * - It's currently assumed all requests go to the same server
+ * - There is no distinguishing between media (ObjectType `a`/`v`/`av`) and initialization (ObjectType `i`) segments
+ * - Muxed Audio and Video into a single segment (ObjectType `av`) is not supported
+ * - TimedTextTrack (ObjectType `tt`) is currently not used
+ */
+
 import {
   AudioAdaptationData,
   BufferType,

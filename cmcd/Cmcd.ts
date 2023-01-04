@@ -2,7 +2,8 @@
  * Enums, keys, classes for CMCD v1.0 support according to
  * https://cdn.cta.tech/cta/media/media/resources/standards/pdfs/cta-5004-final.pdf
  *
- * Limitation: JSON is not supported, only HTTP Headers and Query Args.
+ * Limitation: 
+ * - JSON is not supported, only HTTP Headers and Query Args.
  */
 
 export enum CmcdObjectTypeToken {
