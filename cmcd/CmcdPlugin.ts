@@ -59,6 +59,7 @@ export class CmcdPlugin {
   private isSeekingOrTimeshiftingOrStartup: boolean;
   private lastMeasuredThroughputAudio: number;
   private lastMeasuredThroughputVideo: number;
+  private manifestType: CmcdStreamingFormatToken | null;
 
   constructor(config: CmcdConfig) {
     this.useQueryArgs = config.useQueryArgs || false;
@@ -70,6 +71,7 @@ export class CmcdPlugin {
     this.isSeekingOrTimeshiftingOrStartup = true;
     this.lastMeasuredThroughputAudio = 0;
     this.lastMeasuredThroughputVideo = 0;
+    this.manifestType = null;
   }
 
   public setPlayer(player: PlayerAPI) {
@@ -96,7 +98,7 @@ export class CmcdPlugin {
   }
 
   public preprocessHttpRequest = (type: HttpRequestType, request: HttpRequest) => {
-    const data = this.gatherCmcdData(type);
+    const data = this.gatherCmcdData(type, request);
 
     if (this.useQueryArgs) {
       const cmcdStr = cmcdDataToUrlParameter(data);
@@ -133,7 +135,7 @@ export class CmcdPlugin {
     return Promise.resolve(response);
   }
 
-  private gatherCmcdData(type: HttpRequestType): CmcdBase[] {
+  private gatherCmcdData(type: HttpRequestType, request: HttpRequest): CmcdBase[] {
     if (!this.player) {
       throw new Error('Bitmovin Player not provided!');
     }
@@ -143,7 +145,7 @@ export class CmcdPlugin {
     data.push(new CmcdStreamType(this.player.isLive() ? CmcdStreamTypeToken.Live : CmcdStreamTypeToken.Vod));
     data.push(new CmcdPlaybackRate(this.player.getPlaybackSpeed()));
     data.push(this.getObjectType(type));
-    data.push(this.getStreamingType());
+    data.push(this.getStreamingType(type));
 
     if (this.contentId) {
       data.push(new CmcdContentId(this.contentId));
@@ -163,22 +165,44 @@ export class CmcdPlugin {
     }
 
     if (type === HttpRequestType.MEDIA_AUDIO) {
-      data = data.concat(this.getAudioSegmentRequestSpecificData());
+      data = data.concat(this.getAudioSegmentRequestSpecificData(request));
     } else if (type === HttpRequestType.MEDIA_VIDEO) {
-      data = data.concat(this.getVideoSegmentRequestSpecificData());
+      data = data.concat(this.getVideoSegmentRequestSpecificData(request));
     }
+
+    data.concat(this.getRequestedMaximumThroughput(data));
 
     return data;
   }
 
-  private getStreamingType() {
-    if (this.player?.manifest?.dash) {
-      return new CmcdStreamingFormat(CmcdStreamingFormatToken.MpegDash);
-    } else if (this.player?.manifest?.hls) {
-      return new CmcdStreamingFormat(CmcdStreamingFormatToken.Hls);
-    } else {
-      return new CmcdStreamingFormat(CmcdStreamingFormatToken.Other);
+  private getRequestedMaximumThroughput(data: CmcdBase[]): CmcdBase[] {
+    const cmcdEncodedBitrate = data.find(obj => obj.key === CmcdKeysToken.EncodedBitrate) as CmcdEncodedBitrate;
+    const cmcdObjectDuration = data.find(obj => obj.key === CmcdKeysToken.ObjectDuration) as CmcdObjectDuration;
+    const isBufferStarvation = Boolean(data.find(obj => obj.key === CmcdKeysToken.ObjectDuration));
+    const cmcdStartup = data.find(obj => obj.key === CmcdKeysToken.Startup);
+    const isStartup = cmcdStartup && !cmcdStartup.value
+    if (cmcdEncodedBitrate && cmcdObjectDuration && !isBufferStarvation && !isStartup) {
+      const segmentDurationSec = Number(cmcdObjectDuration.value) * 1000;
+      const encodedBitrateKbps = Number(cmcdEncodedBitrate.value);
+      const maxThroughput = encodedBitrateKbps * (segmentDurationSec / 2);
+      return [new CmcdRequestedMaximumThroughput(maxThroughput)];
     }
+    return [];
+  }
+
+  private getStreamingType(type: HttpRequestType) {
+    if (!this.manifestType) {
+      if (type === HttpRequestType.MANIFEST_DASH) {
+        this.manifestType = CmcdStreamingFormatToken.MpegDash;
+      } else if (type === HttpRequestType.MANIFEST_HLS_MASTER) {
+        this.manifestType = CmcdStreamingFormatToken.Hls;
+      } else if (type === HttpRequestType.MANIFEST_SMOOTH) {
+        this.manifestType = CmcdStreamingFormatToken.Smooth;
+      } else {
+        this.manifestType = CmcdStreamingFormatToken.Other;
+      }
+    }
+    return new CmcdStreamingFormat(this.manifestType);
   }
 
   private getObjectType(type: HttpRequestType) {
@@ -220,11 +244,11 @@ export class CmcdPlugin {
     return data;
   }
 
-  private getAudioSegmentRequestSpecificData() {
+  private getAudioSegmentRequestSpecificData(request: HttpRequest): CmcdBase[] {
     let data: CmcdBase[] = [];
 
-    if (this.currentAudioQuality && this.currentAudioQuality.bitrate) {
-      data.push(new CmcdEncodedBitrate(Math.round(this.currentAudioQuality.bitrate / 1000)));
+    if (this.currentAudioQuality && this.currentAudioQuality.bandwidth) {
+      data.push(new CmcdEncodedBitrate(Math.round(this.currentAudioQuality.bandwidth / 1000)));
     }
 
     if (this.lastMeasuredThroughputAudio) {
@@ -250,14 +274,24 @@ export class CmcdPlugin {
       data.push(new CmcdTopBitrate(audioTopBitrate));
     }
 
+    if (this.currentVideoQuality) {
+      const allSegments = this.player.getAvailableSegments();
+      for (const mimeType in allSegments) {
+        if (mimeType.startsWith('video/')) {
+          const segments = allSegments[mimeType][this.currentVideoQuality.id];
+          data = data.concat(this.getNextObjectAndObjectDurationCmcdData(segments, request.url));
+        }
+      }
+    }
+
     return data;
   }
 
-  private getVideoSegmentRequestSpecificData() {
+  private getVideoSegmentRequestSpecificData(request: HttpRequest): CmcdBase[] {
     let data: CmcdBase[] = [];
 
-    if (this.currentVideoQuality && this.currentVideoQuality?.bitrate) {
-      data.push(new CmcdEncodedBitrate(Math.round(this.currentVideoQuality.bitrate / 1000)));
+    if (this.currentVideoQuality && this.currentVideoQuality.bandwidth) {
+      data.push(new CmcdEncodedBitrate(Math.round(this.currentVideoQuality.bandwidth / 1000)));
     }
 
     if (this.lastMeasuredThroughputVideo) {
@@ -283,6 +317,37 @@ export class CmcdPlugin {
       data.push(new CmcdTopBitrate(videoTopBitrate));
     }
 
-    return data
+    if (this.currentVideoQuality) {
+      const allSegments = this.player.getAvailableSegments();
+      for (const mimeType in allSegments) {
+        if (mimeType.startsWith('video/')) {
+          const segments = allSegments[mimeType][this.currentVideoQuality.id];
+          data = data.concat(this.getNextObjectAndObjectDurationCmcdData(segments, request.url));
+        }
+      }
+    }
+
+    return data;
   }
+
+  private getNextObjectAndObjectDurationCmcdData(segments: SegmentInfo[], requestUrl: string): CmcdBase[] {
+    const data: CmcdBase[] = [];
+
+    const currentSegmentIndex = segments.findIndex(value => value.url === requestUrl);
+    if (currentSegmentIndex > -1) {
+      const currentSegment = segments[currentSegmentIndex];
+      if (!Number.isNaN(currentSegment.duration)) {
+        data.push(new CmcdObjectDuration(Number(currentSegment.duration) * 1000))
+      }
+
+      if (currentSegmentIndex + 1 < segments.length) {
+        const nextSegment = segments[currentSegmentIndex + 1];
+        if (nextSegment.url) {
+          data.push(new CmcdNextObjectRequest(nextSegment.url));
+        }
+      }
+    }
+    return data;
+  }
+
 }
