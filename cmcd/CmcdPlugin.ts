@@ -172,6 +172,8 @@ export class CmcdPlugin {
 
     data.concat(this.getRequestedMaximumThroughput(data));
 
+    // TODO: data.push(new CmcdNextRangeRequest('byte-range'));
+
     return data;
   }
 
@@ -210,9 +212,12 @@ export class CmcdPlugin {
 
     switch (type) {
       case HttpRequestType.MEDIA_AUDIO:
+        // TODO: We can't distinguish between media and init segments
         data = new CmcdObjectType(CmcdObjectTypeToken.AudioOnly);
         break;
       case HttpRequestType.MEDIA_VIDEO:
+        // TODO: We can't distinguish between Video and muxed Audio/Video
+        // TODO: We can't distinguish between media and init segments
         data = new CmcdObjectType(CmcdObjectTypeToken.VideoOnly);
         break;
       case HttpRequestType.DRM_CERTIFICATE_FAIRPLAY:
@@ -343,6 +348,7 @@ export class CmcdPlugin {
       if (currentSegmentIndex + 1 < segments.length) {
         const nextSegment = segments[currentSegmentIndex + 1];
         if (nextSegment.url) {
+          // TODO what about range requests?
           data.push(new CmcdNextObjectRequest(nextSegment.url));
         }
       }
