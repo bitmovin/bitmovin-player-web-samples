@@ -139,3 +139,6 @@ $RECYCLE.BIN/
 # Generated files
 typescript/build
 media-session-api/build
+
+# Other IDEs
+.vscode
