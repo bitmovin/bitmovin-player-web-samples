@@ -44,7 +44,7 @@ export enum CmcdVersionNumbers {
  * Enum containing all CMCD keys as defined in
  * https://cdn.cta.tech/cta/media/media/resources/standards/pdfs/cta-5004-final.pdf
  */
-enum CmcdKeysToken {
+export enum CmcdKeysToken {
   EncodedBitrate = 'br',
   BufferLength = 'bl',
   BufferStarvation = 'bs',
