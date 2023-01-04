@@ -1,4 +1,16 @@
-import { AudioAdaptationData, AudioQuality, BufferType, HttpRequest, HttpRequestType, HttpResponse, HttpResponseBody, MediaType, PlayerAPI, PlayerEvent, VideoAdaptationData, VideoQuality } from 'bitmovin-player';
+import {
+  AudioAdaptationData,
+  BufferType,
+  HttpRequest,
+  HttpRequestType,
+  HttpResponse,
+  HttpResponseBody,
+  MediaType,
+  PlayerAPI,
+  PlayerEvent,
+  SegmentInfo,
+  VideoAdaptationData,
+} from 'bitmovin-player';
 import type {
   CmcdBase,
 } from './Cmcd';
@@ -10,6 +22,7 @@ import {
   cmcdDataToUrlParameter,
   CmcdDeadline,
   CmcdEncodedBitrate,
+  CmcdKeysToken,
   CmcdMeasuredThroughput,
   CmcdNextObjectRequest,
   CmcdNextRangeRequest,
@@ -41,8 +54,8 @@ export class CmcdPlugin {
   private useQueryArgs: boolean;
   private player?: PlayerAPI;
   private stalledSinceLastRequest: boolean;
-  private currentVideoQuality: VideoQuality | null;
-  private currentAudioQuality: AudioQuality | null;
+  private currentVideoQuality: {bandwidth: number, id: string} | null;
+  private currentAudioQuality: {bandwidth: number, id: string} | null;
   private isSeekingOrTimeshiftingOrStartup: boolean;
   private lastMeasuredThroughputAudio: number;
   private lastMeasuredThroughputVideo: number;
@@ -78,7 +91,7 @@ export class CmcdPlugin {
   }
 
   public onAudioAdaptation = (data: AudioAdaptationData) => {
-    this.currentAudioQuality = data.representations.filter(rep => rep.id === data.suggested)[0].bandwidth / 1000;
+    this.currentAudioQuality = data.representations.filter(rep => rep.id === data.suggested)[0];
     return data.suggested;
   }
 
@@ -208,7 +221,7 @@ export class CmcdPlugin {
   }
 
   private getAudioSegmentRequestSpecificData() {
-    const data = [];
+    let data: CmcdBase[] = [];
 
     if (this.currentAudioQuality && this.currentAudioQuality.bitrate) {
       data.push(new CmcdEncodedBitrate(Math.round(this.currentAudioQuality.bitrate / 1000)));
@@ -241,7 +254,7 @@ export class CmcdPlugin {
   }
 
   private getVideoSegmentRequestSpecificData() {
-    const data = [];
+    let data: CmcdBase[] = [];
 
     if (this.currentVideoQuality && this.currentVideoQuality?.bitrate) {
       data.push(new CmcdEncodedBitrate(Math.round(this.currentVideoQuality.bitrate / 1000)));
