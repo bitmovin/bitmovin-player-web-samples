@@ -32,10 +32,6 @@ These examples are build around the Bitmovin Adaptive Streaming Player, demonstr
 
 ### Playback & Casting
 * [**CAF Receiver**](https://github.com/bitmovin/bitmovin-player-caf-receiver): Example of a Chromecast Application Framework (CAF) receiver app, also known as cast receiver v3 SDK.
-* [**castReceiver**](castReceiver/)
-  * [receiverApp](castReceiver/receiverApp.html): Example of a custom receiver app.
-* [**castReceiver-v7**](castReceiver/)
-  * [receiverApp](castReceiver-v7/receiverApp.html): Example of a custom receiver app based on Bitmovin Player v7. This is required for casting to receiver apps from Android & iOS Bitmovin Player v2 sender apps.
 * [**keyboard**](keyboard/)
   * [keyboardSupport](keyboard/keyboardSupport.html): Keyboard shortcuts for the Bitmovin Player.
   * [keyboardCustom](keyboard/keyboardCustom.html): Custom keyboard shortcuts for the Bitmovin Player.
