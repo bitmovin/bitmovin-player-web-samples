@@ -216,14 +216,14 @@
       cssClasses: ['sample-ui-skin-tv-disneyplus'],
     });
 
-    // const spatialNavigation = new bitmovin.playerui.SpatialNavigation(
-    //   new bitmovin.playerui.RootNavigationGroup(uiContainer, seekBar, replayButton, playbackToggleButton, settingsToggleButton),
-    //   new bitmovin.playerui.NavigationGroup(settingsPanel, audioTrackList, subtitleList),
-    // );
+    const spatialNavigation = new bitmovin.playerui.SpatialNavigation(
+      new bitmovin.playerui.RootNavigationGroup(uiContainer, seekBar, replayButton, playbackToggleButton, settingsToggleButton),
+      new bitmovin.playerui.NavigationGroup(settingsPanel, audioTrackList, subtitleList),
+    );
 
     return {
       ui: uiContainer,
-      // spatialNavigation: spatialNavigation,
+      spatialNavigation: spatialNavigation,
     };
   }
 </script>

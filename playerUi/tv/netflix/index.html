@@ -216,19 +216,19 @@
 
         uiContainer.addComponent(uiComponents);
 
-        // const spatialNavigation = new SpatialNavigation(
-        //   new RootNavigationGroup(
-        //     uiContainer,
-        //     seekBar,
-        //     nextButton,
-        //     replayButton,
-        //     closeButton
-        //   )
-        // );
+        const spatialNavigation = new bitmovin.playerui.SpatialNavigation(
+          new bitmovin.playerui.RootNavigationGroup(
+            uiContainer,
+            seekBar,
+            nextButton,
+            replayButton,
+            closeButton
+          )
+        );
 
         return {
           ui: uiContainer,
-          // spatialNavigation: spatialNavigation,
+          spatialNavigation: spatialNavigation,
         };
       }
     </script>

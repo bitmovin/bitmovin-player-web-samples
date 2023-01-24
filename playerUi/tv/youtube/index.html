@@ -172,14 +172,14 @@
           settingsPanel: subtitleListPanel,
           autoHideWhenNoActiveSettings: true,
           cssClass: 'ui-subtitlesettingstogglebutton',
-          text: 'Subtitles', // i18n.getLocalizer('settings.subtitles'),
+          text: bitmovin.playerui.i18n.getLocalizer('settings.subtitles'),
         });
         const audioToggleButton = new bitmovin.playerui.SettingsToggleButton({
           settingsPanel: audioTrackListPanel,
           autoHideWhenNoActiveSettings: true,
           cssClass: 'ui-audiotracksettingstogglebutton',
-          ariaLabel: 'Audio Track', // i18n.getLocalizer('settings.audio.track'),
-          text: 'Audio Track', // i18n.getLocalizer('settings.audio.track'),
+          ariaLabel: bitmovin.playerui.i18n.getLocalizer('settings.audio.track'),
+          text: bitmovin.playerui.i18n.getLocalizer('settings.audio.track'),
         });
 
         const playbackToggleOverlay = new bitmovin.playerui.PlaybackToggleOverlay();
@@ -237,19 +237,19 @@
 
         uiContainer.addComponent(uiComponents);
 
-        // const spatialNavigation = new bitmovin.playerui.SpatialNavigation(
-        //   new bitmovin.playerui.RootNavigationGroup(
-        //     uiContainer,
-        //     seekBar,
-        //     audioToggleButton,
-        //     subtitleToggleButton,
-        //     replayButton
-        //   )
-        // );
+        const spatialNavigation = new bitmovin.playerui.SpatialNavigation(
+          new bitmovin.playerui.RootNavigationGroup(
+            uiContainer,
+            seekBar,
+            audioToggleButton,
+            subtitleToggleButton,
+            replayButton
+          )
+        );
 
         return {
           ui: uiContainer,
-          // spatialNavigation: spatialNavigation,
+          spatialNavigation: spatialNavigation,
         };
       }
     </script>
