@@ -122,8 +122,12 @@
   };
   var sourceConfig = {
     title: 'Bitmovin Player TV UI Sample',
-    dash: 'https://bitmovin-a.akamaihd.net/content/sintel/sintel.mpd',
-    hls: 'https://bitmovin-a.akamaihd.net/content/sintel/hls/playlist.m3u8',
+    dash: 'https://cdn.bitmovin.com/content/assets/sintel/sintel.mpd',
+    hls: 'https://cdn.bitmovin.com/content/assets/sintel/hls/playlist.m3u8',
+    poster: 'https://cdn.bitmovin.com/content/assets/sintel/poster.png',
+    thumbnailTrack: {
+      url: 'https://cdn.bitmovin.com/content/assets/sintel/sprite/sprite.vtt',
+    },
   };
 
   var player = new bitmovin.player.Player(document.getElementById('player'), conf);
