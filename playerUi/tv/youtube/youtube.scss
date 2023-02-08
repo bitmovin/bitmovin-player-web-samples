@@ -1,0 +1,218 @@
+$prefix: 'bmpui';
+$color-primary: #fff !default;
+$animation-duration: .3s !default;
+
+@mixin svg-icon-shadow {
+  filter: drop-shadow(0 0 1px $color-primary);
+}
+
+.#{$prefix}-ui-skin-tv-youtube {
+  visibility: visible !important;
+  $overscan-margin: 3%;
+  $large-size: 3.5vh;
+  $medium-large-size: 3vh;
+  $medium-size: 2vh;
+  $small-size: 1.2vh;
+  font-family: Roboto;
+  letter-spacing: 0em;
+
+  $color-highlight: #ffffff;
+  $color-background: #ffffff;
+
+  font-size: $medium-size;
+
+  .#{$prefix}-ui-titlebar {
+    > .#{$prefix}-container-wrapper {
+      margin: $overscan-margin $overscan-margin $small-size;
+      width: 100% - 2 * $overscan-margin;
+    }
+  }
+
+  .#{$prefix}-ui-titlebar-top {
+    height: 5vh;
+
+    > .#{$prefix}-container-wrapper {
+      width: 100%;
+      height: 5vh;
+      font-size: $small-size;
+
+      display: inline-block;
+      flex-direction: column;
+
+      > .#{$prefix}-label-metadata-title {
+        // Moves rest of the items starting with this one to the very left
+        // margin auto will fill up the rest of the space in between.
+        font-weight: 400;
+        font-size: $medium-large-size;
+      }
+      > .#{$prefix}-label-metadata-description {
+        font-size: 1.5vh;
+        width: 60%;
+      }
+    }
+  }
+
+  .#{$prefix}-ui-titlebar-bottom {
+    > .#{$prefix}-container-wrapper {
+      width: 100%;
+      font-size: $small-size;
+
+      position: relative;
+      display: inline-flex;
+      justify-content: right;
+      align-items: flex-start;
+    }
+  }
+
+  // Position the settings panel top left below the settings icons
+  .#{$prefix}-ui-settings-panel {
+    font-size: $small-size;
+    top: 0;
+    left: 0;
+    width: 10vw;
+    background-color: transparent;
+  }
+
+  // Controlbar hierarchy
+  .#{$prefix}-ui-controlbar {
+    font-size: $medium-size;
+
+    //WRAPPER
+    > .#{$prefix}-container-wrapper {
+      margin: $overscan-margin auto;
+      width: 90%;
+
+      > .#{$prefix}-controlbar-bottom {
+        font-size: $medium-size;
+
+        //WRAPPER
+        > .#{$prefix}-container-wrapper {
+          font-size: $medium-large-size;
+          margin: auto;
+
+          > .#{$prefix}-ui-seekbar {
+            font-size: $medium-size;
+            margin: auto;
+
+            > .#{$prefix}-seekbar {
+              > .#{$prefix}-seekbar-bufferlevel {
+                background-color: grey;
+              }
+              > .#{$prefix}-seekbar-playbackposition {
+                background-color: red;
+              }
+              > .#{$prefix}-seekbar-markers {
+                visibility: hidden;
+              }
+              > .#{$prefix}-seekbar-playbackposition-marker {
+                background-color: #ffffff;
+                border-color: rgb(255, 255, 255);
+                box-shadow: 0 0 0 calc($medium-size / 4)
+                  rgba(255, 255, 255, 0.5);
+                width: $medium-size;
+                height: $medium-size;
+              }
+            }
+
+            > .#{$prefix}-ui-seekbar-label {
+              background: none;
+              margin-bottom: $large-size * 2;
+
+              > .#{$prefix}-container-wrapper {
+                > .#{$prefix}-seekbar-label-inner {
+                  border: 0;
+
+                  &::after {
+                    content: none;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // SETTINGS ABOVE SEEKBAR
+  .#{$prefix}-controlbar-top {
+    font-size: $medium-size;
+    > .#{$prefix}-container-wrapper {
+      font-size: $small-size;
+      height: 8vh;
+      margin: auto;
+
+      > .#{$prefix}-ui-subtitlesettingstogglebutton,
+      .#{$prefix}-ui-audiotracksettingstogglebutton,
+      .#{$prefix}-ui-replaybutton {
+        font-size: $medium-size;
+        margin-top: 0;
+      }
+
+      > .#{$prefix}-ui-replaybutton {
+        background-image: url('assets/avatar.svg');
+      }
+
+      > .#{$prefix}-ui-subtitlesettingstogglebutton {
+        background-image: url('assets/subtitles.svg');
+      }
+
+      > .#{$prefix}-ui-audiotracksettingstogglebutton {
+        background-image: url('assets/settings.svg');
+      }
+
+      > .#{$prefix}-ui-playbacktimelabel {
+        font-size: $medium-size;
+        text-align: right;
+        margin-right: 0;
+        margin-left: auto;
+        margin-top: auto;
+        margin-bottom: $small-size;
+      }
+    }
+  }
+
+  // SPECIFIC STYLES TO BUTTONS
+  .#{$prefix}-ui-replaybutton {
+    font-size: $small-size;
+    background-image: url('assets/restart.svg');
+  }
+
+  //Thumbnail
+  .#{$prefix}-seekbar-label-title {
+    visibility: hidden;
+  }
+  .#{$prefix}-seekbar-label-time {
+    font-size: $medium-size;
+    position: relative;
+    bottom: ($medium-size * -2);
+  }
+
+  .#{$prefix}-ui-hugeplaybacktogglebutton {
+
+    &.#{$prefix}-on {
+      .#{$prefix}-image {
+        background-image: url('assets/play_big.svg');
+        background-size: 10em;
+        animation: fade-out $animation-duration cubic-bezier(0.55, 0.055, 0.675, 0.19); // http://easings.net/de#easeInCubic
+        transition: visibility 1s $animation-duration;
+        visibility: hidden;
+      }
+    }
+
+    &.#{$prefix}-off {
+      .#{$prefix}-image {
+        background-image: url('assets/pause_big.svg');
+        background-size: 10em;
+        animation: fade-in $animation-duration cubic-bezier(0.55, 0.055, 0.675, 0.19); // http://easings.net/de#easeInCubic
+        visibility: hidden;
+      }
+    }
+  }
+
+  :focus {
+    transition: all 0.05s ease-in-out;
+    outline: none;
+    border: none;
+  }
+}
