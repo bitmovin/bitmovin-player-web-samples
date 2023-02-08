@@ -55,11 +55,13 @@ These examples are build around the Bitmovin Adaptive Streaming Player, demonstr
   * [playbackControlsUiWithImaAds](playerUi/playbackControlsUiWithImaAds.html) : Adding playback controls UI during Ads playback with IMA SDK
   * [**TV UI**](playerUi/tv)
     * [disney](playerUi/tv/disney/index.html): Customized TV UI in the style of Disney Plus
-    <img src="images/tv-ui-disney.png" width="66%">
+      <img src="images/tv-ui-disney.png" width="66%"><br>
+
     * [netflix](playerUi/tv/netflix/index.html): Customized TV UI in the style of Netflix
-    <img src="images/tv-ui-netflix.png" width="66%">
+      <img src="images/tv-ui-netflix.png" width="66%"><br>
+
     * [youtube](playerUi/tv/youtube/index.html): Customized TV UI in the style of Youtube
-    <img src="images/tv-ui-youtube.png" width="66%">
+      <img src="images/tv-ui-youtube.png" width="66%"><br>
 * [**subtitles**](subtitles/)
   * [customSubtitleDisplay](subtitles/customSubtitleDisplay.js): Render subtitles using the ON_CUE_ENTER and ON_CUE_EXIT player events.
   * [uiSubtitleOverlay](subtitles/uiSubtitleOverlay.html): Use only the SubtitleOverlay from the [Bitmovin Player UI](https://github.com/bitmovin/bitmovin-player-ui) but not the rest of the UI.
