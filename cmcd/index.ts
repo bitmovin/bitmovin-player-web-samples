@@ -14,7 +14,7 @@ const playerConfig: PlayerConfig = {
 const cmcdConfig: CmcdConfig = {
   useQueryArgs: true,
   sessionId: '6e2fb550-c457-11e9-bb97-0800200c9a66',
-  contentId: '1111-111111-1111="asdf"11-11111',
+  contentId: '1111-111111-111111-11111',
 };
 
 const cmcdPlugin = new CmcdPlugin(cmcdConfig);
