@@ -1,6 +1,7 @@
 import { Player, PlayerConfig, SourceConfig } from "bitmovin-player";
 import { UIFactory } from "bitmovin-player-ui";
 import { CmcdConfig, CmcdPlugin } from "./CmcdPlugin";
+import { v4 as uuidv4 } from 'uuid';
 
 const playerConfig: PlayerConfig = {
   key: '7e9c8483-ea84-423e-b675-19cf31dec43a',
@@ -13,7 +14,7 @@ const playerConfig: PlayerConfig = {
 
 const cmcdConfig: CmcdConfig = {
   useQueryArgs: true,
-  sessionId: '6e2fb550-c457-11e9-bb97-0800200c9a66',
+  sessionId: uuidv4(),
   contentId: '1111-111111-111111-11111',
 };
 
