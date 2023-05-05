@@ -32,10 +32,6 @@ These examples are build around the Bitmovin Adaptive Streaming Player, demonstr
 
 ### Playback & Casting
 * [**CAF Receiver**](https://github.com/bitmovin/bitmovin-player-caf-receiver): Example of a Chromecast Application Framework (CAF) receiver app, also known as cast receiver v3 SDK.
-* [**castReceiver**](castReceiver/)
-  * [receiverApp](castReceiver/receiverApp.html): Example of a custom receiver app.
-* [**castReceiver-v7**](castReceiver/)
-  * [receiverApp](castReceiver-v7/receiverApp.html): Example of a custom receiver app based on Bitmovin Player v7. This is required for casting to receiver apps from Android & iOS Bitmovin Player v2 sender apps.
 * [**keyboard**](keyboard/)
   * [keyboardSupport](keyboard/keyboardSupport.html): Keyboard shortcuts for the Bitmovin Player.
   * [keyboardCustom](keyboard/keyboardCustom.html): Custom keyboard shortcuts for the Bitmovin Player.
@@ -57,6 +53,15 @@ These examples are build around the Bitmovin Adaptive Streaming Player, demonstr
   * [labeling](playerUi/labeling.html): Change Languages, Quality and Subtitles labels
   * [customForwardRewindButtons](playerUi/customForwardRewindButtons.html): Custom Forward & Rewind Buttons
   * [playbackControlsUiWithImaAds](playerUi/playbackControlsUiWithImaAds.html) : Adding playback controls UI during Ads playback with IMA SDK
+  * [**TV UI**](playerUi/tv)
+    * [disney](playerUi/tv/disney/index.html): Customized TV UI in the style of Disney Plus
+      <img src="images/tv-ui-disney.png" width="66%"><br>
+
+    * [netflix](playerUi/tv/netflix/index.html): Customized TV UI in the style of Netflix
+      <img src="images/tv-ui-netflix.png" width="66%"><br>
+
+    * [youtube](playerUi/tv/youtube/index.html): Customized TV UI in the style of Youtube
+      <img src="images/tv-ui-youtube.png" width="66%"><br>
 * [**subtitles**](subtitles/)
   * [customSubtitleDisplay](subtitles/customSubtitleDisplay.js): Render subtitles using the ON_CUE_ENTER and ON_CUE_EXIT player events.
   * [uiSubtitleOverlay](subtitles/uiSubtitleOverlay.html): Use only the SubtitleOverlay from the [Bitmovin Player UI](https://github.com/bitmovin/bitmovin-player-ui) but not the rest of the UI.
