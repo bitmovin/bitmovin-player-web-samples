@@ -1,6 +1,6 @@
 import { Player, PlayerConfig, SourceConfig } from "bitmovin-player";
 import { UIFactory } from "bitmovin-player-ui";
-import { CmcdConfig, CmcdPlugin } from "./CmcdPlugin";
+import { CmcdConfig, CmcdIntegration } from "@bitmovin/player-web-integration-cmcd";
 import { v4 as uuidv4 } from 'uuid';
 
 const playerConfig: PlayerConfig = {
@@ -18,19 +18,19 @@ const cmcdConfig: CmcdConfig = {
   contentId: '1111-111111-111111-11111',
 };
 
-const cmcdPlugin = new CmcdPlugin(cmcdConfig);
+const cmcdIntegration = new CmcdIntegration(cmcdConfig);
 playerConfig.network = {
-  preprocessHttpRequest: cmcdPlugin.preprocessHttpRequest,
-  preprocessHttpResponse: cmcdPlugin.preprocessHttpResponse,
+  preprocessHttpRequest: cmcdIntegration.preprocessHttpRequest,
+  preprocessHttpResponse: cmcdIntegration.preprocessHttpResponse as any,
 }
 playerConfig.adaptation = {
   desktop: {
-    onVideoAdaptation: cmcdPlugin.onVideoAdaptation,
-    onAudioAdaptation: cmcdPlugin.onAudioAdaptation,
+    onVideoAdaptation: cmcdIntegration.onVideoAdaptation,
+    onAudioAdaptation: cmcdIntegration.onAudioAdaptation,
   },
   mobile: {
-    onVideoAdaptation: cmcdPlugin.onVideoAdaptation,
-    onAudioAdaptation: cmcdPlugin.onAudioAdaptation,
+    onVideoAdaptation: cmcdIntegration.onVideoAdaptation,
+    onAudioAdaptation: cmcdIntegration.onAudioAdaptation,
   },
 }
 
@@ -46,8 +46,7 @@ if (!htmlContainer) {
 const player = new Player(htmlContainer, playerConfig);
 const uimanager = UIFactory.buildDefaultUI(player);
 
-cmcdPlugin.setPlayer(player);
+cmcdIntegration.setPlayer(player);
+cmcdIntegration.setSessionId((player as any).analytics.getCurrentImpressionId());
 
-player.load(sourceConfig).then(() => {
-
-});
+player.load(sourceConfig);
