@@ -94,7 +94,7 @@ These examples are build around the Bitmovin Adaptive Streaming Player, demonstr
 * [**webapi-pip**](webapi-pip/)
     * [pictureInPicture](webapi-pip/index.html): Integrate the Bitmovin HTML5 Player with the Picture-In-Picture(PiP) Web Api
 * [**Media Session API**](media-session-api/index.ts): Leverage the browser's Media Session API to show the user in system notifications what's being played and control the player from there.
-
+* [**CMCD**](cmcd/index.ts): Enable Common Media Client-Data (CMCD) to be send along with requests to the CDN.
 
 ## Sample Apps Setup Instructions
 
