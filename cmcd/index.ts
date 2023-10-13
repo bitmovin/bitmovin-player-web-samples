@@ -1,6 +1,6 @@
 import { Player, PlayerConfig, SourceConfig } from "bitmovin-player";
 import { UIFactory } from "bitmovin-player-ui";
-import { CmcdConfig, CmcdIntegration } from "@bitmovin/player-web-integration-cmcd";
+import { CmcdConfig, CmcdIntegration, CustomKey } from "@bitmovin/player-web-integration-cmcd";
 import { v4 as uuidv4 } from 'uuid';
 
 const playerConfig: PlayerConfig = {
@@ -16,6 +16,9 @@ const cmcdConfig: CmcdConfig = {
   useQueryArgs: true,
   sessionId: uuidv4(),
   contentId: '1111-111111-111111-11111',
+  customKeys: [
+    new CustomKey('com.example-player_name', 'bitmovin-player'),
+  ]
 };
 
 const cmcdIntegration = new CmcdIntegration(cmcdConfig);
