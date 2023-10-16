@@ -8,6 +8,10 @@ import SubtitlesModule from 'bitmovin-player/modules/bitmovinplayer-subtitles';
 import SubtitlesCEA608Module from 'bitmovin-player/modules/bitmovinplayer-subtitles-cea608';
 import PolyfillModule from 'bitmovin-player/modules/bitmovinplayer-polyfill';
 import StyleModule from 'bitmovin-player/modules/bitmovinplayer-style';
+import XMLModule from 'bitmovin-player/modules/bitmovinplayer-xml';
+import DashModule from 'bitmovin-player/modules/bitmovinplayer-dash';
+import MP4ContainerModule from 'bitmovin-player/modules/bitmovinplayer-container-mp4';
+
 
 import { UIFactory } from 'bitmovin-player/bitmovinplayer-ui';
 import 'bitmovin-player/bitmovinplayer-ui.css';
@@ -17,10 +21,13 @@ Player.addModule(MseRendererModule);
 Player.addModule(HlsModule);
 Player.addModule(AbrModule);
 Player.addModule(ContainerTSModule);
+Player.addModule(MP4ContainerModule);
 Player.addModule(SubtitlesModule);
 Player.addModule(SubtitlesCEA608Module);
 Player.addModule(PolyfillModule);
 Player.addModule(StyleModule);
+Player.addModule(XMLModule);
+Player.addModule(DashModule);
 
 const conf = {
     key: 'YOUR KEY HERE',
