@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack-dev-server"
+  },
   "devDependencies": {
     "bitmovin-player": "^8.0.1",
     "css-loader": "^1.0.0",
