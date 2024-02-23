@@ -1,0 +1,6 @@
+{
+  "name": "Bitmovin Sample App",
+  "identifier": "com.bitmovin.sampleapp",
+  "version": "1.0.0",
+  "icon": "./static/icon.png"
+}

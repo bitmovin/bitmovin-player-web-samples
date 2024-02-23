@@ -1,0 +1,13 @@
+{
+  "name": "com.bitmovin.sampleapp",
+  "description": "Bitmovin Sample App",
+  "scripts": {
+    "tsc": "tsc"
+  },
+  "dependencies": {
+    "@lightningjs/sdk": "^5.5.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.7.4"
+  }
+}
