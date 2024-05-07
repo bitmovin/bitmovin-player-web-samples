@@ -1,25 +1,22 @@
 import { ConvivaAnalytics } from '@bitmovin/player-integration-conviva';
 import { PlayerConfig, PlayerEvent, SourceConfig } from 'bitmovin-player';
 import { BitmovinPlayer } from 'bitmovin-player-react';
-import { Fragment, useMemo } from 'react';
+import { Fragment } from 'react';
 import { Constants as ConvivaConstants } from '@convivainc/conviva-js-coresdk';
 
 const defaultPlayerSource: SourceConfig = {
   hls: 'https://cdn.bitmovin.com/content/assets/streams-sample-video/sintel/m3u8/index.m3u8',
 };
 
-export function App() {
-  const playerConfig: PlayerConfig = useMemo(
-    () => ({
-      key: '<key>',
-      playback: {
-        muted: true,
-        autoplay: true,
-      },
-    }),
-    [],
-  );
+const playerConfig: PlayerConfig = {
+  key: '<key>',
+  playback: {
+    muted: true,
+    autoplay: true,
+  },
+};
 
+export function App() {
   return (
     <Fragment>
       <h1>Bitmovin Player Conviva Integration Sample</h1>

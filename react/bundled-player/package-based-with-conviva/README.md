@@ -1,6 +1,6 @@
 # Bitmovin Player React & Conviva
 
-It's a simple sample of integration Conviva with Bitmovin Player in React leveraging https://www.npmjs.com/package/bitmovin-player-react.
+It's a simple sample of integration Conviva with Bitmovin Player in React leveraging https://www.npmjs.com/package/bitmovin-player-react and https://www.npmjs.com/package/@bitmovin/player-integration-conviva.
 
 How to use:
 

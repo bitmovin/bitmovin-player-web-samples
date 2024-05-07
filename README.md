@@ -74,7 +74,7 @@ These examples are build around the Bitmovin Adaptive Streaming Player, demonstr
   * [buildPlayerWithBundledNpmClassBased](react/bundled-player/class-based/src/bitmovinPlayer.js): Using the Bitmovin Monolithic NPM package on a class based React component.
   * [buildPlayerWithBundledNpmFunctionBased](react/bundled-player/function-based/src/bitmovinPlayer.js): Using the Bitmovin Monolithic NPM package on a function based React component.
   * [buildPlayerReactPackageFunctionBased](react/bundled-player/package-based/src/App.tsx): Using the Bitmovin React NPM package on a function based React component.
-  * [buildPlayerReactPackageWithConvivaFunctionBased](react/bundled-player/package-based-with-conviva/src/App.tsx): Using the Bitmovin React NPM package on a function based React component with Conviva.
+  * [buildPlayerReactPackageWithConvivaFunctionBased](react/bundled-player/package-based-with-conviva/src/App.tsx): Using the Bitmovin React NPM package on a function based React component with Conviva integration.
   * [buildPlayerWithModularNpmClassBased](react/modular-player/class-based/src/bitmovinPlayer.js): Using the Bitmovin Modular NPM package on a class based React component.
   * [buildPlayerWithModularNpmFunctionBased](react/modular-player/function-based/src/bitmovinPlayer.js): Using the Bitmovin Modular NPM package on a function based React component.
 * [**vue**](vue)
