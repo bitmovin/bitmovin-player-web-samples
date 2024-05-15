@@ -6,7 +6,6 @@
   },
   "dependencies": {
     "@bitmovin/player-integration-conviva": "^4.2.0",
-    "@convivainc/conviva-js-coresdk": "^4.7.6",
     "@types/react-dom": "^18.3.0",
     "bitmovin-player": "^8.159.0",
     "bitmovin-player-react": "^1.0.0-beta.2",

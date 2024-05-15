@@ -2,10 +2,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start:dev": "vite"
+    "start:dev": "vite --force"
   },
   "dependencies": {
-    "@bitmovin/player-integration-conviva": "^4.2.0",
+    "@bitmovin/player-integration-conviva": "file:../../../../bitmovin-player-web-analytics-conviva",
     "@convivainc/conviva-js-coresdk": "^4.7.6",
     "@types/react-dom": "^18.3.0",
     "bitmovin-player": "^8.159.0",
@@ -15,6 +15,7 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@types/react": "^18.3.1",
     "@vitejs/plugin-react": "^4.2.1",
     "vite": "^5.2.7"

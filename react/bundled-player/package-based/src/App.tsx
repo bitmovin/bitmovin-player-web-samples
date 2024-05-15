@@ -8,7 +8,7 @@ const defaultPlayerSource: SourceConfig = {
 };
 
 const playerConfig: PlayerConfig = {
-  key: '<key>',
+  key: '<playerKey>',
   playback: {
     muted: true,
     autoplay: true,
