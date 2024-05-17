@@ -8,7 +8,7 @@
     "@bitmovin/player-integration-conviva": "file:../../../../bitmovin-player-web-analytics-conviva",
     "@convivainc/conviva-js-coresdk": "^4.7.6",
     "@types/react-dom": "^18.3.0",
-    "bitmovin-player": "^8.159.0",
+    "bitmovin-player": "^8.164.0",
     "bitmovin-player-react": "^1.0.0-beta.2",
     "bitmovin-player-ui": "^3.60.0",
     "react": "^18.3.1",
