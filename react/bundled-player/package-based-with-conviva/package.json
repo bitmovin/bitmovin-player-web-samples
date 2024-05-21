@@ -5,7 +5,7 @@
     "start:dev": "vite --force"
   },
   "dependencies": {
-    "@bitmovin/player-integration-conviva": "file:../../../../bitmovin-player-web-analytics-conviva",
+    "@bitmovin/player-integration-conviva": "^5.0.0",
     "@convivainc/conviva-js-coresdk": "^4.7.6",
     "@types/react-dom": "^18.3.0",
     "bitmovin-player": "^8.164.0",

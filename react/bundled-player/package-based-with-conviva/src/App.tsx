@@ -73,7 +73,7 @@ export function App() {
 
             // Initialize metadata. It also can be used to update some data during playback.
             convivaAnalytics.updateContentMetadata({
-              viewerId: 'bitmovin-player-web-conviva-integration-viewer-7',
+              viewerId: 'bitmovin-player-web-conviva-integration-viewer',
               // It's also referred as "Player name" on Conviva in some places.
               applicationName: 'Bitmovin Web Player',
               assetName: 'Sintel',
