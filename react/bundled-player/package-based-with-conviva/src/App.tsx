@@ -5,8 +5,6 @@ import { Fragment } from 'react';
 
 const defaultPlayerSource: SourceConfig = {
   hls: 'https://cdn.bitmovin.com/content/assets/streams-sample-video/sintel/m3u8/index.m3u8',
-  // Live example
-  // dash: 'https://cmafref.akamaized.net/cmaf/live-ull/2006350/akambr/out.mpd'
 };
 
 const playerConfig: PlayerConfig = {
@@ -104,9 +102,9 @@ export function App() {
                 'c3.cm.genreList': 'Test Genre List Item 1, Test Genre List Item 2',
                 'c3.cm.utmTrackingUrl': 'https://test-utm-tracking-url',
                 // Cannot be determined reliably, but if there is a need this approximation can be used.
-                dcType: (navigator as Navigator & { connection?: { type: string } }).connection?.type
-                  || (navigator as Navigator & { connection?: { effectiveType: string } }).connection?.effectiveType
-                  || 'NA'
+                // dcType: (navigator as Navigator & { connection?: { type: string } }).connection?.type
+                //   || (navigator as Navigator & { connection?: { effectiveType: string } }).connection?.effectiveType
+                //   || 'NA'
               },
             });
 
