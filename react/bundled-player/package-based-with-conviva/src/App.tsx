@@ -2,6 +2,7 @@ import { ConvivaAnalytics } from '@bitmovin/player-integration-conviva';
 import { AdTagConfig, PlayerConfig, PlayerEvent, SourceConfig } from 'bitmovin-player';
 import { BitmovinPlayer } from 'bitmovin-player-react';
 import { Fragment } from 'react';
+import * as Conviva from '@convivainc/conviva-js-coresdk';
 
 const defaultPlayerSource: SourceConfig = {
   hls: 'https://cdn.bitmovin.com/content/assets/streams-sample-video/sintel/m3u8/index.m3u8',
@@ -107,6 +108,38 @@ export function App() {
                 //   || 'NA'
               },
             });
+
+            const simulateSsaiAd = () => {
+              // To avoid cyclic calls.
+              player.off(PlayerEvent.AdBreakFinished, simulateSsaiAd);
+
+              const playSsaiAd = () => {
+                convivaAnalytics.ssai.reportAdBreakStarted();
+                convivaAnalytics.ssai.reportAdStarted({
+                  id: 'dummy-web-server-side-ad',
+                  title: 'Dummy web server side AD',
+                  duration: 20,
+                  adSystem: 'dummy-server-side-ad-system',
+                  position: Conviva.Constants.AdPosition.PREROLL,
+                  isSlate: false,
+                  adStitcher: 'Dummy AD stitcher',
+                  additionalMetadata: {
+                    dummyKey: 'dummy-value'
+                  }
+                });
+
+                // "Play" the server side ad for 20 seconds.
+                setTimeout(() => {
+                  convivaAnalytics.ssai.reportAdFinished();
+                  convivaAnalytics.ssai.reportAdBreakFinished();
+                }, 20_000);
+              }
+
+              // Simulate server-side ad break with a little delay after the previous client side ad.
+              setTimeout(playSsaiAd, 2_000);
+            }
+
+            player.on(PlayerEvent.AdBreakFinished, simulateSsaiAd)
 
             player.on(PlayerEvent.Destroy, () => {
               convivaAnalytics.release();
