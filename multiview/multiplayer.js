@@ -98,6 +98,7 @@ function updateGrid() {
     const player = getPlayerInstance(playerConfig, source);
 
     const tile = player.getContainer();
+    tile.title = source.title;
     grid.appendChild(tile);
   }
 
@@ -134,7 +135,6 @@ function createPlayerTile(source) {
   tile.classList.add('tile');
   tile.id = 'player'; 
   tile.draggable = true;
-  tile.title = source.title;
 
   tile.addEventListener("dragstart", event => {
     if (event.target.id === 'player') {
@@ -149,7 +149,6 @@ function createPlayerTile(source) {
 
     const targetElement = event.target.closest('#player');
     if (draggedElement == null || targetElement == null || draggedElement == targetElement) {
-      console.error('No target or same source');
       return;
     }
 
