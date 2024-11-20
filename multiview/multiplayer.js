@@ -9,11 +9,6 @@ const sources = [
     poster: 'https://cdn.bitmovin.com/content/assets/poster/hd/RedBull.jpg',
     title: 'Red Bull - Art of Motion',
   },
-  // {
-  //   hls: 'https://cdn.bitmovin.com/content/sintel/hls/playlist.m3u8',
-  //   poster: 'https://cdn.bitmovin.com/content/assets/sintel/poster.png',
-  //   title: 'Sintel',
-  // },
   {
     hls: 'https://bitmovin-player-eu-west1-ci-input.s3.amazonaws.com/general/hls/tears-of-steel/max-720p.m3u8',
     poster: 'https://i.ytimg.com/vi/umNfA9m6Kis/hq720.jpg',
@@ -79,7 +74,7 @@ const toggleCarouselItem = (item) => {
     activeSources = activeSources.filter(active => {
       const shouldKeep = active.title !== source.title;
       if (!shouldKeep) {
-        // TODO: should we destroy the player instance?
+        // Unload the player instance, so that it can be reused
         const player = reusablePlayers.find(player => player.getSource() === source);
         player && player.unload();
       }
@@ -138,6 +133,7 @@ function createPlayerTile(source) {
     // Swap sources
     const targetIndex = activeSources.findIndex(config => config.title === targetElement.title);
     const sourceIndex = activeSources.findIndex(config => config.title === draggedElement.title);
+    
     const temp = activeSources[targetIndex];
     activeSources[targetIndex] = activeSources[sourceIndex];
     activeSources[sourceIndex] = temp;
@@ -149,8 +145,16 @@ function createPlayerTile(source) {
 }
 
 function getPlayerInstance(playerConfig, source) {
-  const player = reusablePlayers.find(player => player.getSource() === source);
+  let player = reusablePlayers.find(player => player.getSource() === source);
   if (player) {
+    // An active player instance already exists for this source
+    return player;
+  }
+
+  player = reusablePlayers.find(player => player.getSource() == null);
+  if (player) {
+    // Re-use one of the unused player instances
+    player.load(source);
     return player;
   }
 
