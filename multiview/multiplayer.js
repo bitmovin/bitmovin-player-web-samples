@@ -105,6 +105,29 @@ function updateGrid() {
   grid.classList.add(`tile-count-${activeSources.length}`);
 }
 
+function getPlayerInstance(playerConfig, source) {
+  let player = reusablePlayers.find(player => player.getSource() === source);
+  if (player) {
+    // An active player instance already exists for this source
+    return player;
+  }
+
+  player = reusablePlayers.find(player => player.getSource() == null);
+  if (player) {
+    // Re-use one of the unused player instances
+    player.load(source);
+    return player;
+  }
+
+  // Create a new player instance
+  const container = createPlayerTile(source);
+  const newPlayer = new bitmovin.player.Player(container, playerConfig);
+  newPlayer.load(source);
+  reusablePlayers.push(newPlayer);
+
+  return newPlayer;
+}
+
 function createPlayerTile(source) {
   const tile = document.createElement('div');
 
@@ -142,29 +165,6 @@ function createPlayerTile(source) {
   });
 
   return tile;
-}
-
-function getPlayerInstance(playerConfig, source) {
-  let player = reusablePlayers.find(player => player.getSource() === source);
-  if (player) {
-    // An active player instance already exists for this source
-    return player;
-  }
-
-  player = reusablePlayers.find(player => player.getSource() == null);
-  if (player) {
-    // Re-use one of the unused player instances
-    player.load(source);
-    return player;
-  }
-
-  // Create a new player instance
-  const container = createPlayerTile(source);
-  const newPlayer = new bitmovin.player.Player(container, playerConfig);
-  newPlayer.load(source);
-  reusablePlayers.push(newPlayer);
-
-  return newPlayer;
 }
 
 // Page listeners
