@@ -10,15 +10,15 @@ const sources = [
     title: 'Red Bull - Art of Motion',
   },
   {
-    hls: 'https://bitmovin-player-eu-west1-ci-input.s3.amazonaws.com/general/hls/tears-of-steel/max-720p.m3u8',
-    poster: 'https://i.ytimg.com/vi/umNfA9m6Kis/hq720.jpg',
-    title: 'Tears of Steel',
+    dash: 'https://cdn.bitmovin.com/content/assets/bbb/stream.mpd',
+    poster: 'https://cdn.bitmovin.com/content/assets/poster/hd/BigBuckBunny.jpg',
+    title: 'Big Buck Bunny',
   },
   {
-    dash: 'https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd',
-    poster: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXQhf9eletYavf20COCj38YnLdm01cCJ-qyg&s',
-    title: 'Big Buck Bunny',
-  }
+    dash: 'https://cdn.bitmovin.com/content/assets/sintel/sintel.mpd',
+    poster: 'https://cdn.bitmovin.com/content/assets/sintel/poster.png',
+    title: 'Sintel',
+  },
 ];
 const playerConfig = {
   key: 'YOUR_PLAYER_KEY',
