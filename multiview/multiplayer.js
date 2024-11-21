@@ -34,7 +34,7 @@ const onPageLoad = () => {
   populateCarousel();
 
   // Pre-select the first item to showcase the feature
-  toggleCarouselItem(document.querySelector('.item'));
+  toggleCarouselItem(document.getElementById('0'));
 }
 
 function populateCarousel() {
