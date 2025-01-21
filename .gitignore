@@ -138,6 +138,7 @@ $RECYCLE.BIN/
 
 # Generated files
 typescript/build
+subtitles/uiSubtitleOverlay-modular/build
 media-session-api/build
 
 # Other IDEs
