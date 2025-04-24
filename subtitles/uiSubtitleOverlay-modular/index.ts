@@ -1,7 +1,6 @@
 import {
   Player,
   PlayerConfig,
-  PlayerEvent,
   SourceConfig,
   util,
 } from 'bitmovin-player/modules/bitmovinplayer-core';
@@ -23,6 +22,8 @@ import {
   UIContainer,
   UIManager,
   SubtitleOverlay,
+  SettingsPanel,
+  SubtitleSettingsPanelPage,
 } from 'bitmovin-player-ui';
 
 import 'bitmovin-player-ui/dist/css/bitmovinplayer-ui.css';
@@ -46,7 +47,11 @@ const config: PlayerConfig = new util.PlayerConfigBuilder('YOUR-KEY-HERE')
   .build();
 console.log('player config:', config);
 
-const player = new Player(document.getElementById('player'), config);
+const playerContainer = document.getElementById('player-container');
+if (!playerContainer) {
+  throw new Error('Player container not found');
+}
+const player = new Player(playerContainer, config);
 
 const source: SourceConfig = {
   title: 'Sintel',
@@ -60,15 +65,38 @@ player.load(source).then(() => {
   // the first subtitle track
   player.subtitles.enable(player.subtitles.list()[0].id, true);
 
-  createSubtitleOverlay();
+  const uiManager = createSubtitleOverlay();
+
+  // Subtitles can be customized using the SubtitleSettingsManager.
+  // Supported values for `fontSize` can be found here (the `key` properties):
+  // https://github.com/bitmovin/bitmovin-player-ui/blob/a8c1d1e7d5eda4154841bbc457848520a2d870bf/src/ts/components/subtitlesettings/fontsizeselectbox.ts#L23-L30
+  uiManager.getSubtitleSettingsManager().fontSize.value = '150';
 
   console.log('Successfully created player instance');
 });
 
 function createSubtitleOverlay() {
-  // Create a custom UI structure with only the SubtitleOverlay
+  const subtitleOverlay = new SubtitleOverlay();
+  const settingsPanel = new SettingsPanel({
+    components: [],
+    hidden: true,
+  });
+
+  // Subtitle styling only works if a `SubtitleSettingsPanelPage` (with the corresponding Subtitle Settings elements)
+  // are in the UI tree.
+  const subtitleSettingsPanelPage =
+    new SubtitleSettingsPanelPage({
+      settingsPanel: settingsPanel,
+      overlay: subtitleOverlay,
+    });
+  settingsPanel.addComponent(subtitleSettingsPanelPage);
+
+  // Create a custom UI structure with only the SubtitleOverlay (and the hidden SettingsPanel to enable UI customizations)
   const subtitleUI = new UIContainer({
-    components: [new SubtitleOverlay()],
+    components: [
+      subtitleOverlay,
+      settingsPanel,
+    ],
   });
 
   // Launch the UI
