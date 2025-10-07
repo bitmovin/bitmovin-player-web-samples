@@ -17,8 +17,12 @@ module.exports = {
     },
     devtool: 'source-map',
     devServer: {
-        contentBase: path.resolve(__dirname),
-        publicPath: '/dist/',
+        static: {
+            directory: path.resolve(__dirname)
+        },
+        devMiddleware: {
+            publicPath: '/dist/'
+        },
         host: '127.0.0.1',
         port: 3035
     }
