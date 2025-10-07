@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "start": "webpack-dev-server --open",
+    "build": "webpack --mode development"
+  },
   "devDependencies": {
     "bitmovin-player": "^8.0.0",
     "bitmovin-player-ui": "^3.0.1",
