@@ -86,7 +86,7 @@ function App() {
 
   const playerConfig: PlayerConfig = useMemo(
     () => ({
-      key: '89f6ed6c-ab0e-46c2-ac47-5665e60c3c41',
+      key: 'YOUR-KEY-HERE',
       playback: {
         muted: true,
         autoplay: true,
