@@ -1,0 +1,97 @@
+.app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #1a1a1a;
+  padding: 20px;
+  box-sizing: border-box;
+  gap: 20px;
+  padding-top: 40px;
+}
+
+.app-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+}
+
+.header-links {
+  display: flex;
+  gap: 2em;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.app-title {
+  color: rgba(255, 255, 255, 0.87);
+  font-size: 2.5em;
+  font-weight: 600;
+  margin: 0;
+  text-align: center;
+}
+
+.source-link {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.source-link:hover {
+  color: rgba(255, 255, 255, 0.87);
+  text-decoration: underline;
+}
+
+.external-icon {
+  margin-left: 0.3em;
+  display: inline-block;
+}
+
+.video-container {
+  width: 100%;
+  max-width: 1200px;
+  aspect-ratio: 16/9;
+  background-color: #000;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.video-container > div {
+  width: 100%;
+  height: 100%;
+}
+
+.bmpui-ui-watermark {
+  display: none;
+}
+
+.cr-icon-button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 12px;
+  z-index: 1000;
+}
+
+.cr-icon-button:focus {
+  outline: none;
+}
+
+.cr-icon-button.disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.cr-icon {
+  width: 54px;
+  height: 36px;
+  display: block;
+}
