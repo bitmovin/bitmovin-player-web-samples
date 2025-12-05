@@ -60,6 +60,7 @@ The Bitmovin Player is configured with:
 
 ## Resources
 
+- [Bitmovin Blog Article on C2PA Integration](https://bitmovin.com/blog/bringing-content-authenticity-to-video-streaming-c2pa-integration-with-bitmovins-player/)
 - [C2PA JavaScript SDK](https://github.com/contentauth/c2pa-js) - Official C2PA SDK used in this project
 - [C2PA Specification](https://c2pa.org/specifications/)
 - [Bitmovin Player Documentation](https://developer.bitmovin.com/playback/docs/getting-started)
