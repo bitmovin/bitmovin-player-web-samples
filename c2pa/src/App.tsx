@@ -125,7 +125,7 @@ function App() {
           <a href="https://github.com/bitmovin/bitmovin-player-web-samples/tree/main/c2pa" className="source-link" target="_blank" rel="noopener noreferrer">
             View on GitHub<span className="external-icon" aria-hidden="true">↗</span>
           </a>
-          <a href="https://bitmovin.com/blog" className="source-link" target="_blank" rel="noopener noreferrer">
+          <a href="https://bitmovin.com/blog/bringing-content-authenticity-to-video-streaming-c2pa-integration-with-bitmovins-player/" className="source-link" target="_blank" rel="noopener noreferrer">
             Read the Blog Article<span className="external-icon" aria-hidden="true">↗</span>
           </a>
         </div>
