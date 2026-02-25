@@ -10,6 +10,11 @@ const conf = {
   logs: {
     level: 'debug'
   },
+  style: {
+    visibility: {
+      enableTracking: true,
+    },
+  },
   events: {
     adbreakstarted: console.log,
     adstarted: function(event) {
