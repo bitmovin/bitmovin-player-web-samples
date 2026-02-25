@@ -12,7 +12,7 @@ const conf = {
   },
   style: {
     visibility: {
-      // This is required to enable intersttiials viewability tracking.
+      // This is required to enable interstitials viewability tracking.
       // When enabled, the player will track the viewability of interstitials and trigger events accordingly.
       enableTracking: true,
     },
