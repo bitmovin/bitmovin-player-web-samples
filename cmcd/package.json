@@ -17,7 +17,7 @@
   "dependencies": {
     "@bitmovin/player-web-integration-cmcd": "github:bitmovin/bitmovin-player-web-integration-cmcd",
     "bitmovin-player": "^8.115.0",
-    "bitmovin-player-ui": "^3.47.0",
+    "bitmovin-player-ui": "^4.9.1",
     "esbuild": "^0.16.13",
     "typescript": "^4.9.4",
     "uuid": "^9.0.0"

@@ -47,7 +47,7 @@ if (!htmlContainer) {
   throw new Error('No HTMLElement with ID `player` found.');
 }
 const player = new Player(htmlContainer, playerConfig);
-const uimanager = UIFactory.buildDefaultUI(player);
+const uimanager = UIFactory.buildUI(player);
 
 cmcdIntegration.setPlayer(player);
 cmcdIntegration.setSessionId((player as any).analytics.getCurrentImpressionId());
