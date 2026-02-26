@@ -144,7 +144,7 @@
   };
 
   var player = new bitmovin.player.Player(playerElement, playerConfiguration);
-  var myUiManager = new bitmovin.playerui.UIFactory.buildDefaultUI(player, uiConfig);
+  var myUiManager = bitmovin.playerui.UIFactory.buildUI(player, uiConfig);
 
   var sourceConfig = {
     title: "Bitmovin Player",
@@ -165,4 +165,3 @@
 </script>
 </body>
 </html>
-

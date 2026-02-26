@@ -149,7 +149,7 @@
     };
 
     var player = new bitmovin.player.Player(document.getElementById('player'), conf);
-    var myUiManager = new bitmovin.playerui.UIFactory.buildDefaultUI(player);
+    var myUiManager = bitmovin.playerui.UIFactory.buildUI(player);
 
     player.load(sourceConfig).then(function () {
       console.log('Successfully loaded source');

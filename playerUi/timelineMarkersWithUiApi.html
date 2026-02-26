@@ -157,7 +157,7 @@
   ];
 
   var player = new bitmovin.player.Player(playerElement, playerConfiguration);
-  var myUiManager = new bitmovin.playerui.UIFactory.buildDefaultUI(player);
+  var myUiManager = bitmovin.playerui.UIFactory.buildUI(player);
 
   //Once player/UI is ready you can interact with their respective API
   player.on("ready", function() {
@@ -189,4 +189,3 @@
 </script>
 </body>
 </html>
-
