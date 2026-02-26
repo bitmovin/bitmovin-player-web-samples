@@ -209,20 +209,21 @@
             targetPage: subtitleSettingsPanelPage,
             container: settingsPanel,
             ariaLabel: 'Subtitles',
-            text: 'open',
+            text: 'Settings',
         });
 
         mainSettingsPanelPage.addComponent(
-            new bitmovin.playerui.SettingsPanelItem(
-                new bitmovin.playerui.SubtitleSettingsLabel({
-                    text: 'Subtitles',
-                    opener: subtitleSettingsOpenButton,
-                }),
-                subtitleSelectBox,
-                {
-                    role: 'menubar',
-                },
-            ));
+            new bitmovin.playerui.SettingsPanelItem({
+                label: 'Subtitles',
+                settingComponent: subtitleSelectBox,
+            }),
+        );
+        mainSettingsPanelPage.addComponent(
+            new bitmovin.playerui.SettingsPanelItem({
+                label: null,
+                settingComponent: subtitleSettingsOpenButton,
+            }),
+        );
 
         settingsPanel.addComponent(subtitleSettingsPanelPage);
 
