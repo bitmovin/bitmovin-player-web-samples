@@ -174,7 +174,7 @@
       };
 
       const player = new bitmovin.player.Player(playerElement, playerConfiguration);
-      const myUiManager = new bitmovin.playerui.UIFactory.buildDefaultUI(player);
+      const myUiManager = bitmovin.playerui.UIFactory.buildUI(player);
 
       player.on(bitmovin.player.PlayerEvent.SourceLoaded, () => {
         adTags.forEach(adTag => {
