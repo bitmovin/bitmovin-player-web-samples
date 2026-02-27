@@ -8,10 +8,10 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
     <link rel="icon" type="../../image/png" href="../images/bit-fav.png">
     <!-- Bitmovin Player -->
-    <link href="https://cdn.bitmovin.com/player/web/8/bitmovinplayer-ui.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bitmovin-player-ui@4.9.1/dist/css/bitmovinplayer-ui.css" rel="stylesheet" />
     <link href="disney.css" rel="stylesheet" />
     <script type="text/javascript" src="https://cdn.bitmovin.com/player/web/8/bitmovinplayer.js"></script>
-    <script type="text/javascript" src="https://cdn.bitmovin.com/player/web/8/bitmovinplayer-ui.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bitmovin-player-ui@4.9.1/dist/js/bitmovinplayer-ui.js"></script>
     <style>
         body {
             margin: 0;
@@ -118,6 +118,7 @@
 <script type="text/javascript">
   var conf = {
     key: 'YOUR-PLAYER-LICENSE-KEY',
+    analytics: false,
     ui: false,
   };
   var sourceConfig = {
@@ -142,33 +143,8 @@
 
   function buildDisneyPlusTvUI() {
     const subtitleOverlay = new bitmovin.playerui.SubtitleOverlay();
-    const audioTrackList = new bitmovin.playerui.AudioTrackListBox();
-    const subtitleList = new bitmovin.playerui.SubtitleListBox();
-
-    let mainSettingsPanelPage = new bitmovin.playerui.SettingsPanelPage({
-      components: [
-        new bitmovin.playerui.SettingsPanelItem('Audio Tracks', audioTrackList),
-        new bitmovin.playerui.SettingsPanelItem('Subtitles', subtitleList),
-      ],
-    });
-
-    let settingsPanel = new bitmovin.playerui.SettingsPanel({
-      components: [
-        mainSettingsPanelPage,
-      ],
-      hidden: true,
-    });
-
-    let subtitleSettingsPanelPage = new bitmovin.playerui.SubtitleSettingsPanelPage({
-      settingsPanel: settingsPanel,
-      overlay: subtitleOverlay,
-    });
-
-    settingsPanel.addComponent(subtitleSettingsPanelPage);
-
     const replayButton = new bitmovin.playerui.ReplayButton();
     const playbackToggleButton = new bitmovin.playerui.PlaybackToggleButton();
-    const settingsToggleButton = new bitmovin.playerui.SettingsToggleButton({ settingsPanel: settingsPanel });
     const seekBar = new bitmovin.playerui.SeekBar({ label: new bitmovin.playerui.SeekBarLabel() });
 
     let controlBar = new bitmovin.playerui.ControlBar({
@@ -189,7 +165,6 @@
             replayButton,
             playbackToggleButton,
             new bitmovin.playerui.Spacer(),
-            settingsToggleButton,
           ],
           cssClasses: ['controlbar-bottom'],
         }),
@@ -202,7 +177,6 @@
         new bitmovin.playerui.BufferingOverlay(),
         controlBar,
         new bitmovin.playerui.TitleBar(),
-        settingsPanel,
         new bitmovin.playerui.RecommendationOverlay(),
         new bitmovin.playerui.ErrorMessageOverlay(),
       ],
@@ -213,12 +187,11 @@
         bitmovin.playerui.PlayerUtils.PlayerState.Finished,
         bitmovin.playerui.PlayerUtils.PlayerState.Idle,
       ],
-      cssClasses: ['sample-ui-skin-tv-disneyplus'],
+      cssClasses: ['ui-tv', 'ui-tv-disneyplus'],
     });
 
     const spatialNavigation = new bitmovin.playerui.SpatialNavigation(
-      new bitmovin.playerui.RootNavigationGroup(uiContainer, seekBar, replayButton, playbackToggleButton, settingsToggleButton),
-      new bitmovin.playerui.NavigationGroup(settingsPanel, audioTrackList, subtitleList),
+      new bitmovin.playerui.RootNavigationGroup(uiContainer, seekBar, replayButton, playbackToggleButton),
     );
 
     return {

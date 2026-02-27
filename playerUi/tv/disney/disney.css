@@ -1,128 +1,143 @@
-.bmpui-sample-ui-skin-tv-disneyplus {
-  font-family: "Avenir" !important;
+.bmpui-ui-tv-disneyplus {
+  font-family: "Avenir", "Open Sans", sans-serif !important;
   font-style: normal !important;
 }
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-ui-titlebar > .bmpui-container-wrapper,
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-ui-controlbar > .bmpui-container-wrapper {
-  padding: 2em;
+.bmpui-ui-tv-disneyplus .bmpui-ui-titlebar > .bmpui-container-wrapper,
+.bmpui-ui-tv-disneyplus .bmpui-ui-controlbar > .bmpui-container-wrapper {
+  padding: 1.5em 2em;
 }
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-container-wrapper > .bmpui-ui-settings-panel {
-  margin: 0;
-  top: 0;
-  left: 0;
-  width: 100% !important;
-  padding: 3em;
+.bmpui-ui-tv-disneyplus .bmpui-ui-titlebar {
+  padding: 1em 1em 0.4em;
 }
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-ui-titlebar {
-  padding: 1em 1em 0.5em;
+.bmpui-ui-tv-disneyplus .bmpui-ui-titlebar .bmpui-label-metadata-title {
+  font-weight: 700;
 }
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-ui-titlebar .bmpui-label-metadata-title {
-  font-size: 3.5vh;
-  font-weight: bold;
+.bmpui-ui-tv-disneyplus .bmpui-ui-titlebar .bmpui-label-metadata-title .bmpui-ui-label-text {
+  font-size: 3vh;
 }
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-ui-titlebar .bmpui-label-metadata-description {
-  font-size: 2vh;
+.bmpui-ui-tv-disneyplus .bmpui-ui-titlebar .bmpui-label-metadata-description {
+  display: none;
 }
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-controlbar-bottom {
-  font-size: 2.5vh;
+.bmpui-ui-tv-disneyplus .bmpui-ui-controlbar .bmpui-controlbar-bottom > .bmpui-container-wrapper > .bmpui-ui-spacer {
+  flex: 1;
 }
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-controlbar-bottom .bmpui-container-wrapper > * {
-  margin: auto 0.5em;
+.bmpui-ui-tv-disneyplus .bmpui-ui-controlbar .bmpui-controlbar-bottom > .bmpui-container-wrapper .bmpui-ui-playbacktogglebutton,
+.bmpui-ui-tv-disneyplus .bmpui-ui-controlbar .bmpui-controlbar-bottom > .bmpui-container-wrapper .bmpui-ui-replaybutton {
+  font-size: 5.2vh !important;
+  padding: 0.25em;
+  margin: 0 0.9em;
 }
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-ui-playbacktogglebutton {
+.bmpui-ui-tv-disneyplus .bmpui-ui-controlbar .bmpui-controlbar-bottom > .bmpui-container-wrapper .bmpui-ui-playbacktogglebutton .bmpui-ui-icon,
+.bmpui-ui-tv-disneyplus .bmpui-ui-controlbar .bmpui-controlbar-bottom > .bmpui-container-wrapper .bmpui-ui-replaybutton .bmpui-ui-icon {
+  width: 5.2vh !important;
+  min-width: 5.2vh !important;
+  height: 5.2vh !important;
+  background-size: contain;
+}
+.bmpui-ui-tv-disneyplus .bmpui-ui-controlbar .bmpui-controlbar-bottom > .bmpui-container-wrapper .bmpui-ui-playbacktogglebutton:hover,
+.bmpui-ui-tv-disneyplus .bmpui-ui-controlbar .bmpui-controlbar-bottom > .bmpui-container-wrapper .bmpui-ui-replaybutton:hover {
+  filter: drop-shadow(0 0 1px #fff);
+}
+.bmpui-ui-tv-disneyplus .bmpui-ui-playbacktogglebutton .bmpui-ui-icon {
   background-image: url("assets/play.svg");
 }
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-ui-playbacktogglebutton:hover {
-  filter: drop-shadow(0 0 1px #fff);
-}
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-ui-playbacktogglebutton:focus {
+.bmpui-ui-tv-disneyplus .bmpui-ui-playbacktogglebutton:focus .bmpui-ui-icon,
+.bmpui-ui-tv-disneyplus .bmpui-ui-playbacktogglebutton.bmpui-focused .bmpui-ui-icon {
   background-image: url("assets/playX.svg");
 }
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-ui-playbacktogglebutton.bmpui-on {
+.bmpui-ui-tv-disneyplus .bmpui-ui-playbacktogglebutton.bmpui-on .bmpui-ui-icon {
   background-image: url("assets/pause.svg");
 }
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-ui-playbacktogglebutton.bmpui-on:focus {
+.bmpui-ui-tv-disneyplus .bmpui-ui-playbacktogglebutton.bmpui-on:focus .bmpui-ui-icon,
+.bmpui-ui-tv-disneyplus .bmpui-ui-playbacktogglebutton.bmpui-on.bmpui-focused .bmpui-ui-icon {
   background-image: url("assets/pauseX.svg");
 }
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-ui-replaybutton {
+.bmpui-ui-tv-disneyplus .bmpui-ui-replaybutton .bmpui-ui-icon {
   background-image: url("assets/restart.svg");
 }
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-ui-replaybutton:hover {
-  filter: drop-shadow(0 0 1px #fff);
-}
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-ui-replaybutton:focus {
+.bmpui-ui-tv-disneyplus .bmpui-ui-replaybutton:focus .bmpui-ui-icon,
+.bmpui-ui-tv-disneyplus .bmpui-ui-replaybutton.bmpui-focused .bmpui-ui-icon {
   background-image: url("assets/restartX.svg");
 }
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-ui-settingstogglebutton {
-  background-image: url("assets/settings.svg");
+.bmpui-ui-tv-disneyplus .bmpui-ui-playbacktimelabel .bmpui-label {
+  font-size: 2.4vh;
+  font-weight: 600;
 }
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-ui-settingstogglebutton:focus {
-  background-image: url("assets/settingsX.svg");
-}
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-seekbar-backdrop,
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-seekbar-bufferlevel,
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-seekbar-seekposition,
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-seekbar-playbackposition {
+.bmpui-ui-tv-disneyplus .bmpui-seekbar-backdrop,
+.bmpui-ui-tv-disneyplus .bmpui-seekbar-bufferlevel,
+.bmpui-ui-tv-disneyplus .bmpui-seekbar-seekposition,
+.bmpui-ui-tv-disneyplus .bmpui-seekbar-playbackposition {
   border-radius: 9px !important;
 }
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-seekbar-playbackposition-marker {
-  background-color: rgb(255, 255, 255) !important;
+.bmpui-ui-tv-disneyplus .bmpui-seekbar-backdrop {
+  background-color: rgba(255, 255, 255, 0.28) !important;
+}
+.bmpui-ui-tv-disneyplus .bmpui-seekbar-bufferlevel {
+  background-color: transparent !important;
+}
+.bmpui-ui-tv-disneyplus .bmpui-seekbar-seekposition,
+.bmpui-ui-tv-disneyplus .bmpui-seekbar-playbackposition {
+  background-color: rgb(93, 167, 255) !important;
+}
+.bmpui-ui-tv-disneyplus .bmpui-seekbar-playbackposition-marker {
+  background-color: #fff !important;
   border: solid !important;
   width: 0.1em !important;
   margin-left: 0.4em !important;
   border-radius: 6px !important;
 }
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-seekbar-backdrop {
-  background-color: rgba(255, 255, 255, 0.3) !important;
-}
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-seekbar-seekposition {
-  background-color: rgb(93, 167, 255) !important;
-}
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-seekbar-bufferlevel {
-  background-color: rgba(0, 0, 0, 0) !important;
-}
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-seekbar-playbackposition {
-  background-color: rgb(93, 167, 255) !important;
-}
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-ui-seekbar-label {
-  font-size: 4vw;
+.bmpui-ui-tv-disneyplus .bmpui-ui-seekbar-label {
   border-radius: 5px;
 }
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-ui-seekbar-label .bmpui-seekbar-label-inner {
+.bmpui-ui-tv-disneyplus .bmpui-ui-seekbar-label .bmpui-seekbar-label-inner {
   border: none;
 }
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-ui-seekbar-label .bmpui-seekbar-label-inner .bmpui-container-wrapper .bmpui-seekbar-label-metadata {
+.bmpui-ui-tv-disneyplus .bmpui-ui-seekbar-label .bmpui-seekbar-label-inner .bmpui-container-wrapper .bmpui-seekbar-label-metadata {
   border-radius: 8px;
-  bottom: -1.2em;
+  bottom: -1.4em;
   background: none;
 }
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-ui-seekbar-label .bmpui-seekbar-label-inner .bmpui-container-wrapper .bmpui-seekbar-label-metadata .bmpui-seekbar-label-title {
+.bmpui-ui-tv-disneyplus .bmpui-ui-seekbar-label .bmpui-seekbar-label-inner .bmpui-container-wrapper .bmpui-ui-label.bmpui-seekbar-label-time {
+  background-color: #fff !important;
+  color: #000;
+  border-radius: 999px !important;
+  padding: 0.2em 1em !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+}
+.bmpui-ui-tv-disneyplus .bmpui-ui-seekbar-label .bmpui-seekbar-label-inner .bmpui-container-wrapper .bmpui-seekbar-label-metadata .bmpui-seekbar-label-title {
   display: none;
 }
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-ui-seekbar-label .bmpui-seekbar-label-inner .bmpui-container-wrapper .bmpui-seekbar-label-metadata .bmpui-seekbar-label-time {
-  font-size: 1.5vh;
-  background-color: rgb(255, 255, 255);
-  color: black;
-  width: 30%;
-  margin: auto;
-  height: 2vh;
-  padding-top: 0.5vh;
-  border-radius: 2vh;
-}
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-ui-seekbar-label .bmpui-seekbar-label-inner .bmpui-seekbar-thumbnail {
-  border-radius: 8px;
-}
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-ui-seekbar-label .bmpui-seekbar-label-inner::after {
-  content: unset;
-}
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-ui-settings-panel {
-  height: 30%;
-}
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-ui-settings-panel .bmpui-ui-settings-panel-page .bmpui-container-wrapper > *.bmpui-ui-label {
-  width: 20%;
-}
-.bmpui-sample-ui-skin-tv-disneyplus .bmpui-ui-listbox {
+.bmpui-ui-tv-disneyplus .bmpui-ui-seekbar-label .bmpui-seekbar-label-inner .bmpui-container-wrapper .bmpui-seekbar-label-metadata .bmpui-seekbar-label-time {
+  font-size: 1.8vh;
+  font-weight: 600;
+  background-color: #fff;
+  color: #000;
+  width: auto;
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  padding: 0.2em 1em;
+  border-radius: 999px;
+  line-height: 1.2;
+}
+.bmpui-ui-tv-disneyplus .bmpui-ui-seekbar-label .bmpui-seekbar-label-inner .bmpui-container-wrapper .bmpui-seekbar-label-metadata .bmpui-seekbar-label-time .bmpui-ui-label-text {
+  background-color: #fff;
+  color: #000;
+  border-radius: 999px;
+  padding: 0.1em 0.2em;
+}
+.bmpui-ui-tv-disneyplus .bmpui-ui-seekbar-label .bmpui-seekbar-label-inner .bmpui-seekbar-thumbnail {
+  width: 22vw;
+  min-width: 260px;
+  max-width: 360px;
+  border-radius: 0;
+  border: 2px solid #000;
+}
+.bmpui-ui-tv-disneyplus .bmpui-ui-seekbar-label .bmpui-seekbar-label-inner::after {
+  content: none;
 }
 
 /*# sourceMappingURL=disney.css.map */
