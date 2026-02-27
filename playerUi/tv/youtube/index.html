@@ -8,10 +8,10 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet" />
     <link rel="icon" type="../../image/png" href="../images/bit-fav.png" />
     <!-- Bitmovin Player -->
-    <link href="https://cdn.bitmovin.com/player/web/8/bitmovinplayer-ui.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bitmovin-player-ui@4.9.1/dist/css/bitmovinplayer-ui.css" rel="stylesheet" />
     <link href="youtube.css" rel="stylesheet" />
     <script type="text/javascript" src="https://cdn.bitmovin.com/player/web/8/bitmovinplayer.js"></script>
-    <script type="text/javascript" src="https://cdn.bitmovin.com/player/web/8/bitmovinplayer-ui.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bitmovin-player-ui@4.9.1/dist/js/bitmovinplayer-ui.js"></script>
     <style>
       body {
         margin: 0;
@@ -138,7 +138,7 @@
 
       function buildYoutubeTvUI() {
         const uiContainer = new bitmovin.playerui.UIContainer({
-          cssClasses: ['ui-skin-tv-youtube'],
+          cssClasses: ['ui-tv', 'ui-tv-youtube'],
           hideDelay: 2000,
           hidePlayerStateExceptions: [
             bitmovin.playerui.PlayerUtils.PlayerState.Prepared,
@@ -152,17 +152,27 @@
         const subtitleListPanel = new bitmovin.playerui.SettingsPanel({
           components: [
             new bitmovin.playerui.SettingsPanelPage({
-              components: [new bitmovin.playerui.SettingsPanelItem(null, subtitleListBox)],
+              components: [
+                new bitmovin.playerui.SettingsPanelItem({
+                  label: null,
+                  settingComponent: subtitleListBox,
+                }),
+              ],
             }),
           ],
-          hidden: false,
+          hidden: true,
         });
 
         const audioTrackListBox = new bitmovin.playerui.AudioTrackListBox();
         const audioTrackListPanel = new bitmovin.playerui.SettingsPanel({
           components: [
             new bitmovin.playerui.SettingsPanelPage({
-              components: [new bitmovin.playerui.SettingsPanelItem(null, audioTrackListBox)],
+              components: [
+                new bitmovin.playerui.SettingsPanelItem({
+                  label: null,
+                  settingComponent: audioTrackListBox,
+                }),
+              ],
             }),
           ],
           hidden: true,
