@@ -9,7 +9,7 @@ $color-primary: #fff !default;
   $accent-color: rgba(93, 167, 255, 1);
   $backdrop-color: rgba(255, 255, 255, 0.28);
 
-  font-family: 'Avenir', 'Open Sans', sans-serif !important;
+  font-family: 'Avenir' !important;
   font-style: normal !important;
 
   .#{$prefix}-ui-titlebar > .#{$prefix}-container-wrapper,
@@ -154,6 +154,9 @@ $color-primary: #fff !default;
           display: inline-flex !important;
           align-items: center;
           justify-content: center;
+          font-size: 1.8vh;
+          font-weight: 600;
+          line-height: 1.2;
         }
 
         .#{$prefix}-seekbar-label-metadata {
@@ -163,28 +166,6 @@ $color-primary: #fff !default;
 
           .#{$prefix}-seekbar-label-title {
             display: none;
-          }
-
-          .#{$prefix}-seekbar-label-time {
-            font-size: 1.8vh;
-            font-weight: 600;
-            background-color: #fff;
-            color: #000;
-            width: auto;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin: auto;
-            padding: 0.2em 1em;
-            border-radius: 999px;
-            line-height: 1.2;
-
-            .#{$prefix}-ui-label-text {
-              background-color: #fff;
-              color: #000;
-              border-radius: 999px;
-              padding: 0.1em 0.2em;
-            }
           }
         }
       }

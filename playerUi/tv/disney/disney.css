@@ -1,5 +1,5 @@
 .bmpui-ui-tv-disneyplus {
-  font-family: "Avenir", "Open Sans", sans-serif !important;
+  font-family: "Avenir" !important;
   font-style: normal !important;
 }
 .bmpui-ui-tv-disneyplus .bmpui-ui-titlebar > .bmpui-container-wrapper,
@@ -105,29 +105,12 @@
   display: inline-flex !important;
   align-items: center;
   justify-content: center;
+  font-size: 1.8vh;
+  font-weight: 600;
+  line-height: 1.2;
 }
 .bmpui-ui-tv-disneyplus .bmpui-ui-seekbar-label .bmpui-seekbar-label-inner .bmpui-container-wrapper .bmpui-seekbar-label-metadata .bmpui-seekbar-label-title {
   display: none;
-}
-.bmpui-ui-tv-disneyplus .bmpui-ui-seekbar-label .bmpui-seekbar-label-inner .bmpui-container-wrapper .bmpui-seekbar-label-metadata .bmpui-seekbar-label-time {
-  font-size: 1.8vh;
-  font-weight: 600;
-  background-color: #fff;
-  color: #000;
-  width: auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin: auto;
-  padding: 0.2em 1em;
-  border-radius: 999px;
-  line-height: 1.2;
-}
-.bmpui-ui-tv-disneyplus .bmpui-ui-seekbar-label .bmpui-seekbar-label-inner .bmpui-container-wrapper .bmpui-seekbar-label-metadata .bmpui-seekbar-label-time .bmpui-ui-label-text {
-  background-color: #fff;
-  color: #000;
-  border-radius: 999px;
-  padding: 0.1em 0.2em;
 }
 .bmpui-ui-tv-disneyplus .bmpui-ui-seekbar-label .bmpui-seekbar-label-inner .bmpui-seekbar-thumbnail {
   width: 22vw;
