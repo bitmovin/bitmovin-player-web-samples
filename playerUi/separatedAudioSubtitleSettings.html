@@ -126,29 +126,6 @@
             -webkit-filter: none;
         }
 
-        .bmpui-subtitle-customization-settings-panel-item {
-            text-align: center;
-        }
-
-        .bmpui-subtitle-customization-settings-panel-item .bmpui-customization-open-button .bmpui-label {
-            display: initial;
-        }
-
-        .bmpui-subtitle-customization-settings-panel-item .bmpui-customization-open-button {
-            background-image: none;
-            display: block;
-            font-size: .8em;
-            min-height: 15px;
-            height: 1.5em;
-            padding: .5em;
-            width: 100%;
-            filter: none;
-        }
-
-        .bmpui-subtitle-customization-settings-panel-item .bmpui-customization-open-button:hover {
-            background-color: rgba(31, 171, 226, .85)
-        }
-
     </style>
 </head>
 <body>
@@ -202,26 +179,28 @@
         let subtitleOverlay = new bitmovin.playerui.SubtitleOverlay();
 
         let settingsPanel = new bitmovin.playerui.SettingsPanel({
-            components: [
-                new bitmovin.playerui.SettingsPanelPage({
-                    components: [
-                        new bitmovin.playerui.SettingsPanelItem({
-                            label: 'Video Quality',
-                            settingComponent: new bitmovin.playerui.VideoQualitySelectBox(),
-                        }),
-                        new bitmovin.playerui.SettingsPanelItem({
-                            label: 'Speed',
-                            settingComponent: new bitmovin.playerui.PlaybackSpeedSelectBox(),
-                        }),
-                        new bitmovin.playerui.SettingsPanelItem({
-                            label: 'Audio Quality',
-                            settingComponent: new bitmovin.playerui.AudioQualitySelectBox(),
-                        }),
-                    ],
-                }),
-            ],
+            components: [],
             hidden: true,
         });
+        settingsPanel.addComponent(new bitmovin.playerui.SettingsPanelPage({
+            components: [
+                new bitmovin.playerui.DynamicSettingsPanelItem({
+                    label: 'Video Quality',
+                    settingComponent: new bitmovin.playerui.VideoQualitySelectBox(),
+                    container: settingsPanel,
+                }),
+                new bitmovin.playerui.DynamicSettingsPanelItem({
+                    label: 'Speed',
+                    settingComponent: new bitmovin.playerui.PlaybackSpeedSelectBox(),
+                    container: settingsPanel,
+                }),
+                new bitmovin.playerui.DynamicSettingsPanelItem({
+                    label: 'Audio Quality',
+                    settingComponent: new bitmovin.playerui.AudioQualitySelectBox(),
+                    container: settingsPanel,
+                }),
+            ],
+        }));
 
         let subtitleSettingsPanel = new bitmovin.playerui.SettingsPanel({
             hidden: true,
@@ -231,13 +210,13 @@
         let subtitleSettingsPanelPage = new bitmovin.playerui.SubtitleSettingsPanelPage({
             settingsPanel: subtitleSettingsPanel,
             overlay: subtitleOverlay,
+            useDynamicSettingsPanelItem: true,
         });
 
         let subtitleSettingsOpenButton = new bitmovin.playerui.SettingsPanelPageOpenButton({
             targetPage: subtitleSettingsPanelPage,
             container: subtitleSettingsPanel,
             text: 'Settings',
-            cssClasses: ['customization-open-button']
         });
 
         const subtitleSelectItem = new bitmovin.playerui.DynamicSettingsPanelItem({
