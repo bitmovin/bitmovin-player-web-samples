@@ -106,22 +106,51 @@
             }
         }
 
+        .bmpui-ui-audiotracksettingstogglebutton.bmpui-on {
+            background-image: url(audio_tracks_symbol_selected.svg);
+            background-size: contain;
+        }
+
+        .bmpui-ui-audiotracksettingstogglebutton.bmpui-off {
+            background-image: url(audio_tracks_symbol.svg);
+            background-size: contain;
+        }
+
         .bmpui-ui-subtitlesettingstogglebutton.bmpui-on {
-            background-image: url(cc_symbol_selected.svg);
+            background-image: url(subtitles_symbol_selected.svg);
             background-size: contain;
         }
 
         .bmpui-ui-subtitlesettingstogglebutton.bmpui-off {
-            background-image: url(cc_symbol.svg);
+            background-image: url(subtitles_symbol.svg);
             background-size: contain;
         }
 
-        .bmpui-ui-subtitlesettingstogglebutton.bmpui-on:hover {
-            filter: none;
-            -webkit-filter: none;
+        .bmpui-ui-audiotracksettingstogglebutton,
+        .bmpui-ui-subtitlesettingstogglebutton {
+            background-color: transparent !important;
+            background-position: center;
+            background-repeat: no-repeat;
+            border: none;
+            box-shadow: none !important;
         }
 
-        .bmpui-ui-subtitlesettingstogglebutton.bmpui-off:hover {
+        .bmpui-ui-audiotracksettingstogglebutton.bmpui-on,
+        .bmpui-ui-audiotracksettingstogglebutton.bmpui-off,
+        .bmpui-ui-subtitlesettingstogglebutton.bmpui-on,
+        .bmpui-ui-subtitlesettingstogglebutton.bmpui-off {
+            background-color: transparent !important;
+        }
+
+        .bmpui-ui-audiotracksettingstogglebutton.bmpui-on:hover,
+        .bmpui-ui-audiotracksettingstogglebutton.bmpui-off:hover,
+        .bmpui-ui-subtitlesettingstogglebutton.bmpui-on:hover,
+        .bmpui-ui-subtitlesettingstogglebutton.bmpui-off:hover,
+        .bmpui-ui-audiotracksettingstogglebutton:focus,
+        .bmpui-ui-subtitlesettingstogglebutton:focus,
+        .bmpui-ui-audiotracksettingstogglebutton:active,
+        .bmpui-ui-subtitlesettingstogglebutton:active {
+            background-color: transparent !important;
             filter: none;
             -webkit-filter: none;
         }
