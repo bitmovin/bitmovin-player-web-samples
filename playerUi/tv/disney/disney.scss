@@ -5,89 +5,109 @@ $color-primary: #fff !default;
   filter: drop-shadow(0 0 1px $color-primary);
 }
 
-.#{$prefix}-sample-ui-skin-tv-disneyplus {
-  $accentColor: rgba(93, 167, 255, 1);
-  $greyish: rgba(255, 255, 255, 0.3);
-  $white: rgba(255, 255, 255, 1);
+.#{$prefix}-ui-tv-disneyplus {
+  $accent-color: rgba(93, 167, 255, 1);
+  $backdrop-color: rgba(255, 255, 255, 0.28);
 
   font-family: 'Avenir' !important;
   font-style: normal !important;
 
-  $large-size: 3.5vh;
-  $medium-size: 2vh;
-
   .#{$prefix}-ui-titlebar > .#{$prefix}-container-wrapper,
   .#{$prefix}-ui-controlbar > .#{$prefix}-container-wrapper {
-      padding: 2em;
-  }
-
-  .#{$prefix}-container-wrapper > .#{$prefix}-ui-settings-panel {
-    margin: 0;
-    top: 0;
-    left: 0;
-    width: 100% !important;
-    padding: 3em;
+    padding: 1.5em 2em;
   }
 
   .#{$prefix}-ui-titlebar {
-    padding: 1em 1em 0.5em;
+    padding: 1em 1em 0.4em;
 
     .#{$prefix}-label-metadata-title {
-      font-size: $large-size;
-      font-weight: bold;
+      font-weight: 700;
+
+      .#{$prefix}-ui-label-text {
+        font-size: 3vh;
+      }
     }
 
     .#{$prefix}-label-metadata-description {
-      font-size: $medium-size;
+      display: none;
     }
   }
-  
-  .#{$prefix}-controlbar-bottom {
-    font-size: 2.5vh;
 
-    .#{$prefix}-container-wrapper 
-    > * {
-      margin: auto 0.5em;
+  .#{$prefix}-ui-controlbar {
+    .#{$prefix}-controlbar-bottom {
+      > .#{$prefix}-container-wrapper {
+        > .#{$prefix}-ui-spacer {
+          flex: 1;
+        }
+      }
+    }
+  }
+
+  .#{$prefix}-ui-controlbar .#{$prefix}-controlbar-bottom {
+    > .#{$prefix}-container-wrapper {
+      .#{$prefix}-ui-playbacktogglebutton,
+      .#{$prefix}-ui-replaybutton {
+        font-size: 5.2vh !important;
+        padding: 0.25em;
+        margin: 0 0.9em;
+
+        .#{$prefix}-ui-icon {
+          width: 5.2vh !important;
+          min-width: 5.2vh !important;
+          height: 5.2vh !important;
+          background-size: contain;
+        }
+
+        &:hover {
+          @include svg-icon-shadow;
+        }
+      }
     }
   }
 
   .#{$prefix}-ui-playbacktogglebutton {
-    background-image: url('assets/play.svg');
-  
-    &:hover {
-      @include svg-icon-shadow;
+    .#{$prefix}-ui-icon {
+      background-image: url('assets/play.svg');
     }
 
-    &:focus {
-      background-image: url('assets/playX.svg');
+    &:focus,
+    &.#{$prefix}-focused {
+      .#{$prefix}-ui-icon {
+        background-image: url('assets/playX.svg');
+      }
     }
-  
+
     &.#{$prefix}-on {
-      background-image: url('assets/pause.svg');
+      .#{$prefix}-ui-icon {
+        background-image: url('assets/pause.svg');
+      }
 
-      &:focus {
-        background-image: url('assets/pauseX.svg');
+      &:focus,
+      &.#{$prefix}-focused {
+        .#{$prefix}-ui-icon {
+          background-image: url('assets/pauseX.svg');
+        }
       }
     }
   }
 
   .#{$prefix}-ui-replaybutton {
-    background-image: url('assets/restart.svg');
-  
-    &:hover {
-      @include svg-icon-shadow;
+    .#{$prefix}-ui-icon {
+      background-image: url('assets/restart.svg');
     }
 
-    &:focus {
-      background-image: url('assets/restartX.svg');
+    &:focus,
+    &.#{$prefix}-focused {
+      .#{$prefix}-ui-icon {
+        background-image: url('assets/restartX.svg');
+      }
     }
   }
 
-  .#{$prefix}-ui-settingstogglebutton {
-    background-image: url('assets/settings.svg');
-
-    &:focus {
-      background-image: url('assets/settingsX.svg');
+  .#{$prefix}-ui-playbacktimelabel {
+    .#{$prefix}-label {
+      font-size: 2.4vh;
+      font-weight: 600;
     }
   }
 
@@ -98,81 +118,69 @@ $color-primary: #fff !default;
     border-radius: 9px !important;
   }
 
+  .#{$prefix}-seekbar-backdrop {
+    background-color: $backdrop-color !important;
+  }
+
+  .#{$prefix}-seekbar-bufferlevel {
+    background-color: transparent !important;
+  }
+
+  .#{$prefix}-seekbar-seekposition,
+  .#{$prefix}-seekbar-playbackposition {
+    background-color: $accent-color !important;
+  }
+
   .#{$prefix}-seekbar-playbackposition-marker {
-    background-color: $white !important;
+    background-color: #fff !important;
     border: solid !important;
     width: 0.1em !important;
     margin-left: 0.4em !important;
     border-radius: 6px !important;
   }
 
-  .#{$prefix}-seekbar-backdrop {
-    background-color: $greyish !important;
-  }
-
-  .#{$prefix}-seekbar-seekposition {
-    background-color: $accentColor !important;
-  }
-
-  .#{$prefix}-seekbar-bufferlevel {
-    background-color: rgba(0, 0, 0, 0) !important;
-  }
-
-  .#{$prefix}-seekbar-playbackposition {
-    background-color: $accentColor !important;
-  }
-
   .#{$prefix}-ui-seekbar-label {
-    font-size: 4vw;
     border-radius: 5px;
 
     .#{$prefix}-seekbar-label-inner {
       border: none;
 
       .#{$prefix}-container-wrapper {
+        .#{$prefix}-ui-label.#{$prefix}-seekbar-label-time {
+          background-color: #fff !important;
+          color: #000;
+          border-radius: 999px !important;
+          padding: 0.2em 1em !important;
+          display: inline-flex !important;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.8vh;
+          font-weight: 600;
+          line-height: 1.2;
+        }
+
         .#{$prefix}-seekbar-label-metadata {
           border-radius: 8px;
-          bottom: -1.2em;
+          bottom: -1.4em;
           background: none;
 
           .#{$prefix}-seekbar-label-title {
             display: none;
           }
-
-          .#{$prefix}-seekbar-label-time {
-            font-size: 1.5vh;
-            background-color: $white;
-            color: black;
-            width: 30%;
-            margin: auto;
-            height: 2vh;
-            padding-top: 0.5vh;
-            border-radius: 2vh;
-          }
         }
       }
 
       .#{$prefix}-seekbar-thumbnail {
-        border-radius: 8px;
+        width: 22vw;
+        min-width: 260px;
+        max-width: 360px;
+        border-radius: 0;
+        border: 2px solid #000;
       }
     }
 
     .#{$prefix}-seekbar-label-inner::after {
-      content: unset;
+      content: none;
     }
-  }
-
-  .#{$prefix}-ui-settings-panel {
-    height: 30%;
-
-    .#{$prefix}-ui-settings-panel-page {
-      .#{$prefix}-container-wrapper > *.#{$prefix}-ui-label {
-        width: 20%;
-      }
-    }
-  }
-
-  .#{$prefix}-ui-listbox {
-    display: inline-flex;
   }
 }
