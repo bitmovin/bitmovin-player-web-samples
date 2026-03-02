@@ -183,52 +183,58 @@
 
         let subtitleOverlay = new bitmovin.playerui.SubtitleOverlay();
 
-        let mainSettingsPanelPage = new bitmovin.playerui.SettingsPanelPage({
-            components: [
-                new bitmovin.playerui.SettingsPanelItem('Video Quality', new bitmovin.playerui.VideoQualitySelectBox()),
-                new bitmovin.playerui.SettingsPanelItem('Speed', new bitmovin.playerui.PlaybackSpeedSelectBox()),
-                new bitmovin.playerui.SettingsPanelItem('Audio Quality', new bitmovin.playerui.AudioQualitySelectBox()),
-            ],
-        });
-
         let settingsPanel = new bitmovin.playerui.SettingsPanel({
-            components: [
-                mainSettingsPanelPage,
-            ],
+            components: [],
             hidden: true,
         });
+
+        let mainSettingsPanelPage = new bitmovin.playerui.SettingsPanelPage({
+            components: [
+                new bitmovin.playerui.DynamicSettingsPanelItem({
+                    label: 'Video Quality',
+                    settingComponent: new bitmovin.playerui.VideoQualitySelectBox(),
+                    container: settingsPanel,
+                }),
+                new bitmovin.playerui.DynamicSettingsPanelItem({
+                    label: 'Speed',
+                    settingComponent: new bitmovin.playerui.PlaybackSpeedSelectBox(),
+                    container: settingsPanel,
+                }),
+                new bitmovin.playerui.DynamicSettingsPanelItem({
+                    label: 'Audio Quality',
+                    settingComponent: new bitmovin.playerui.AudioQualitySelectBox(),
+                    container: settingsPanel,
+                }),
+            ],
+        });
+        settingsPanel.addComponent(mainSettingsPanelPage);
 
         let subtitleSettingsPanelPage = new bitmovin.playerui.SubtitleSettingsPanelPage({
             settingsPanel: settingsPanel,
             overlay: subtitleOverlay,
+            useDynamicSettingsPanelItem: true,
         });
-
-        const subtitleSelectBox = new bitmovin.playerui.SubtitleSelectBox();
 
         let subtitleSettingsOpenButton = new bitmovin.playerui.SettingsPanelPageOpenButton({
             targetPage: subtitleSettingsPanelPage,
             container: settingsPanel,
             ariaLabel: 'Subtitles',
-            text: 'open',
+            text: 'Settings',
         });
 
         mainSettingsPanelPage.addComponent(
-            new bitmovin.playerui.SettingsPanelItem(
-                new bitmovin.playerui.SubtitleSettingsLabel({
-                    text: 'Subtitles',
-                    opener: subtitleSettingsOpenButton,
-                }),
-                subtitleSelectBox,
-                {
-                    role: 'menubar',
-                },
-            ));
+            new bitmovin.playerui.DynamicSettingsPanelItem({
+                label: 'Subtitles',
+                settingComponent: new bitmovin.playerui.SubtitleSelectBox(),
+                backNavigationRightComponent: subtitleSettingsOpenButton,
+                container: settingsPanel,
+            }),
+        );
 
         settingsPanel.addComponent(subtitleSettingsPanelPage);
 
         let controlBar = new bitmovin.playerui.ControlBar({
             components: [
-                settingsPanel,
                 new bitmovin.playerui.Container({
                     components: [
                         new bitmovin.playerui.PlaybackTimeLabel({
@@ -270,6 +276,8 @@
                 new bitmovin.playerui.PlaybackToggleOverlay(),
                 new bitmovin.playerui.CastStatusOverlay(),
                 controlBar,
+                new bitmovin.playerui.DismissClickOverlay({ target: settingsPanel }),
+                settingsPanel,
                 new bitmovin.playerui.TitleBar(),
                 new bitmovin.playerui.RecommendationOverlay(),
                 new bitmovin.playerui.Watermark(),
