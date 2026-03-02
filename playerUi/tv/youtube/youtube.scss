@@ -1,12 +1,13 @@
 $prefix: 'bmpui';
 $color-primary: #fff !default;
 $animation-duration: .3s !default;
+$center-toggle-duration: .8s;
 
 @mixin svg-icon-shadow {
   filter: drop-shadow(0 0 1px $color-primary);
 }
 
-.#{$prefix}-ui-skin-tv-youtube {
+.#{$prefix}-ui-tv-youtube {
   visibility: visible !important;
   $overscan-margin: 3%;
   $large-size: 3.5vh;
@@ -95,16 +96,16 @@ $animation-duration: .3s !default;
             margin: auto;
 
             > .#{$prefix}-seekbar {
-              > .#{$prefix}-seekbar-bufferlevel {
-                background-color: grey;
+              .#{$prefix}-seekbar-bufferlevel {
+                background-color: rgba(255, 255, 255, 0.45);
               }
-              > .#{$prefix}-seekbar-playbackposition {
+              .#{$prefix}-seekbar-playbackposition {
                 background-color: red;
               }
-              > .#{$prefix}-seekbar-markers {
+              .#{$prefix}-seekbar-markers {
                 visibility: hidden;
               }
-              > .#{$prefix}-seekbar-playbackposition-marker {
+              .#{$prefix}-seekbar-playbackposition-marker {
                 background-color: #ffffff;
                 border-color: rgb(255, 255, 255);
                 box-shadow: 0 0 0 calc($medium-size / 4)
@@ -147,18 +148,62 @@ $animation-duration: .3s !default;
       .#{$prefix}-ui-replaybutton {
         font-size: $medium-size;
         margin-top: 0;
+        background-color: transparent !important;
+        border: none;
       }
 
       > .#{$prefix}-ui-replaybutton {
-        background-image: url('assets/avatar.svg');
+        padding-left: 0.6vh;
+        .#{$prefix}-ui-icon {
+          background-image: url('assets/avatar.svg');
+          background-size: contain;
+        }
       }
 
       > .#{$prefix}-ui-subtitlesettingstogglebutton {
-        background-image: url('assets/subtitles.svg');
+        .#{$prefix}-ui-icon {
+          background-image: url('assets/subtitles.svg');
+          background-size: contain;
+        }
+
+        &.#{$prefix}-off .#{$prefix}-ui-icon,
+        &.#{$prefix}-on .#{$prefix}-ui-icon {
+          background-image: url('assets/subtitles.svg');
+          background-size: contain;
+          transform: none;
+        }
+
+        &:focus,
+        &.#{$prefix}-focused,
+        &.#{$prefix}-focus-visible {
+          box-shadow: 0 0 0 0.2vh rgba(255, 255, 255, 0.95);
+          background-color: rgba(255, 255, 255, 0.35);
+          backdrop-filter: blur(5px);
+          border-radius: 999px;
+        }
       }
 
       > .#{$prefix}-ui-audiotracksettingstogglebutton {
-        background-image: url('assets/settings.svg');
+        .#{$prefix}-ui-icon {
+          background-image: url('assets/settings.svg');
+          background-size: contain;
+        }
+
+        &.#{$prefix}-off .#{$prefix}-ui-icon,
+        &.#{$prefix}-on .#{$prefix}-ui-icon {
+          background-image: url('assets/settings.svg');
+          background-size: contain;
+          transform: none;
+        }
+
+        &:focus,
+        &.#{$prefix}-focused,
+        &.#{$prefix}-focus-visible {
+          box-shadow: 0 0 0 0.2vh rgba(255, 255, 255, 0.95);
+          background-color: rgba(255, 255, 255, 0.35);
+          backdrop-filter: blur(5px);
+          border-radius: 999px;
+        }
       }
 
       > .#{$prefix}-ui-playbacktimelabel {
@@ -175,38 +220,78 @@ $animation-duration: .3s !default;
   // SPECIFIC STYLES TO BUTTONS
   .#{$prefix}-ui-replaybutton {
     font-size: $small-size;
-    background-image: url('assets/restart.svg');
+
+    .#{$prefix}-ui-icon {
+      background-image: url('assets/restart.svg');
+      background-size: contain;
+    }
   }
 
   //Thumbnail
   .#{$prefix}-seekbar-label-title {
     visibility: hidden;
   }
-  .#{$prefix}-seekbar-label-time {
+  .#{$prefix}-ui-label.#{$prefix}-seekbar-label-metadata.#{$prefix}-seekbar-label-time {
     font-size: $medium-size;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    visibility: visible !important;
+    opacity: 1 !important;
+    padding: .4em .5em !important;
+    border-radius: .8rem !important;
     position: relative;
-    bottom: ($medium-size * -2);
+    bottom: 0;
   }
 
   .#{$prefix}-ui-hugeplaybacktogglebutton {
+    .#{$prefix}-ui-icon {
+      background-image: url('assets/pause_big.svg');
+      background-size: 10em;
+      opacity: 0;
+      visibility: hidden;
+    }
 
     &.#{$prefix}-on {
-      .#{$prefix}-image {
+      .#{$prefix}-ui-icon {
         background-image: url('assets/play_big.svg');
         background-size: 10em;
-        animation: fade-out $animation-duration cubic-bezier(0.55, 0.055, 0.675, 0.19); // http://easings.net/de#easeInCubic
-        transition: visibility 1s $animation-duration;
-        visibility: hidden;
+        animation: youtube-center-pop-play $center-toggle-duration ease-out;
       }
     }
 
     &.#{$prefix}-off {
-      .#{$prefix}-image {
+      .#{$prefix}-ui-icon {
         background-image: url('assets/pause_big.svg');
         background-size: 10em;
-        animation: fade-in $animation-duration cubic-bezier(0.55, 0.055, 0.675, 0.19); // http://easings.net/de#easeInCubic
-        visibility: hidden;
+        animation: youtube-center-pop-pause $center-toggle-duration ease-out;
       }
+    }
+  }
+
+  @keyframes youtube-center-pop-play {
+    0% {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(1.08);
+    }
+  }
+
+  @keyframes youtube-center-pop-pause {
+    0% {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(1.08);
     }
   }
 
