@@ -5,8 +5,9 @@ $color-primary: #fff !default;
   filter: drop-shadow(0 0 1px $color-primary);
 }
 
-.#{$prefix}-ui-skin-tv-netflix {
+.#{$prefix}-ui-tv-netflix {
   $overscan-margin: 5%;
+  $top-controls-width: 17vh;
   $large-size: 3.5vh;
   $medium-large-size: 3vh;
   $medium-size: 2vh;
@@ -34,18 +35,49 @@ $color-primary: #fff !default;
       height: 5vh;
       font-size: $small-size;
 
-      display: inline-flex;
-      // Start from the right side
-      justify-content: flex-end;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
       align-items: center;
+      column-gap: 0.6vw;
 
       .#{$prefix}-label-metadata-title {
-        // Moves rest of the items starting with this one to the very left
-        // margin auto will fill up the rest of the space in between.
         margin-left: auto;
         font-weight: bold;
-        font-size: $medium-size;
+        font-size: 2.3vh;
+        text-align: right;
+
+        .#{$prefix}-ui-label-text {
+          font-size: 2.5vh;
+        }
       }
+    }
+  }
+
+  .#{$prefix}-ui-top-controls {
+    > .#{$prefix}-container-wrapper {
+      width: $top-controls-width;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      justify-items: center;
+      align-items: center;
+      column-gap: 0.8vh;
+    }
+
+    .#{$prefix}-ui-closebutton,
+    .#{$prefix}-ui-replaybutton,
+    .#{$prefix}-ui-nextbutton {
+      margin: 0;
+    }
+  }
+
+  .#{$prefix}-ui-top-left-group {
+    > .#{$prefix}-container-wrapper {
+      width: $top-controls-width;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      row-gap: 0.4vh;
     }
   }
 
@@ -55,15 +87,17 @@ $color-primary: #fff !default;
       font-size: $small-size;
 
       position: relative;
-      display: inline-flex;
-      justify-content: right;
+      display: flex;
+      justify-content: flex-end;
       align-items: flex-start;
     }
 
     .#{$prefix}-label-metadata-description {
       font-size: $small-size;
+      margin-left: auto;
       text-align: right;
-      width: 40%;
+      width: auto;
+      max-width: 40%;
     }
   }
 
@@ -76,28 +110,45 @@ $color-primary: #fff !default;
     background-color: transparent;
   }
 
-  // Increase icon sizes and texts in the controlbar such as current time
-  .#{$prefix}-ui-subtitlesettingstogglebutton,
-  .#{$prefix}-ui-audiotracksettingstogglebutton {
-    font-size: $large-size;
-  }
-
   .#{$prefix}-ui-closebutton {
     margin: 1vh;
-    font-size: $medium-size;
-    background-image: url('assets/return.svg');
+    font-size: $medium-large-size;
+
+    .#{$prefix}-ui-icon {
+      width: $medium-large-size;
+      min-width: $medium-large-size;
+      height: $medium-large-size;
+      background-image: url('assets/return.svg');
+      background-size: contain;
+    }
   }
 
   .#{$prefix}-ui-replaybutton {
     margin: 1vh;
-    font-size: $medium-large-size;
-    background-image: url('assets/restart.svg');
+    font-size: 4vh;
+
+    .#{$prefix}-ui-icon {
+      width: 4vh;
+      min-width: 4vh;
+      height: 4vh;
+      background-image: url('assets/restart.svg');
+      background-size: contain;
+    }
   }
 
   .#{$prefix}-ui-nextbutton {
     margin: 1vh;
-    font-size: $medium-size;
-    background-image: url('assets/next.svg');
+    font-size: $medium-large-size;
+    min-width: fit-content;
+    padding: 0.3em 0.5em;
+
+    .#{$prefix}-ui-icon {
+      width: $medium-large-size;
+      min-width: $medium-large-size;
+      height: $medium-large-size;
+      background-image: url('assets/next.svg');
+      background-size: contain;
+    }
 
     &:hover {
       @include svg-icon-shadow;
@@ -109,10 +160,17 @@ $color-primary: #fff !default;
     text-align: center;
     font-size: $small-size;
     font-weight: lighter;
-    width: 20.5vh;
-    margin-top: 0.5vh;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 0;
     margin-left: 0;
-    margin-right: auto;
+    margin-right: 0;
+
+    .#{$prefix}-ui-label-text {
+      width: 100%;
+      text-align: center;
+    }
   }
 
   // Controlbar hierarchy
@@ -137,16 +195,16 @@ $color-primary: #fff !default;
             margin: auto;
 
             > .#{$prefix}-seekbar {
-              > .#{$prefix}-seekbar-bufferlevel {
-                background-color: grey;
+              .#{$prefix}-seekbar-bufferlevel {
+                background-color: rgba(255, 255, 255, 0.35);
               }
-              > .#{$prefix}-seekbar-playbackposition {
+              .#{$prefix}-seekbar-playbackposition {
                 background-color: red;
               }
-              > .#{$prefix}-seekbar-markers {
+              .#{$prefix}-seekbar-markers {
                 visibility: hidden;
               }
-              > .#{$prefix}-seekbar-playbackposition-marker {
+              .#{$prefix}-seekbar-playbackposition-marker {
                 visibility: hidden;
               }
             }
@@ -182,16 +240,22 @@ $color-primary: #fff !default;
   }
 
   .#{$prefix}-ui-playbacktogglebutton {
-    font-size: $medium-size;
-    padding-right: 1vw;
+    font-size: 4vh;
+    padding: 0.25em;
 
-    background-image: url('assets/play.svg');
+    .#{$prefix}-ui-icon {
+      width: 4vh;
+      min-width: 4vh;
+      height: 4vh;
+      background-image: url('assets/play.svg');
+      background-size: contain;
+    }
 
     &:hover {
       @include svg-icon-shadow;
     }
 
-    &.#{$prefix}-on {
+    &.#{$prefix}-on .#{$prefix}-ui-icon {
       background-image: url('assets/pause.svg');
     }
   }

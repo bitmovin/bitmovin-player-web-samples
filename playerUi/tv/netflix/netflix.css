@@ -1,139 +1,195 @@
-.bmpui-ui-skin-tv-netflix {
+.bmpui-ui-tv-netflix {
   font-family: Helvetica, sans-serif;
   letter-spacing: 0em;
   font-size: 2vh;
 }
-.bmpui-ui-skin-tv-netflix .bmpui-ui-titlebar > .bmpui-container-wrapper {
+.bmpui-ui-tv-netflix .bmpui-ui-titlebar > .bmpui-container-wrapper {
   margin: 5% 5% 1.5vh;
   width: 90%;
 }
-.bmpui-ui-skin-tv-netflix .bmpui-ui-titlebar-top {
+.bmpui-ui-tv-netflix .bmpui-ui-titlebar-top {
   height: 5vh;
 }
-.bmpui-ui-skin-tv-netflix .bmpui-ui-titlebar-top > .bmpui-container-wrapper {
+.bmpui-ui-tv-netflix .bmpui-ui-titlebar-top > .bmpui-container-wrapper {
   width: 100%;
   height: 5vh;
   font-size: 1.5vh;
-  display: inline-flex;
-  justify-content: flex-end;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
   align-items: center;
+  column-gap: 0.6vw;
 }
-.bmpui-ui-skin-tv-netflix .bmpui-ui-titlebar-top > .bmpui-container-wrapper .bmpui-label-metadata-title {
+.bmpui-ui-tv-netflix .bmpui-ui-titlebar-top > .bmpui-container-wrapper .bmpui-label-metadata-title {
   margin-left: auto;
   font-weight: bold;
-  font-size: 2vh;
+  font-size: 2.3vh;
+  text-align: right;
 }
-.bmpui-ui-skin-tv-netflix .bmpui-ui-titlebar-bottom > .bmpui-container-wrapper {
+.bmpui-ui-tv-netflix .bmpui-ui-titlebar-top > .bmpui-container-wrapper .bmpui-label-metadata-title .bmpui-ui-label-text {
+  font-size: 2.5vh;
+}
+.bmpui-ui-tv-netflix .bmpui-ui-top-controls > .bmpui-container-wrapper {
+  width: 17vh;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  align-items: center;
+  column-gap: 0.8vh;
+}
+.bmpui-ui-tv-netflix .bmpui-ui-top-controls .bmpui-ui-closebutton,
+.bmpui-ui-tv-netflix .bmpui-ui-top-controls .bmpui-ui-replaybutton,
+.bmpui-ui-tv-netflix .bmpui-ui-top-controls .bmpui-ui-nextbutton {
+  margin: 0;
+}
+.bmpui-ui-tv-netflix .bmpui-ui-top-left-group > .bmpui-container-wrapper {
+  width: 17vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 0.4vh;
+}
+.bmpui-ui-tv-netflix .bmpui-ui-titlebar-bottom > .bmpui-container-wrapper {
   width: 100%;
   font-size: 1.5vh;
   position: relative;
-  display: inline-flex;
-  justify-content: right;
+  display: flex;
+  justify-content: flex-end;
   align-items: flex-start;
 }
-.bmpui-ui-skin-tv-netflix .bmpui-ui-titlebar-bottom .bmpui-label-metadata-description {
+.bmpui-ui-tv-netflix .bmpui-ui-titlebar-bottom .bmpui-label-metadata-description {
   font-size: 1.5vh;
+  margin-left: auto;
   text-align: right;
-  width: 40%;
+  width: auto;
+  max-width: 40%;
 }
-.bmpui-ui-skin-tv-netflix .bmpui-ui-settings-panel {
+.bmpui-ui-tv-netflix .bmpui-ui-settings-panel {
   font-size: 1.5vh;
   top: 0;
   left: 0;
   width: 10vw;
   background-color: transparent;
 }
-.bmpui-ui-skin-tv-netflix .bmpui-ui-subtitlesettingstogglebutton,
-.bmpui-ui-skin-tv-netflix .bmpui-ui-audiotracksettingstogglebutton {
-  font-size: 3.5vh;
-}
-.bmpui-ui-skin-tv-netflix .bmpui-ui-closebutton {
-  margin: 1vh;
-  font-size: 2vh;
-  background-image: url("assets/return.svg");
-}
-.bmpui-ui-skin-tv-netflix .bmpui-ui-replaybutton {
+.bmpui-ui-tv-netflix .bmpui-ui-closebutton {
   margin: 1vh;
   font-size: 3vh;
-  background-image: url("assets/restart.svg");
 }
-.bmpui-ui-skin-tv-netflix .bmpui-ui-nextbutton {
+.bmpui-ui-tv-netflix .bmpui-ui-closebutton .bmpui-ui-icon {
+  width: 3vh;
+  min-width: 3vh;
+  height: 3vh;
+  background-image: url("assets/return.svg");
+  background-size: contain;
+}
+.bmpui-ui-tv-netflix .bmpui-ui-replaybutton {
   margin: 1vh;
-  font-size: 2vh;
-  background-image: url("assets/next.svg");
+  font-size: 4vh;
 }
-.bmpui-ui-skin-tv-netflix .bmpui-ui-nextbutton:hover {
+.bmpui-ui-tv-netflix .bmpui-ui-replaybutton .bmpui-ui-icon {
+  width: 4vh;
+  min-width: 4vh;
+  height: 4vh;
+  background-image: url("assets/restart.svg");
+  background-size: contain;
+}
+.bmpui-ui-tv-netflix .bmpui-ui-nextbutton {
+  margin: 1vh;
+  font-size: 3vh;
+  min-width: fit-content;
+  padding: 0.3em 0.5em;
+}
+.bmpui-ui-tv-netflix .bmpui-ui-nextbutton .bmpui-ui-icon {
+  width: 3vh;
+  min-width: 3vh;
+  height: 3vh;
+  background-image: url("assets/next.svg");
+  background-size: contain;
+}
+.bmpui-ui-tv-netflix .bmpui-ui-nextbutton:hover {
   filter: drop-shadow(0 0 1px #fff);
 }
-.bmpui-ui-skin-tv-netflix .bmpui-ui-label-options {
+.bmpui-ui-tv-netflix .bmpui-ui-label-options {
+  display: flex;
+  justify-content: center;
   text-align: center;
   font-size: 1.5vh;
   font-weight: lighter;
-  width: 20.5vh;
-  margin-top: 0.5vh;
+  width: 100%;
+  margin-top: 0;
   margin-left: 0;
-  margin-right: auto;
+  margin-right: 0;
 }
-.bmpui-ui-skin-tv-netflix .bmpui-ui-controlbar {
+.bmpui-ui-tv-netflix .bmpui-ui-label-options .bmpui-ui-label-text {
+  width: 100%;
+  text-align: center;
+}
+.bmpui-ui-tv-netflix .bmpui-ui-controlbar {
   font-size: 3vh;
 }
-.bmpui-ui-skin-tv-netflix .bmpui-ui-controlbar > .bmpui-container-wrapper {
+.bmpui-ui-tv-netflix .bmpui-ui-controlbar > .bmpui-container-wrapper {
   margin: 5% auto;
   width: 80%;
 }
-.bmpui-ui-skin-tv-netflix .bmpui-ui-controlbar > .bmpui-container-wrapper > .bmpui-controlbar-top {
+.bmpui-ui-tv-netflix .bmpui-ui-controlbar > .bmpui-container-wrapper > .bmpui-controlbar-top {
   font-size: 3vh;
 }
-.bmpui-ui-skin-tv-netflix .bmpui-ui-controlbar > .bmpui-container-wrapper > .bmpui-controlbar-top > .bmpui-container-wrapper {
+.bmpui-ui-tv-netflix .bmpui-ui-controlbar > .bmpui-container-wrapper > .bmpui-controlbar-top > .bmpui-container-wrapper {
   font-size: 3vh;
   margin: auto;
 }
-.bmpui-ui-skin-tv-netflix .bmpui-ui-controlbar > .bmpui-container-wrapper > .bmpui-controlbar-top > .bmpui-container-wrapper > .bmpui-ui-seekbar {
+.bmpui-ui-tv-netflix .bmpui-ui-controlbar > .bmpui-container-wrapper > .bmpui-controlbar-top > .bmpui-container-wrapper > .bmpui-ui-seekbar {
   font-size: 1.5vh;
   margin: auto;
 }
-.bmpui-ui-skin-tv-netflix .bmpui-ui-controlbar > .bmpui-container-wrapper > .bmpui-controlbar-top > .bmpui-container-wrapper > .bmpui-ui-seekbar > .bmpui-seekbar > .bmpui-seekbar-bufferlevel {
-  background-color: grey;
+.bmpui-ui-tv-netflix .bmpui-ui-controlbar > .bmpui-container-wrapper > .bmpui-controlbar-top > .bmpui-container-wrapper > .bmpui-ui-seekbar > .bmpui-seekbar .bmpui-seekbar-bufferlevel {
+  background-color: rgba(255, 255, 255, 0.35);
 }
-.bmpui-ui-skin-tv-netflix .bmpui-ui-controlbar > .bmpui-container-wrapper > .bmpui-controlbar-top > .bmpui-container-wrapper > .bmpui-ui-seekbar > .bmpui-seekbar > .bmpui-seekbar-playbackposition {
+.bmpui-ui-tv-netflix .bmpui-ui-controlbar > .bmpui-container-wrapper > .bmpui-controlbar-top > .bmpui-container-wrapper > .bmpui-ui-seekbar > .bmpui-seekbar .bmpui-seekbar-playbackposition {
   background-color: red;
 }
-.bmpui-ui-skin-tv-netflix .bmpui-ui-controlbar > .bmpui-container-wrapper > .bmpui-controlbar-top > .bmpui-container-wrapper > .bmpui-ui-seekbar > .bmpui-seekbar > .bmpui-seekbar-markers {
+.bmpui-ui-tv-netflix .bmpui-ui-controlbar > .bmpui-container-wrapper > .bmpui-controlbar-top > .bmpui-container-wrapper > .bmpui-ui-seekbar > .bmpui-seekbar .bmpui-seekbar-markers {
   visibility: hidden;
 }
-.bmpui-ui-skin-tv-netflix .bmpui-ui-controlbar > .bmpui-container-wrapper > .bmpui-controlbar-top > .bmpui-container-wrapper > .bmpui-ui-seekbar > .bmpui-seekbar > .bmpui-seekbar-playbackposition-marker {
+.bmpui-ui-tv-netflix .bmpui-ui-controlbar > .bmpui-container-wrapper > .bmpui-controlbar-top > .bmpui-container-wrapper > .bmpui-ui-seekbar > .bmpui-seekbar .bmpui-seekbar-playbackposition-marker {
   visibility: hidden;
 }
-.bmpui-ui-skin-tv-netflix .bmpui-ui-controlbar > .bmpui-container-wrapper > .bmpui-controlbar-top > .bmpui-container-wrapper > .bmpui-ui-seekbar > .bmpui-ui-seekbar-label {
+.bmpui-ui-tv-netflix .bmpui-ui-controlbar > .bmpui-container-wrapper > .bmpui-controlbar-top > .bmpui-container-wrapper > .bmpui-ui-seekbar > .bmpui-ui-seekbar-label {
   background: none;
   left: 50% !important;
 }
-.bmpui-ui-skin-tv-netflix .bmpui-ui-controlbar > .bmpui-container-wrapper > .bmpui-controlbar-top > .bmpui-container-wrapper > .bmpui-ui-seekbar > .bmpui-ui-seekbar-label > .bmpui-container-wrapper > .bmpui-seekbar-label-inner {
+.bmpui-ui-tv-netflix .bmpui-ui-controlbar > .bmpui-container-wrapper > .bmpui-controlbar-top > .bmpui-container-wrapper > .bmpui-ui-seekbar > .bmpui-ui-seekbar-label > .bmpui-container-wrapper > .bmpui-seekbar-label-inner {
   border: 0;
 }
-.bmpui-ui-skin-tv-netflix .bmpui-ui-controlbar > .bmpui-container-wrapper > .bmpui-controlbar-top > .bmpui-container-wrapper > .bmpui-ui-seekbar > .bmpui-ui-seekbar-label > .bmpui-container-wrapper > .bmpui-seekbar-label-inner::after {
+.bmpui-ui-tv-netflix .bmpui-ui-controlbar > .bmpui-container-wrapper > .bmpui-controlbar-top > .bmpui-container-wrapper > .bmpui-ui-seekbar > .bmpui-ui-seekbar-label > .bmpui-container-wrapper > .bmpui-seekbar-label-inner::after {
   content: none;
 }
-.bmpui-ui-skin-tv-netflix .bmpui-ui-controlbar > .bmpui-container-wrapper > .bmpui-controlbar-top > .bmpui-container-wrapper > .bmpui-ui-playbacktimelabel {
+.bmpui-ui-tv-netflix .bmpui-ui-controlbar > .bmpui-container-wrapper > .bmpui-controlbar-top > .bmpui-container-wrapper > .bmpui-ui-playbacktimelabel {
   font-size: 2vh;
   margin: auto;
   width: 5vw;
 }
-.bmpui-ui-skin-tv-netflix .bmpui-seekbar-label-metadata {
+.bmpui-ui-tv-netflix .bmpui-seekbar-label-metadata {
   visibility: hidden;
 }
-.bmpui-ui-skin-tv-netflix .bmpui-ui-playbacktogglebutton {
-  font-size: 2vh;
-  padding-right: 1vw;
-  background-image: url("assets/play.svg");
+.bmpui-ui-tv-netflix .bmpui-ui-playbacktogglebutton {
+  font-size: 4vh;
+  padding: 0.25em;
 }
-.bmpui-ui-skin-tv-netflix .bmpui-ui-playbacktogglebutton:hover {
+.bmpui-ui-tv-netflix .bmpui-ui-playbacktogglebutton .bmpui-ui-icon {
+  width: 4vh;
+  min-width: 4vh;
+  height: 4vh;
+  background-image: url("assets/play.svg");
+  background-size: contain;
+}
+.bmpui-ui-tv-netflix .bmpui-ui-playbacktogglebutton:hover {
   filter: drop-shadow(0 0 1px #fff);
 }
-.bmpui-ui-skin-tv-netflix .bmpui-ui-playbacktogglebutton.bmpui-on {
+.bmpui-ui-tv-netflix .bmpui-ui-playbacktogglebutton.bmpui-on .bmpui-ui-icon {
   background-image: url("assets/pause.svg");
 }
-.bmpui-ui-skin-tv-netflix :focus {
+.bmpui-ui-tv-netflix :focus {
   transition: all 0.05s ease-in-out;
   outline: none;
   border: none;
