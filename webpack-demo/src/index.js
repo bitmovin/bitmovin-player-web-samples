@@ -1,6 +1,6 @@
 import { Player } from 'bitmovin-player';
 import { UIFactory } from 'bitmovin-player-ui';
-require('bitmovin-player-ui/dist/css/bitmovinplayer-ui.min.css');
+require('bitmovin-player-ui/dist/css/bitmovinplayer-ui.css');
 
 const conf = {
   key: 'YOUR KEY HERE',
@@ -15,7 +15,7 @@ const source = {
 
 const player = new Player(document.getElementById('player'), conf);
 
-UIFactory.buildDefaultUI(player);
+UIFactory.buildUI(player);
 player.load(source).then(function () {
     console.log('Successfully loaded source');
 }, function () {

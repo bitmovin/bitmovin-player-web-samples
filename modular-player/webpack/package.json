@@ -5,6 +5,7 @@
   },
   "devDependencies": {
     "bitmovin-player": "^8.0.1",
+    "bitmovin-player-ui": "^4.0.0",
     "css-loader": "^1.0.0",
     "style-loader": "^0.23.0",
     "webpack": "^4.17.1",

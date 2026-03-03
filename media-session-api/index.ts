@@ -77,7 +77,7 @@ const conf: PlayerConfig = {
 };
 
 const player = new Player(document.getElementById('player'), conf);
-const uiManager = UIFactory.buildDefaultUI(player);
+const uiManager = UIFactory.buildUI(player);
 
 player.on(PlayerEvent.Playing, () => {
   if (!('mediaSession' in navigator)) {

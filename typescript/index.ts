@@ -38,7 +38,7 @@ const conf: PlayerConfig = {
 
 const player = new Player(document.getElementById("player"), conf);
 
-const uiManager = UIFactory.buildDefaultUI(player);
+const uiManager = UIFactory.buildUI(player);
 
 const source: SourceConfig = {
   title: "Art of Motion",
