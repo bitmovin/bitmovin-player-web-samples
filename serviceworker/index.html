@@ -51,14 +51,6 @@
   </div>
 </div>
 <script type="text/javascript">
-  function unregisterAllServiceWorker() {
-    return navigator.serviceWorker.getRegistrations().then((registrations) => {
-      return Promise
-      .all(registrations.map(registration => registration.unregister()))
-      .then(() => {});
-    });
-  }
-
   const conf = {
     key: 'YOUR KEY HERE',
     cast: {
@@ -83,12 +75,8 @@
 
   bitmovin.player.Player.addModule(bitmovin.player['serviceworker-client'].default);
 
-  var player;
-  unregisterAllServiceWorker().then(() => {
-    player = new bitmovin.player.Player(document.getElementById('player'), conf);
-
-    player.load(source).then(() => player.play());
-  });
+  var player = new bitmovin.player.Player(document.getElementById('player'), conf);
+  player.load(source).then(() => player.play());
 </script>
 </body>
 </html>
