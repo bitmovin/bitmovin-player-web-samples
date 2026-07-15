@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@contentauth/c2pa-web": "^0.2.3",
+    "@contentauth/c2pa-web": "^0.12.1",
     "bitmovin-player": "^8.227.0",
     "bitmovin-player-react": "^1.0.3",
     "bitmovin-player-ui": "^3.102.0",
