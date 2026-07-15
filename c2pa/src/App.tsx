@@ -43,6 +43,9 @@ function App() {
   const [currentManifest, setCurrentManifest] = useState<ManifestStore | undefined>(undefined);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [playerSource, setPlayerSource] = useState<SourceConfig>(validSource);
+  const [isCustomSourceOpen, setIsCustomSourceOpen] = useState(false);
+  const [customSourceJson, setCustomSourceJson] = useState('');
+  const [customSourceError, setCustomSourceError] = useState<string | undefined>(undefined);
   const c2paValidator = useMemo(
     () =>
       new C2paValidator(manifest => {
@@ -110,6 +113,24 @@ function App() {
     setPlayerSource(source);
   };
 
+  const handleLoadCustomSource = () => {
+    let source: SourceConfig;
+    try {
+      source = JSON.parse(customSourceJson);
+    } catch (error) {
+      setCustomSourceError(`Invalid JSON: ${error instanceof Error ? error.message : String(error)}`);
+      return;
+    }
+
+    if (!source || typeof source !== 'object' || Array.isArray(source)) {
+      setCustomSourceError('Input must be a JSON object matching the SourceConfig type');
+      return;
+    }
+
+    setCustomSourceError(undefined);
+    handleSourceChange(source);
+  };
+
   const handleCrIconClick = () => {
     setIsMenuOpen(true);
   };
@@ -145,7 +166,27 @@ function App() {
         <button onClick={() => handleSourceChange(validSource)}>Valid Source</button>
         <button onClick={() => handleSourceChange(partiallyValidSource)}>Partially Valid Source</button>
         <button onClick={() => handleSourceChange(noC2paSource)}>No C2PA Source</button>
+        <button className="custom-source-button" onClick={() => setIsCustomSourceOpen(!isCustomSourceOpen)}>
+          Custom Source <span className="experimental-badge">experimental</span>
+          <span className="toggle-triangle" aria-hidden="true">
+            {isCustomSourceOpen ? '▴' : '▾'}
+          </span>
+        </button>
       </div>
+      {isCustomSourceOpen && (
+        <div className="custom-source-container">
+          <textarea
+            className="custom-source-input"
+            value={customSourceJson}
+            onChange={event => setCustomSourceJson(event.target.value)}
+            placeholder={'{\n  "dash": "https://example.com/manifest.mpd"\n}'}
+            rows={6}
+            spellCheck={false}
+          />
+          {customSourceError && <div className="custom-source-error">{customSourceError}</div>}
+          <button onClick={handleLoadCustomSource}>Load Custom Source</button>
+        </div>
+      )}
       {isMenuOpen && <ContentCredentialsMenu manifest={currentManifest} onClose={() => setIsMenuOpen(false)} />}
     </div>
   );
