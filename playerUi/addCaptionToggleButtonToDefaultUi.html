@@ -195,6 +195,14 @@
       const captionsAvailable = () => player.subtitles.list().length > 0;
       const captionsActive = () => player.subtitles.list().some(track => track.enabled);
 
+      // Remembers the last track the user picked (via this button or the
+      // settings panel), so toggling captions back on restores their choice
+      // instead of re-running the language fallback every time.
+      let lastEnabledTrackId = null;
+      player.on(player.exports.PlayerEvent.SubtitleEnabled, event => {
+        lastEnabledTrackId = event.subtitle.id;
+      });
+
       const syncState = () => {
         if (!captionsAvailable()) {
           this.hide();
@@ -237,10 +245,11 @@
           const currentAudio = player.getAudio();
           const audioLanguage = currentAudio && currentAudio.lang;
 
-          // Pick which caption track to enable: prefer one matching the
-          // current audio language, fall back to English, then to the
-          // first available track.
+          // Pick which caption track to enable: prefer the user's last
+          // selection, then one matching the current audio language, then
+          // English, then simply the first available track.
           const trackToEnable =
+            player.subtitles.list().find(track => track.id === lastEnabledTrackId) ||
             player.subtitles.list().find(track => track.lang === audioLanguage) ||
             player.subtitles.list().find(track => track.lang === 'en') ||
             player.subtitles.list()[0];
