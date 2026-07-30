@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bitmovin Player - Caption Toggle Button</title>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script type="text/javascript" src="https://cdn.bitmovin.com/player/web/8/bitmovinplayer.js"></script>
+  <script src="https://cdn.bitmovin.com/player/web/8/bitmovinplayer-ui.js"></script>
+  <link rel="stylesheet" href="https://cdn.bitmovin.com/player/web/8/bitmovinplayer-ui.css"/>
+
+  <style>
+    /* DEMO Page CSS */
+    .container {
+      color: white;
+      text-align: center;
+    }
+    .container a {
+      color: white;
+    }
+    .container h1 {
+      margin-bottom: 22px;
+      line-height: 66px;
+    }
+    .container h2 {
+      font-weight: normal;
+      margin-bottom: 36px;
+      line-height: 26px;
+    }
+    .player-wrapper {
+      width: 95%;
+      margin: 20px auto;
+      box-shadow: 0 0 30px rgba(0,0,0,0.7);
+    }
+
+    /* CC toggle button base styling. The default UI applies its shared button
+       reset only to a fixed list of built-in button classes, not to our custom
+       one, so the native <button> border/padding/background leaks through.
+       Replicate that base rule here. */
+    .bmpui-ui-togglebutton.bmpui-closedcaptions-button {
+      align-items: center;
+      background-color: transparent;
+      border: 0;
+      box-sizing: content-box;
+      column-gap: 0.4em;
+      cursor: pointer;
+      display: flex;
+      flex-flow: row;
+      font-size: 1.125rem;
+      height: 1.5rem;
+      justify-content: flex-start;
+      min-width: 1.5rem;
+      padding: 0.375rem;
+      transition: transform 0.15s ease;
+    }
+    .bmpui-focus-visible.bmpui-ui-togglebutton.bmpui-closedcaptions-button {
+      backdrop-filter: blur(5px);
+      background-color: hsla(0, 0%, 100%, 0.2);
+      border-radius: 0.3em;
+      box-shadow: 0 0 0 0.1em hsla(0, 0%, 100%, 0.4);
+      outline: none;
+    }
+    /* CC toggle button icon (matches the default UI icon style) */
+    .bmpui-ui-togglebutton.bmpui-closedcaptions-button .bmpui-ui-icon {
+      background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2724%27 height=%2724%27 fill=%27%23fff%27 viewBox=%270 0 24 24%27%3E%3Cpath d=%27M19 4H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2m-8 7H9.5v-.5h-2v3h2V13H11v1c0 .55-.45 1-1 1H7c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1h3c.55 0 1 .45 1 1zm7 0h-1.5v-.5h-2v3h2V13H18v1c0 .55-.45 1-1 1h-3c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1h3c.55 0 1 .45 1 1z%27/%3E%3C/svg%3E");
+    }
+    /* Dim the icon when captions are off, full opacity when on */
+    .bmpui-ui-togglebutton.bmpui-closedcaptions-button.bmpui-off .bmpui-ui-icon {
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="content">
+    <div class="player-wrapper">
+      <div id="player"></div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  const conf = {
+    key: 'YOUR_PLAYER_KEY_HERE',
+    ui: false,
+  };
+
+  const source = {
+    hls: 'https://cdn.bitmovin.com/content/assets/sintel/hls/playlist.m3u8',
+  };
+
+  const ui = bitmovin.playerui;
+  const player = new bitmovin.player.Player(document.getElementById('player'), conf);
+
+  /**
+   * Finds the first component in a UI component tree that matches the predicate.
+   * Containers expose their children via getComponents(), so the tree can be
+   * walked without knowing the exact layout structure.
+   */
+  function findComponent(component, predicate) {
+    if (predicate(component)) {
+      return component;
+    }
+
+    if (typeof component.getComponents !== 'function') {
+      return null;
+    }
+
+    for (const child of component.getComponents()) {
+      const match = findComponent(child, predicate);
+      if (match) {
+        return match;
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Takes a default UI layout and inserts the caption toggle button into the
+   * bottom control bar, before the settings button. The layout is only mutated
+   * before the UIManager initializes it, so splicing into the live components
+   * array returned by getComponents() is safe here.
+   */
+  function addCaptionToggleButton(uiContainer) {
+    const controlBarBottom = findComponent(
+      uiContainer,
+      component =>
+        component instanceof ui.Container &&
+        (component.getConfig().cssClasses || []).includes('controlbar-bottom'),
+    );
+
+    if (!controlBarBottom) {
+      return uiContainer;
+    }
+
+    const components = controlBarBottom.getComponents();
+    const settingsButtonIndex = components.findIndex(component => component instanceof ui.SettingsToggleButton);
+    const insertIndex = settingsButtonIndex === -1 ? components.length : settingsButtonIndex;
+
+    components.splice(insertIndex, 0, new CaptionToggleButton());
+
+    return uiContainer;
+  }
+
+  // Reuse the default layouts instead of rebuilding the UI from scratch. Each
+  // variant of the default UI is built from UIFactory.defaultLayouts, so only
+  // the variants that should show the button need to be customized.
+  const uiManager = new ui.UIManager(
+    player,
+    [
+      {
+        ui: () => ui.UIFactory.defaultLayouts.emptyState(),
+        condition: context => !context.isSourceLoaded,
+      },
+      {
+        ui: () => ui.UIFactory.defaultLayouts.ads(),
+        condition: context => context.isAd && context.adRequiresUi,
+      },
+      {
+        ui: () => addCaptionToggleButton(ui.UIFactory.defaultLayouts.smallScreen()),
+        condition: context => !context.isAd && !context.adRequiresUi && context.documentWidth < 800,
+      },
+      {
+        ui: () => addCaptionToggleButton(ui.UIFactory.defaultLayouts.main()),
+        condition: context => !context.isAd && !context.adRequiresUi,
+      },
+    ],
+  );
+
+  player.load(source);
+
+  /**
+   * A ToggleButton that turns captions on and off.
+   *
+   * Subclassing ToggleButton lets the button hook into configure(), which the UI
+   * calls when it attaches the component to the player. That matters because the
+   * default UI builds its variants lazily: by the time this button exists,
+   * SourceLoaded may already have fired, so initial state has to be read from
+   * the player rather than waited for.
+   */
+  class CaptionToggleButton extends bitmovin.playerui.ToggleButton {
+    constructor(config = {}) {
+      super({
+        hidden: true,
+        cssClasses: ['closedcaptions-button'],
+        ariaLabel: 'Captions',
+        ...config,
+      });
+    }
+
+    configure(player, uimanager) {
+      super.configure(player, uimanager);
+
+      const captionsAvailable = () => player.subtitles.list().length > 0;
+      const captionsActive = () => player.subtitles.list().some(track => track.enabled);
+
+      const syncState = () => {
+        if (!captionsAvailable()) {
+          this.hide();
+          return;
+        }
+
+        this.show();
+
+        if (captionsActive()) {
+          this.on();
+        } else {
+          this.off();
+        }
+      };
+
+      // Tracks can appear or disappear after SourceLoaded, and captions can be
+      // switched from elsewhere in the UI (e.g. the settings panel), so the
+      // button state is always derived from the player.
+      const events = player.exports.PlayerEvent;
+      [
+        events.SourceLoaded,
+        events.SourceUnloaded,
+        events.SubtitleAdded,
+        events.SubtitleRemoved,
+        events.SubtitleEnabled,
+        events.SubtitleDisabled,
+      ].forEach(event => player.on(event, syncState));
+
+      this.onClick.subscribe(() => {
+        if (!captionsAvailable()) {
+          return;
+        }
+
+        if (captionsActive()) {
+          player.subtitles
+            .list()
+            .filter(track => track.enabled)
+            .forEach(track => player.subtitles.disable(track.id));
+        } else {
+          const currentAudio = player.getAudio();
+          const audioLanguage = currentAudio && currentAudio.lang;
+
+          // Pick which caption track to enable: prefer one matching the
+          // current audio language, fall back to English, then to the
+          // first available track.
+          const trackToEnable =
+            player.subtitles.list().find(track => track.lang === audioLanguage) ||
+            player.subtitles.list().find(track => track.lang === 'en') ||
+            player.subtitles.list()[0];
+          player.subtitles.enable(trackToEnable.id);
+        }
+      });
+
+      syncState();
+    }
+  }
+</script>
+</body>
+</html>
