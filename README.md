@@ -65,6 +65,7 @@ These examples are build around the Bitmovin Adaptive Streaming Player, demonstr
 * [**subtitles**](subtitles/)
   * [customSubtitleDisplay](subtitles/customSubtitleDisplay.js): Render subtitles using the ON_CUE_ENTER and ON_CUE_EXIT player events.
   * [uiSubtitleOverlay](subtitles/uiSubtitleOverlay.html): Use only the SubtitleOverlay from the [Bitmovin Player UI](https://github.com/bitmovin/bitmovin-player-ui) but not the rest of the UI.
+  * [addCaptionToggleButtonToDefaultUi](playerUi/addCaptionToggleButtonToDefaultUi.html): Add a caption on/off toggle button to the default UI's control bar.
 
 ### UI Frameworks
 * [**angular**](angular/)
