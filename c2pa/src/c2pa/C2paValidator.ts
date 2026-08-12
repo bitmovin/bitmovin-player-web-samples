@@ -1,6 +1,12 @@
-import { type C2paSdk, type ValidationState, createC2pa, type ManifestStore } from '@contentauth/c2pa-web';
-
-import wasmSrc from '@contentauth/c2pa-web/resources/c2pa.wasm?url';
+import {
+  type InitSegmentValidation,
+  type MerkleSegmentState,
+  type SequenceState,
+  type C2paManifest,
+  validateC2paInitSegment,
+  validateC2paMerkleSegment,
+  validateC2paSegment,
+} from '@svta/cml-c2pa';
 import {
   HttpRequestType,
   type HttpResponse,
@@ -9,43 +15,28 @@ import {
   type SegmentRequestFinishedEvent,
 } from 'bitmovin-player';
 
+export type C2paPlaybackState = {
+  manifest: C2paManifest | null;
+  isValid: boolean;
+  errorCodes: readonly string[];
+};
+
+type TrackState = {
+  initValidation?: InitSegmentValidation;
+  noC2pa?: boolean;
+  merkleState?: MerkleSegmentState;
+  sequenceState?: SequenceState;
+};
+
 export class C2paValidator {
-  private readonly c2paFetch: Promise<Response>;
-  private c2paSdk: C2paSdk | undefined;
-  private initSegmentMap: Map<string, Blob> = new Map();
-  private dataSegmentMap: Map<string, Blob> = new Map();
-  private manifestMap: Map<string, ManifestStore> = new Map();
-  private readonly onManifestChange?: (manifest: ManifestStore | undefined) => void;
+  private initSegmentMap: Map<string, Uint8Array> = new Map();
+  private dataSegmentMap: Map<string, Uint8Array> = new Map();
+  private resultMap: Map<string, C2paPlaybackState> = new Map();
+  private trackStateMap: Map<string, TrackState> = new Map();
+  private readonly onC2paStateChange?: (state: C2paPlaybackState | undefined) => void;
 
-  constructor(onManifestChange?: (manifest: ManifestStore | undefined) => void) {
-    this.onManifestChange = onManifestChange;
-    this.c2paFetch = fetch(wasmSrc);
-  }
-
-  public async init(): Promise<void> {
-    if (this.c2paSdk) {
-      // Already initialized
-      return;
-    }
-
-    const response = await this.c2paFetch;
-    const wasmBinary = await response.arrayBuffer();
-
-    this.c2paSdk = await createC2pa({ wasmSrc: wasmBinary });
-    console.log('C2PA SDK initialized');
-  }
-
-  public async validateProgressive(url: string): Promise<ValidationState | undefined> {
-    const response = await fetch(url);
-    const blob = await response.blob();
-
-    const reader = await this.c2paSdk!.reader.fromBlob(blob.type, blob);
-
-    const manifestStore = await reader.manifestStore();
-
-    console.log(manifestStore);
-
-    return manifestStore.validation_state ?? undefined;
+  constructor(onC2paStateChange?: (state: C2paPlaybackState | undefined) => void) {
+    this.onC2paStateChange = onC2paStateChange;
   }
 
   preprocessHttpResponse: <T extends HttpResponseBody>(
@@ -57,69 +48,154 @@ export class C2paValidator {
         return response;
       }
 
-      const mimeType = type === HttpRequestType.MEDIA_VIDEO ? 'video/mp4' : 'audio/mp4';
-      const blob = new Blob([response.body], { type: mimeType });
-      this.dataSegmentMap.set(response.url, blob);
+      this.dataSegmentMap.set(response.url, new Uint8Array(response.body.slice(0)));
     }
 
     return response;
   };
 
   public async onSegmentRequestFinished(event: SegmentRequestFinishedEvent) {
-    const existingBlob = this.dataSegmentMap.get(event.url);
-    if (existingBlob && event.isInit) {
-      this.initSegmentMap.set(event.mimeType, existingBlob);
+    const existingSegment = this.dataSegmentMap.get(event.url);
+    if (existingSegment && event.isInit) {
+      this.initSegmentMap.set(event.mimeType, existingSegment);
       this.dataSegmentMap.delete(event.url);
     }
   }
 
   public async onSegmentPlayback(event: SegmentPlaybackEvent) {
-    const initSegmentBlob = this.initSegmentMap.get(event.mimeType);
-    const dataSegmentBlob = this.dataSegmentMap.get(event.url);
-
     try {
       // Note, for SSAI stream, the same segment URL may lead to different data, so this wouldn't work. To distinguish this case from a normal seek case, either more distinguishing info from the segments are needed, or we need to synchronize this with the normal segments lifecycle
-      const existingManifest = this.manifestMap.get(event.url);
-      if (!existingManifest) {
-        if (!initSegmentBlob || !dataSegmentBlob) {
-          console.warn(
-            `Missing init or data segment for playback event of ${event.url}`,
-            initSegmentBlob,
-            dataSegmentBlob,
-          );
-          return;
-        }
-        console.log(`Extracting C2PA manifest for ${event.url}`);
-        const reader = await this.c2paSdk!.reader.fromBlobFragment(
-          dataSegmentBlob.type,
-          initSegmentBlob,
-          dataSegmentBlob,
-        );
-
-        const manifest = await reader.manifestStore();
-
-        this.manifestMap.set(event.url, manifest);
-
-        // Clear the data segment after processing to save memory. Only save the manifest obtained
-        this.dataSegmentMap.delete(event.url);
-
-        this.onManifestChange?.(manifest);
-
-        console.log(`Extracted C2PA manifest:`, manifest);
-      } else {
-        this.onManifestChange?.(existingManifest);
-        console.log(`Reusing existing manifest:`, existingManifest);
+      const existingResult = this.resultMap.get(event.url);
+      if (existingResult) {
+        this.onC2paStateChange?.(existingResult);
+        console.log(`Reusing existing validation result:`, existingResult);
+        return;
       }
-    } catch (error) {
-      console.error('C2PA manifest extraction failed:', error);
 
-      this.onManifestChange?.(undefined);
+      const trackState = await this.getTrackState(event.mimeType);
+      if (!trackState || trackState.noC2pa || !trackState.initValidation) {
+        return;
+      }
+
+      const segmentBytes = this.dataSegmentMap.get(event.url);
+      if (!segmentBytes) {
+        console.warn(`Missing data segment for playback event of ${event.url}`);
+        return;
+      }
+
+      const state = await this.validateSegment(segmentBytes, trackState);
+      if (!state) {
+        // Segment carries no C2PA data
+        return;
+      }
+
+      this.resultMap.set(event.url, state);
+
+      // Clear the data segment after processing to save memory. Only keep the validation result
+      this.dataSegmentMap.delete(event.url);
+
+      this.onC2paStateChange?.(state);
+
+      console.log(`Validated C2PA segment:`, state);
+    } catch (error) {
+      console.error('C2PA validation failed:', error);
+
+      this.onC2paStateChange?.(undefined);
+    }
+  }
+
+  private async getTrackState(mimeType: string): Promise<TrackState | undefined> {
+    const existingState = this.trackStateMap.get(mimeType);
+    if (existingState) {
+      return existingState;
+    }
+
+    const initSegment = this.initSegmentMap.get(mimeType);
+    if (!initSegment) {
+      console.warn(`Missing init segment for ${mimeType}`);
+      return undefined;
+    }
+
+    const trackState: TrackState = {};
+    try {
+      trackState.initValidation = await validateC2paInitSegment(initSegment);
+      console.log(`C2PA init segment validation for ${mimeType}:`, trackState.initValidation);
+    } catch (error) {
+      // validateC2paInitSegment throws when the init segment contains no C2PA box
+      console.log(`No C2PA data found in init segment for ${mimeType}:`, error);
+      trackState.noC2pa = true;
+    }
+
+    this.trackStateMap.set(mimeType, trackState);
+    return trackState;
+  }
+
+  private async validateSegment(
+    segmentBytes: Uint8Array,
+    trackState: TrackState,
+  ): Promise<C2paPlaybackState | null> {
+    const initValidation = trackState.initValidation!;
+
+    if (initValidation.merkleMaps.length > 0) {
+      // VOD Merkle mode (C2PA §15.12.2)
+      const { result, nextState } = await validateC2paMerkleSegment(
+        segmentBytes,
+        initValidation.merkleMaps,
+        trackState.merkleState,
+      );
+      trackState.merkleState = nextState;
+
+      return {
+        manifest: initValidation.manifest,
+        isValid: initValidation.isValid && result.isValid,
+        errorCodes: [...initValidation.errorCodes, ...result.errorCodes],
+      };
+    }
+
+    if (initValidation.sessionKeys.length > 0) {
+      // Live VSI/EMSG mode (C2PA §19.4)
+      const validation = await validateC2paSegment(
+        segmentBytes,
+        initValidation.sessionKeys,
+        trackState.sequenceState,
+      );
+      if (!validation) {
+        return null;
+      }
+      trackState.sequenceState = validation.nextSequenceState;
+
+      return {
+        manifest: initValidation.manifest,
+        isValid: initValidation.isValid && validation.result.isValid,
+        errorCodes: [...initValidation.errorCodes, ...validation.result.errorCodes],
+      };
+    }
+
+    // The init segment carries a C2PA manifest, but no segment-level validation
+    // method supported by @svta/cml-c2pa applies (e.g. legacy c2pa.hash.bmff.v2
+    // assets). Surface the init segment validation result instead.
+    return {
+      manifest: initValidation.manifest,
+      isValid: initValidation.isValid,
+      errorCodes: initValidation.errorCodes,
+    };
+  }
+
+  /**
+   * Clears segment continuity state. Must be called after a seek, as sequence
+   * numbers and merkle locations are no longer contiguous.
+   */
+  public resetSequenceState() {
+    for (const trackState of this.trackStateMap.values()) {
+      trackState.merkleState = undefined;
+      trackState.sequenceState = undefined;
     }
   }
 
   public reset() {
     this.initSegmentMap.clear();
     this.dataSegmentMap.clear();
-    this.manifestMap.clear();
+    this.resultMap.clear();
+    this.trackStateMap.clear();
   }
 }

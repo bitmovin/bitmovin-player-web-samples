@@ -10,11 +10,10 @@ import {
   type SegmentRequestFinishedEvent,
   type SourceConfig,
 } from 'bitmovin-player';
-import { C2paValidator } from './c2pa/C2paValidator';
+import { C2paValidator, type C2paPlaybackState } from './c2pa/C2paValidator';
 import crIcon from './assets/cr-icon.svg';
 import crValidIcon from './assets/cr-valid.svg';
 import crInvalidIcon from './assets/cr-invalid.svg';
-import { type ManifestStore } from '@contentauth/c2pa-web';
 import { ContentCredentialsMenu } from './components/ContentCredentialsMenu';
 
 const validSource = {
@@ -29,18 +28,17 @@ const noC2paSource = {
   dash: 'https://cdn.bitmovin.com/content/assets/art-of-motion-dash-hls-progressive/mpds/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.mpd',
 };
 
-function getIconSrc(currentManifest: ManifestStore | undefined) {
-  const validationState = currentManifest?.validation_state;
-  if (!validationState) {
-    return crIcon; // Default icon when no manifest is available
+function getIconSrc(c2paState: C2paPlaybackState | undefined) {
+  if (!c2paState) {
+    return crIcon; // Default icon when no validation result is available
   }
 
-  return validationState === 'Valid' || validationState === 'Trusted' ? crValidIcon : crInvalidIcon;
+  return c2paState.isValid ? crValidIcon : crInvalidIcon;
 }
 
 function App() {
   const player = useRef<PlayerAPI>(null);
-  const [currentManifest, setCurrentManifest] = useState<ManifestStore | undefined>(undefined);
+  const [c2paState, setC2paState] = useState<C2paPlaybackState | undefined>(undefined);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [playerSource, setPlayerSource] = useState<SourceConfig>(validSource);
   const [isCustomSourceOpen, setIsCustomSourceOpen] = useState(false);
@@ -48,9 +46,9 @@ function App() {
   const [customSourceError, setCustomSourceError] = useState<string | undefined>(undefined);
   const c2paValidator = useMemo(
     () =>
-      new C2paValidator(manifest => {
-        console.log('Manifest updated:', manifest);
-        setCurrentManifest(manifest);
+      new C2paValidator(state => {
+        console.log('C2PA state updated:', state);
+        setC2paState(state);
       }),
     [],
   );
@@ -58,26 +56,10 @@ function App() {
   useEffect(() => {
     if (player.current) {
       (window as any).player = player.current; // eslint-disable-line @typescript-eslint/no-explicit-any
-      player.current.on(PlayerEvent.SourceLoaded, async () => {
-        console.log('Source loaded');
-
-        await c2paValidator.init();
-
-        const source = player.current?.getSource();
-
-        if (!source || !source.progressive) {
-          return;
-        }
-
-        // Validate C2PA data for the loaded video
-        try {
-          const validationState = await c2paValidator.validateProgressive(source.progressive as string);
-          console.log('C2PA validation result:', validationState);
-        } catch (error) {
-          console.error('C2PA validation failed:', error);
-        }
+      player.current.on(PlayerEvent.Seeked, () => {
+        // Segment continuity state must be reset after a seek
+        c2paValidator.resetSequenceState();
       });
-
       player.current.on(PlayerEvent.SegmentPlayback, event => {
         c2paValidator.onSegmentPlayback(event as SegmentPlaybackEvent);
       });
@@ -109,7 +91,7 @@ function App() {
 
   const handleSourceChange = (source: SourceConfig) => {
     c2paValidator.reset();
-    setCurrentManifest(undefined);
+    setC2paState(undefined);
     setPlayerSource(source);
   };
 
@@ -135,8 +117,8 @@ function App() {
     setIsMenuOpen(true);
   };
 
-  const iconSrc = getIconSrc(currentManifest);
-  const isDisabled = !currentManifest;
+  const iconSrc = getIconSrc(c2paState);
+  const isDisabled = !c2paState;
 
   return (
     <div className="app">
@@ -187,7 +169,7 @@ function App() {
           <button onClick={handleLoadCustomSource}>Load Custom Source</button>
         </div>
       )}
-      {isMenuOpen && <ContentCredentialsMenu manifest={currentManifest} onClose={() => setIsMenuOpen(false)} />}
+      {isMenuOpen && <ContentCredentialsMenu state={c2paState} onClose={() => setIsMenuOpen(false)} />}
     </div>
   );
 }

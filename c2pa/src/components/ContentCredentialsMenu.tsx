@@ -1,32 +1,29 @@
-import { type ManifestStore } from '@contentauth/c2pa-web';
+import { type C2paPlaybackState } from '../c2pa/C2paValidator';
 import './ContentCredentialsMenu.css';
 
 interface ContentCredentialsMenuProps {
-  manifest: ManifestStore | undefined;
+  state: C2paPlaybackState | undefined;
   onClose: () => void;
 }
 
-export function ContentCredentialsMenu({ manifest, onClose }: ContentCredentialsMenuProps) {
-  if (!manifest) return null;
+export function ContentCredentialsMenu({ state, onClose }: ContentCredentialsMenuProps) {
+  const activeManifest = state?.manifest;
 
-  const activeManifestLabel = manifest.active_manifest;
-  const activeManifest = activeManifestLabel ? manifest.manifests[activeManifestLabel] : undefined;
-
-  if (!activeManifest) return null;
+  if (!state || !activeManifest) return null;
 
   // Extract relevant data
-  const issuer = activeManifest.signature_info?.issuer || 'Unknown';
-  const issueDate = activeManifest.signature_info?.time
-    ? new Date(activeManifest.signature_info.time).toLocaleDateString('en-US', {
+  const issuer = activeManifest.signatureInfo.issuer || 'Unknown';
+  const issueDate = activeManifest.signatureInfo.certNotBefore
+    ? new Date(activeManifest.signatureInfo.certNotBefore).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'short',
         day: 'numeric',
       })
     : 'Unknown';
 
-  // Extract app/device used from claim_generator
-  const appUsed = activeManifest.claim_generator
-    ? activeManifest.claim_generator.split(' ')[0].replace(/_/g, ' ')
+  // Extract app/device used from claimGenerator
+  const appUsed = activeManifest.claimGenerator
+    ? activeManifest.claimGenerator.split(' ')[0].replace(/_/g, ' ')
     : 'Unknown';
 
   // Extract author/name from CreativeWork assertion
@@ -76,8 +73,7 @@ export function ContentCredentialsMenu({ manifest, onClose }: ContentCredentials
   }
 
   // Get validation status
-  const validationStatus =
-    manifest.validation_state === 'Valid' || manifest.validation_state === 'Trusted' ? 'Passed' : 'Failed';
+  const validationStatus = state.isValid ? 'Passed' : 'Failed';
 
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
