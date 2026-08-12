@@ -2,6 +2,7 @@ import {
   type InitSegmentValidation,
   type MerkleSegmentState,
   type SequenceState,
+  type SequenceValidationResult,
   type C2paManifest,
   validateC2paInitSegment,
   validateC2paMerkleSegment,
@@ -15,10 +16,15 @@ import {
   type SegmentRequestFinishedEvent,
 } from 'bitmovin-player';
 
+export type C2paValidationMode = 'Live VSI' | 'VOD Merkle' | 'Init only';
+
 export type C2paPlaybackState = {
   manifest: C2paManifest | null;
   isValid: boolean;
   errorCodes: readonly string[];
+  mode: C2paValidationMode;
+  sequenceNumber?: number;
+  sequenceResult?: SequenceValidationResult;
 };
 
 type TrackState = {
@@ -149,6 +155,7 @@ export class C2paValidator {
         manifest: initValidation.manifest,
         isValid: initValidation.isValid && result.isValid,
         errorCodes: [...initValidation.errorCodes, ...result.errorCodes],
+        mode: 'VOD Merkle',
       };
     }
 
@@ -168,6 +175,9 @@ export class C2paValidator {
         manifest: initValidation.manifest,
         isValid: initValidation.isValid && validation.result.isValid,
         errorCodes: [...initValidation.errorCodes, ...validation.result.errorCodes],
+        mode: 'Live VSI',
+        sequenceNumber: validation.result.sequenceNumber,
+        sequenceResult: validation.result.sequenceResult,
       };
     }
 
@@ -178,6 +188,7 @@ export class C2paValidator {
       manifest: initValidation.manifest,
       isValid: initValidation.isValid,
       errorCodes: initValidation.errorCodes,
+      mode: 'Init only',
     };
   }
 

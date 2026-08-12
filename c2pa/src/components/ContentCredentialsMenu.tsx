@@ -72,8 +72,36 @@ export function ContentCredentialsMenu({ state, onClose }: ContentCredentialsMen
     }
   }
 
+  // Extract performed actions from the c2pa.actions assertion (v1 or v2)
+  const actionsAssertion = activeManifest.assertions.find(a => a.label.startsWith('c2pa.actions'));
+  let actions: string[] = [];
+
+  if (actionsAssertion && typeof actionsAssertion.data === 'object' && actionsAssertion.data) {
+    const data = actionsAssertion.data as { actions?: Array<{ action?: string }> };
+    actions = (data.actions ?? [])
+      .map(a => a.action)
+      .filter((a): a is string => !!a)
+      .map(a => {
+        const name = a.replace(/^c2pa\./, '').replace(/_/g, ' ');
+        return name.charAt(0).toUpperCase() + name.slice(1);
+      });
+  }
+
   // Get validation status
   const validationStatus = state.isValid ? 'Passed' : 'Failed';
+
+  // Describe the sequence continuity result for Live VSI streams
+  let sequenceInfo = '';
+  if (state.sequenceNumber !== undefined && state.sequenceResult) {
+    const reason = state.sequenceResult.reason;
+    if (reason === 'gap_detected') {
+      sequenceInfo = `#${state.sequenceNumber} (gap detected: missing #${state.sequenceResult.missingFrom}–#${state.sequenceResult.missingTo})`;
+    } else if (reason === 'valid') {
+      sequenceInfo = `#${state.sequenceNumber}`;
+    } else {
+      sequenceInfo = `#${state.sequenceNumber} (${reason.replace(/_/g, ' ')})`;
+    }
+  }
 
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
@@ -139,9 +167,31 @@ export function ContentCredentialsMenu({ state, onClose }: ContentCredentialsMen
               </div>
             )}
 
+            {actions.length > 0 && (
+              <div className="cc-menu-info-item">
+                <strong>Actions</strong> {actions.join(', ')}
+              </div>
+            )}
+
+            <div className="cc-menu-info-item">
+              <strong>Validation Method</strong> {state.mode}
+            </div>
+
+            {sequenceInfo && (
+              <div className="cc-menu-info-item">
+                <strong>Segment Sequence</strong> {sequenceInfo}
+              </div>
+            )}
+
             <div className="cc-menu-info-item">
               <strong>Current Validation Status</strong> {validationStatus}
             </div>
+
+            {state.errorCodes.length > 0 && (
+              <div className="cc-menu-info-item">
+                <strong>Validation Errors</strong> {state.errorCodes.join(', ')}
+              </div>
+            )}
           </div>
 
           <button className="cc-menu-inspect-btn" onClick={onClose}>
