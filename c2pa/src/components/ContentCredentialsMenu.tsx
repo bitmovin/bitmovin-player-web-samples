@@ -13,13 +13,15 @@ export function ContentCredentialsMenu({ state, onClose }: ContentCredentialsMen
 
   // Extract relevant data
   const issuer = activeManifest.signatureInfo.issuer || 'Unknown';
-  const issueDate = activeManifest.signatureInfo.certNotBefore
+  // Note: the library only exposes the certificate validity start, not the
+  // actual signing time, so this is shown as "Certificate valid from"
+  const certValidFrom = activeManifest.signatureInfo.certNotBefore
     ? new Date(activeManifest.signatureInfo.certNotBefore).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'short',
         day: 'numeric',
       })
-    : 'Unknown';
+    : '';
 
   // Extract app/device used from claimGenerator
   const appUsed = activeManifest.claimGenerator
@@ -118,9 +120,7 @@ export function ContentCredentialsMenu({ state, onClose }: ContentCredentialsMen
 
         <div className="cc-menu-header">
           <h2>Content Credentials</h2>
-          <p className="cc-menu-issuer">
-            Issued by {issuer} on {issueDate}
-          </p>
+          <p className="cc-menu-issuer">Issued by {issuer}</p>
         </div>
 
         <div className="cc-menu-content">
@@ -128,6 +128,12 @@ export function ContentCredentialsMenu({ state, onClose }: ContentCredentialsMen
             <div className="cc-menu-info-item">
               <strong>App or device used</strong> {appUsed}
             </div>
+
+            {certValidFrom && (
+              <div className="cc-menu-info-item">
+                <strong>Certificate valid from</strong> {certValidFrom}
+              </div>
+            )}
 
             {authorName && (
               <div className="cc-menu-info-item">
