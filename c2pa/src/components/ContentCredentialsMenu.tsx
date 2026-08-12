@@ -89,6 +89,12 @@ export function ContentCredentialsMenu({ state, onClose }: ContentCredentialsMen
       });
   }
 
+  // Extract the BMFF hash binding version from the assertion label, e.g.
+  // c2pa.hash.bmff.v3 (streaming profile) vs the legacy v2 the library
+  // cannot validate segment-wise
+  const hashBinding = activeManifest.assertions.find(a => a.label.startsWith('c2pa.hash.bmff'))?.label ?? '';
+  const hashBindingUnsupported = hashBinding !== '' && state.mode === 'Init only';
+
   // Get validation status
   const validationStatus = state.isValid ? 'Passed' : 'Failed';
 
@@ -182,6 +188,13 @@ export function ContentCredentialsMenu({ state, onClose }: ContentCredentialsMen
             <div className="cc-menu-info-item">
               <strong>Validation Method</strong> {state.mode}
             </div>
+
+            {hashBinding && (
+              <div className="cc-menu-info-item">
+                <strong>Hash Binding</strong> {hashBinding}
+                {hashBindingUnsupported && ' (segment validation not supported)'}
+              </div>
+            )}
 
             {sequenceInfo && (
               <div className="cc-menu-info-item">
