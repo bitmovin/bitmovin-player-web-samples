@@ -39,6 +39,11 @@ export class C2paValidator {
   private dataSegmentMap: Map<string, Uint8Array> = new Map();
   private resultMap: Map<string, C2paPlaybackState> = new Map();
   private trackStateMap: Map<string, TrackState> = new Map();
+  private validationChainMap: Map<string, Promise<void>> = new Map();
+  // Incremented whenever continuity state is invalidated; in-flight validations
+  // started under an older generation discard their results instead of
+  // committing stale continuity state
+  private generation = 0;
   private readonly onC2paStateChange?: (state: C2paPlaybackState | undefined) => void;
 
   constructor(onC2paStateChange?: (state: C2paPlaybackState | undefined) => void) {
@@ -68,7 +73,18 @@ export class C2paValidator {
     }
   }
 
-  public async onSegmentPlayback(event: SegmentPlaybackEvent) {
+  public onSegmentPlayback(event: SegmentPlaybackEvent): Promise<void> {
+    // Serialize validations per track: continuity state (sequence numbers,
+    // merkle locations) is read before and written after an await, so
+    // overlapping validations for the same track would clobber each other
+    const chain = this.validationChainMap.get(event.mimeType) ?? Promise.resolve();
+    const next = chain.then(() => this.processSegmentPlayback(event));
+    this.validationChainMap.set(event.mimeType, next);
+    return next;
+  }
+
+  private async processSegmentPlayback(event: SegmentPlaybackEvent) {
+    const generation = this.generation;
     try {
       // Note, for SSAI stream, the same segment URL may lead to different data, so this wouldn't work. To distinguish this case from a normal seek case, either more distinguishing info from the segments are needed, or we need to synchronize this with the normal segments lifecycle
       const existingResult = this.resultMap.get(event.url);
@@ -89,9 +105,9 @@ export class C2paValidator {
         return;
       }
 
-      const state = await this.validateSegment(segmentBytes, trackState);
+      const state = await this.validateSegment(segmentBytes, trackState, generation);
       if (!state) {
-        // Segment carries no C2PA data
+        // Segment carries no C2PA data, or the result is stale after a seek/reset
         return;
       }
 
@@ -139,6 +155,7 @@ export class C2paValidator {
   private async validateSegment(
     segmentBytes: Uint8Array,
     trackState: TrackState,
+    generation: number,
   ): Promise<C2paPlaybackState | null> {
     const initValidation = trackState.initValidation!;
 
@@ -149,6 +166,10 @@ export class C2paValidator {
         initValidation.merkleMaps,
         trackState.merkleState,
       );
+      if (generation !== this.generation) {
+        // Continuity state was reset while validating; discard the stale result
+        return null;
+      }
       trackState.merkleState = nextState;
 
       return {
@@ -167,6 +188,10 @@ export class C2paValidator {
         trackState.sequenceState,
       );
       if (!validation) {
+        return null;
+      }
+      if (generation !== this.generation) {
+        // Continuity state was reset while validating; discard the stale result
         return null;
       }
       trackState.sequenceState = validation.nextSequenceState;
@@ -197,6 +222,7 @@ export class C2paValidator {
    * numbers and merkle locations are no longer contiguous.
    */
   public resetSequenceState() {
+    this.generation++;
     for (const trackState of this.trackStateMap.values()) {
       trackState.merkleState = undefined;
       trackState.sequenceState = undefined;
@@ -204,9 +230,11 @@ export class C2paValidator {
   }
 
   public reset() {
+    this.generation++;
     this.initSegmentMap.clear();
     this.dataSegmentMap.clear();
     this.resultMap.clear();
     this.trackStateMap.clear();
+    this.validationChainMap.clear();
   }
 }
