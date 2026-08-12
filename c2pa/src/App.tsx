@@ -60,6 +60,10 @@ function App() {
         // Segment continuity state must be reset after a seek
         c2paValidator.resetSequenceState();
       });
+      player.current.on(PlayerEvent.TimeShifted, () => {
+        // Live streams fire TimeShifted instead of Seeked
+        c2paValidator.resetSequenceState();
+      });
       player.current.on(PlayerEvent.SegmentPlayback, event => {
         c2paValidator.onSegmentPlayback(event as SegmentPlaybackEvent);
       });
