@@ -104,6 +104,7 @@ These examples are build around the Bitmovin Adaptive Streaming Player, demonstr
 * [**Media Session API**](media-session-api/index.ts): Leverage the browser's Media Session API to show the user in system notifications what's being played and control the player from there.
 * [**CMCD**](cmcd/index.ts): Enable Common Media Client-Data (CMCD) to be send along with requests to the CDN.
 * [**WebXR**](webxr/): Play 360° video on a web page and in a VR headset, using the WebXR integration.
+* [**WebXR with AMP-style skin**](webxr-amp-skin/): The WebXR sample with the player UI in an AMP-style skin.
 * [**c2pa**](c2pa/): Validate and display content authenticity information for video streams using the C2PA (Coalition for Content Provenance and Authenticity) standard.
 
 ## Sample Apps Setup Instructions
