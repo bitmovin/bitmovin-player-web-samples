@@ -1,0 +1,78 @@
+/* Demo page design (after the Bitmovin player web samples index page) */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+  color: #fff;
+  font-weight: 300;
+  background: linear-gradient(to right, rgba(44, 131, 185, 1) 0%, rgba(30, 171, 227, 1) 100%);
+}
+
+#banner {
+  border-bottom: 1px solid #fff;
+  background-color: #1eabe3;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+#banner .logo {
+  padding: 10px 30px;
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: .5px;
+}
+
+#banner h1 {
+  margin: 0;
+  padding: 30px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+h1, h2, h3, p {
+  font-weight: 300;
+  text-align: center;
+  margin: 40px;
+}
+
+.content { margin-bottom: 10em; }
+
+.sources {
+  display: block;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.sources select {
+  max-width: 100%;
+  margin-left: 8px;
+  padding: 6px 10px;
+  font: inherit;
+  color: #1c4f73;
+  background: #fff;
+  border: 0;
+  border-radius: 3px;
+}
+
+#player {
+  max-width: 900px;
+  width: 90%;
+  margin: auto;
+  background: #101010;
+  box-shadow: 0 0 56px 0 rgba(0, 0, 0, 0.75);
+}
+
+a { color: #97d9ef; font-weight: 400; text-decoration: none; }
+a:hover { color: #fff; }
+
+@media (max-width: 800px) {
+  #banner h1 { display: none; }
+}
+
+.demo-options { margin: 0 0 16px; }
+
+.ad-toggle { font-size: 14px; cursor: pointer; }
+.ad-toggle + .ad-toggle { margin-left: 16px; }
+
+.demo-options #open-modal { margin-left: 16px; font-size: 14px; cursor: pointer; }
