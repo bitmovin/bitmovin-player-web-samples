@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Bitmovin Demo - Caption Styling</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
+<link rel="icon" type="image/png" href="../../images/bit-fav.png">
+
+<script src="https://cdn.bitmovin.com/player/web/8/bitmovinplayer.js"></script>
+<link rel="stylesheet" href="https://cdn.bitmovin.com/player/web/8/bitmovinplayer-ui.css">
+<script src="https://cdn.bitmovin.com/player/web/8/bitmovinplayer-ui.js"></script>
+
+<style>
+  .bottom-left-captions .bmpui-ui-subtitle-overlay {
+    bottom: 0 !important;
+  }
+  .bottom-left-captions .bmpui-subtitle-vtt-cue-container,
+  .bottom-left-captions .bmpui-subtitle-position-default {
+    position: absolute !important;
+    inset: auto auto 10% 4% !important;
+    max-width: 55% !important;
+    text-align: left !important;
+  }
+  .bottom-left-captions .bmpui-subtitle-vtt-cue {
+    position: relative !important;
+  }
+
+  body {
+    margin: 0 0 10em;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    color: #fff;
+    background: linear-gradient(to right, #2c83b9, #1eabe3) fixed;
+  }
+  h1, h2, p { font-weight: 300; text-align: center; margin: 40px; }
+  #banner { margin: 0; padding: 30px; border-bottom: 1px solid #fff; background: #1eabe3; }
+  #player { max-width: 900px; width: 90%; margin: auto; box-shadow: 0 0 56px rgba(0, 0, 0, 0.75); }
+  .buttons { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; margin: 20px; }
+  .buttons span { min-width: 140px; text-align: right; }
+  button { font: inherit; padding: 10px 18px; border: 1px solid #fff; border-radius: 4px; background: none; color: #fff; cursor: pointer; }
+  button.active, button:hover { background: #fff; color: #2c83b9; }
+  #url { font: 12px monospace; word-break: break-all; margin: 20px; }
+  a { color: #97d9ef; font-weight: 400; text-decoration: none; }
+  a:hover { color: #fff; }
+</style>
+</head>
+
+<body>
+<h1 id="banner">Bitmovin HTML5 Player</h1>
+<h1>Caption Styling</h1>
+<h2>Override the styling and positioning of closed captions.</h2>
+
+<div class="buttons" id="streams"></div>
+<div id="player"></div>
+<p id="url"></p>
+<div class="buttons" id="style">
+  <span>Caption style:</span>
+  <button class="active">Uniform</button>
+  <button>Stream default</button>
+</div>
+<div class="buttons" id="position">
+  <span>Caption position:</span>
+  <button class="active">Bottom left</button>
+  <button>Stream default</button>
+</div>
+<p>For more information, have a look at our
+  <a href="https://developer.bitmovin.com/playback/docs/subtitles-captions" target="_blank">subtitles &amp; captions documentation</a>.</p>
+
+<script>
+  function buildUI(player, { overrideStyle, overridePosition }) {
+    const uiManager = bitmovin.playerui.UIFactory.buildUI(player, {
+      disableStorageApi: true,
+      componentConfigOverrides: {
+        SubtitleOverlay: {
+          enableCea608CaptionFormatting: !overrideStyle,
+          enableCea608CaptionPositioning: !overridePosition
+        }
+      }
+    });
+
+    if (overrideStyle) {
+      const settings = uiManager.getSubtitleSettingsManager();
+      settings.fontColor.value = 'white';
+      settings.fontOpacity.value = '100';
+      settings.backgroundColor.value = 'black';
+      settings.backgroundOpacity.value = '100';
+      settings.fontSize.value = '100';
+    }
+
+    player.getContainer().classList.toggle('bottom-left-captions', overridePosition);
+
+    return uiManager;
+  }
+
+  function enableFirstCaptionTrack(player) {
+    const enable = () => {
+      const tracks = player.subtitles.list();
+      if (tracks.length && !tracks.some(track => track.enabled)) {
+        player.subtitles.enable(tracks[0].id);
+      }
+    };
+    player.on(bitmovin.player.PlayerEvent.Playing, enable);
+    player.on(bitmovin.player.PlayerEvent.SubtitleAdded, enable);
+  }
+
+  const player = new bitmovin.player.Player(document.getElementById('player'), {
+    ui: false,
+    tweaks: { native_caption_rendering: false },
+    playback: { autoplay: true, muted: true }
+  });
+
+  let uiManager = buildUI(player, { overrideStyle: true, overridePosition: true });
+  enableFirstCaptionTrack(player);
+
+  player.load({ hls: 'https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_ts/master.m3u8' });
+
+  const STREAMS = [
+    { title: 'HLS - CEA-608 + WebVTT', hls: 'https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_ts/master.m3u8' },
+    { title: 'DASH - CEA-608 VOD', dash: 'https://livesim2.dashif.org/vod/testpic_2s/cea608.mpd' },
+    { title: 'DASH - CEA-608 Live', dash: 'https://livesim2.dashif.org/livesim2/testpic_2s/cea608.mpd' }
+  ];
+  const overrides = { overrideStyle: true, overridePosition: true };
+
+  function rebuildUI() {
+    uiManager.release();
+    uiManager = buildUI(player, overrides);
+  }
+
+  function showStream(stream) {
+    document.getElementById('url').textContent = stream.hls || stream.dash;
+  }
+
+  function onButtonClick(groupId, callback) {
+    const buttons = document.querySelectorAll(`#${groupId} button`);
+    buttons.forEach((button, index) => {
+      button.onclick = () => {
+        buttons.forEach(other => other.classList.toggle('active', other === button));
+        callback(index);
+      };
+    });
+  }
+
+  document.getElementById('streams').innerHTML = STREAMS.map(stream => `<button>${stream.title}</button>`).join('');
+  document.querySelector('#streams button').classList.add('active');
+  showStream(STREAMS[0]);
+
+  onButtonClick('streams', index => { showStream(STREAMS[index]); player.load(STREAMS[index]); });
+  onButtonClick('style', index => { overrides.overrideStyle = index === 0; rebuildUI(); });
+  onButtonClick('position', index => { overrides.overridePosition = index === 0; rebuildUI(); });
+</script>
+</body>
+</html>
