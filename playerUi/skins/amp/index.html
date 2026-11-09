@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitmovin Player</title>
+    <script src="https://cdn.bitmovin.com/player/web/8/bitmovinplayer.js"></script>
+    <script src="https://cdn.bitmovin.com/player/web/8/bitmovinplayer-ui.js"></script>
+    <link rel="stylesheet" href="https://cdn.bitmovin.com/player/web/8/bitmovinplayer-ui.css">
+    <link rel="stylesheet" href="page.css">
+    <link rel="stylesheet" href="player.css">
+</head>
+
+<body>
+    <div id="banner">
+        <div class="logo">bitmovin</div>
+        <h1>Bitmovin HTML5 Player</h1>
+    </div>
+    <div class="container">
+        <h1>HTML5 Adaptive Streaming Player for MPEG-DASH &amp; HLS</h1>
+        <h2>Your videos play everywhere with low startup delay, no buffering and in highest quality.</h2>
+        <div class="content">
+            <label class="sources">Source
+                <select id="source"></select>
+            </label>
+            <p class="demo-options">
+                <label class="ad-toggle"><input type="checkbox" id="preroll"> Non-skippable pre-roll ad (Google sample)</label>
+                <label class="ad-toggle"><input type="checkbox" id="skippable"> Skippable pre-roll ad (Google sample)</label>
+                <button type="button" id="open-modal">Open in modal</button>
+            </p>
+            <div id="player"></div>
+            <div class="description">
+                <p>For more information about the Bitmovin Player, have a look at the online
+                    <a href="https://bitmovin.com/support" target="_blank">Developer Section</a>.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="player-ui.js"></script>
+    <script>
+        const SOURCES = [
+            { name: 'Bip Bop (HLS)',
+              hls: 'https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8' },
+            { name: 'Big Buck Bunny (HLS)',
+              hls: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8' },
+            { name: 'Apple Atmos (HLS, audio + audio description tracks)',
+              hls: 'https://devstreaming-cdn.apple.com/videos/streaming/examples/adv_dv_atmos/main.m3u8' },
+            { name: 'Sintel (HLS, with seek thumbnails)',
+              hls: 'https://cdn.bitmovin.com/content/assets/sintel/hls/playlist.m3u8',
+              thumbnailTrack: { url: 'test-assets/sintel-thumbnails.vtt' } },
+        ];
+
+        // Google's sample tags: a 10 s linear pre-roll, or one that can be skipped after 5 s
+        const vastTag = skippable => 'https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/'
+            + (skippable
+                ? 'single_preroll_skippable&sz=640x480&ciu_szs=300x250%2C728x90&gdfp_req=1&output=vast'
+                : 'single_ad_samples&sz=640x480&cust_params=sample_ct%3Dlinear&ciu_szs=300x250%2C728x90&gdfp_req=1&output=vast')
+            + '&unviewed_position_start=1&env=vp&impl=s&correlator=';
+
+        const container = document.getElementById('player');
+        const player = new bitmovin.player.Player(container, {
+            key: 'YOUR-PLAYER-LICENSE-KEY',
+            ui: false, // the UI is created by player-ui.js
+            playback: { muted: true },
+            remotecontrol: { type: 'googlecast' }, // Chromecast; the cast button appears when a device is found
+            advertising: {}, // enables ads; pre-rolls are scheduled per source below
+        });
+
+        createPlayerUI(player);
+
+        const select = document.getElementById('source');
+        SOURCES.forEach((s, i) => select.add(new Option(s.name, i)));
+
+        function load(i) {
+            const { name, ...source } = SOURCES[i];
+            player.load(source).then(
+                () => {
+                    console.log('loaded', name);
+                    const skippable = document.getElementById('skippable').checked;
+                    if (skippable || document.getElementById('preroll').checked) {
+                        player.ads.schedule({ id: 'preroll', position: 'pre', tag: { url: vastTag(skippable), type: 'vast' } });
+                    }
+                },
+                e => console.error('load failed', name, e));
+        }
+
+        select.addEventListener('change', () => load(select.value));
+        // the two ads are alternatives: ticking one unticks the other
+        ['preroll', 'skippable'].forEach(id => document.getElementById(id).addEventListener('change', e => {
+            if (e.target.checked) document.getElementById(id === 'preroll' ? 'skippable' : 'preroll').checked = false;
+            load(select.value);
+        }));
+        load(0);
+
+        // the same skin in a full-screen overlay, playing the selected source (without ads)
+        const modal = createPlayerModal({
+            playerConfig: {
+                key: 'YOUR-PLAYER-LICENSE-KEY',
+                playback: { muted: true },
+                remotecontrol: { type: 'googlecast' },
+            },
+        });
+        document.getElementById('open-modal').addEventListener('click', () => {
+            player.pause();
+            const { name, ...source } = SOURCES[select.value];
+            modal.open(source);
+        });
+    </script>
+</body>
+
+</html>

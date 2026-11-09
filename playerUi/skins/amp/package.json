@@ -1,0 +1,30 @@
+{
+  "name": "bitmovin-player-amp-styling",
+  "version": "0.1.0",
+  "description": "Bitmovin Web Player 8 control-bar skin that reproduces the Akamai AMP player look",
+  "license": "MIT",
+  "private": true,
+  "main": "player-ui.js",
+  "files": [
+    "player-ui.js",
+    "player.css",
+    "dist"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "tsc -p .",
+    "dev": "node scripts/dev.mjs"
+  },
+  "peerDependencies": {
+    "bitmovin-player-ui": "^4.23.1"
+  },
+  "devDependencies": {
+    "bitmovin-player": "^8.283.0",
+    "bitmovin-player-ui": "^4.23.1",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

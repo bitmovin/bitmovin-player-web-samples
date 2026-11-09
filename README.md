@@ -62,6 +62,8 @@ These examples are build around the Bitmovin Adaptive Streaming Player, demonstr
 
     * [youtube](playerUi/tv/youtube/index.html): Customized TV UI in the style of Youtube
       <img src="images/tv-ui-youtube.png" width="66%"><br>
+  * [**Skins**](playerUi/skins)
+    * [amp](playerUi/skins/amp/index.html): Control-bar skin in the style of the Akamai AMP player ([README](playerUi/skins/amp/README.md))
 * [**subtitles**](subtitles/)
   * [customSubtitleDisplay](subtitles/customSubtitleDisplay.js): Render subtitles using the ON_CUE_ENTER and ON_CUE_EXIT player events.
   * [uiSubtitleOverlay](subtitles/uiSubtitleOverlay.html): Use only the SubtitleOverlay from the [Bitmovin Player UI](https://github.com/bitmovin/bitmovin-player-ui) but not the rest of the UI.
