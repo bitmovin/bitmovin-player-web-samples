@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bitmovin Player - WebXR</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../images/bit-fav.png">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
+
+  <!-- The player UI and VR control bar styles, bundled from src/index.ts. -->
+  <link rel="stylesheet" href="dist/index.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 300;
+      color: #fff;
+      background: linear-gradient(to right, #2c83b9 0%, #1eabe3 100%);
+    }
+
+    h1 {
+      margin: 40px;
+      font-weight: 300;
+      text-align: center;
+    }
+
+    /* 16:9 box. The player container fills it; the scene fills the container. */
+    #stage {
+      position: relative;
+      width: 90%;
+      max-width: 900px;
+      aspect-ratio: 16 / 9;
+      margin: 0 auto;
+      background: #05070d;
+      box-shadow: 0 0 56px 0 rgba(0, 0, 0, 0.75);
+    }
+
+    #playerContainer,
+    #scene {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* The player renders onto the projection surface in the scene, not into its
+       container. The container must not paint over the canvas or take the
+       pointer, else dragging to look around never reaches the scene. */
+    #playerContainer.bitmovinplayer-container {
+      background: transparent;
+      pointer-events: none;
+    }
+
+    #scene {
+      pointer-events: auto;
+    }
+
+    /* Let drags on the picture through to the canvas. The stock UI gives every
+       element inside its container `pointer-events: auto`. The playback toggle
+       overlay must not take clicks: every drag ends in a click. */
+    .bmpui-ui-titlebar,
+    .bmpui-ui-controlbar,
+    .bmpui-ui-buffering-overlay,
+    .bmpui-ui-buffering-overlay *,
+    .bmpui-ui-playbacktoggle-overlay,
+    .bmpui-ui-playbacktoggle-overlay * {
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+<h1>Bitmovin Player WebXR</h1>
+
+<div id="stage">
+  <div id="playerContainer">
+    <!-- `embedded` keeps A-Frame from styling the canvas as a fullscreen overlay.
+         Inside the player container, so the player's fullscreen mode includes it. -->
+    <a-scene id="scene" embedded renderer="antialias: true; colorManagement: true">
+      <!-- Camera at the origin, inside the projection surface. -->
+      <a-camera id="cam" position="0 0 0" wasd-controls-enabled="false"></a-camera>
+    </a-scene>
+  </div>
+</div>
+
+<script type="module" src="dist/index.js"></script>
+</body>
+</html>
