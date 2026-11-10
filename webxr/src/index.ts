@@ -25,12 +25,13 @@ const source: SourceConfig = {
 };
 
 async function main(): Promise<void> {
-  // 1. The A-Frame scene the video is drawn in.
+  // 1. The A-Frame scene the video is drawn in, and the box that holds it.
   const scene = setUpScene();
+  const stage = getElement('stage');
 
   // 2. The player and its UI on the page.
   const player = new Player(getElement('playerContainer'), playerConfig);
-  const playerUi = createPlayerUi(player, scene);
+  const playerUi = createPlayerUi(player, scene, stage);
 
   // 3. Optional custom icons for the VR controls. Before any VR UI is built.
   await setCustomIcons();

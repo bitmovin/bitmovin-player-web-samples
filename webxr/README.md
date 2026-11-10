@@ -6,6 +6,7 @@ The video is drawn onto a sphere in an [A-Frame](https://aframe.io/) scene.
 
 - On the page, drag the video to look around. On a phone or tablet, tilt the device after the first tap.
 - The control bar is the default Bitmovin Player UI. Its fullscreen button includes the scene.
+  On iPhone, which has no fullscreen for elements, the video box fills the viewport.
 - A compass in the top right corner shows where you look, relative to the front of the video.
 - Where the browser supports immersive VR, for example on Meta Quest or Apple Vision Pro,
   a VR button shows before the fullscreen button. In VR, the integration's control bar shows in the scene.

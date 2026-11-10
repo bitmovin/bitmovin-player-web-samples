@@ -6,11 +6,14 @@ import {
   ContainerConfig,
   FullscreenToggleButton,
   i18n,
+  ToggleButton,
+  ToggleButtonConfig,
   UIContainer,
   UIFactory,
   UIManager,
   UIVariantIdentifier,
 } from 'bitmovin-player-ui';
+import { bindStageFullscreen } from './fullscreen';
 import { AFrameScene } from './scene';
 
 const SMALL_SCREEN_SWITCH_WIDTH = 800;
@@ -23,20 +26,22 @@ export interface PlayerUi {
 
 /**
  * The player UI on the page: the default layouts, with a VR button before the
- * fullscreen button.
+ * fullscreen button. The fullscreen button puts `stage` in fullscreen, see
+ * fullscreen.ts.
  *
  * The default UI has no button that starts a WebXR session: its VRToggleButton
  * drives the player's own VR renderer. These are the variants of
  * UIFactory.buildUI(), without the ad and TV ones.
  */
-export function createPlayerUi(player: PlayerAPI, scene: AFrameScene): PlayerUi {
+export function createPlayerUi(player: PlayerAPI, scene: AFrameScene, stage: HTMLElement): PlayerUi {
   let vrSupported = false;
+  const fullscreen = bindStageFullscreen(stage);
   const vrButtons: Button<ButtonConfig>[] = [];
 
   const withVrButton = (ui: UIContainer): UIContainer => {
     const button = createVrButton(scene, !vrSupported);
     vrButtons.push(button);
-    insertBeforeFullscreenButton(ui, button);
+    replaceFullscreenButton(ui, [button, createFullscreenButton(fullscreen)]);
     return ui;
   };
 
@@ -81,8 +86,25 @@ function createVrButton(scene: AFrameScene, hidden: boolean): Button<ButtonConfi
   return button;
 }
 
+/**
+ * Fullscreen of the stage, not of the player container. The player's own
+ * fullscreen falls back to the video element on iPhone, which shows the flat
+ * 360° image instead of the scene.
+ */
+function createFullscreenButton(
+  fullscreen: ReturnType<typeof bindStageFullscreen>,
+): ToggleButton<ToggleButtonConfig> {
+  const button = new ToggleButton({
+    cssClass: 'ui-fullscreentogglebutton',
+    ariaLabel: i18n.getLocalizer('fullscreen'),
+  });
+  button.onClick.subscribe(() => fullscreen.toggle());
+  fullscreen.onChange((on) => (on ? button.on() : button.off()));
+  return button;
+}
+
 /** Must run before the UI manager builds the layout. */
-function insertBeforeFullscreenButton(ui: UIContainer, button: Button<ButtonConfig>): void {
+function replaceFullscreenButton(ui: UIContainer, buttons: Button<ButtonConfig>[]): void {
   const found = findFullscreenButton(ui);
   if (!found) {
     return;
@@ -90,7 +112,7 @@ function insertBeforeFullscreenButton(ui: UIContainer, button: Button<ButtonConf
   // Containers can only append or prepend. Before the UI is built,
   // getComponents() returns the list the container builds from.
   const components = found.row.getComponents();
-  components.splice(components.indexOf(found.fullscreenButton), 0, button);
+  components.splice(components.indexOf(found.fullscreenButton), 1, ...buttons);
 }
 
 /** The first fullscreen button in the UI tree, and the container that holds it. */

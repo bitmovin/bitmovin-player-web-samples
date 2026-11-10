@@ -3,7 +3,7 @@
 <head>
   <title>Bitmovin Player - WebXR</title>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <link rel="icon" type="image/png" href="../images/bit-fav.png">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
 
@@ -38,6 +38,35 @@
       margin: 0 auto;
       background: #05070d;
       box-shadow: 0 0 56px 0 rgba(0, 0, 0, 0.75);
+    }
+
+    #stage:fullscreen {
+      width: 100%;
+      max-width: none;
+      aspect-ratio: auto;
+      box-shadow: none;
+    }
+
+    /* Fullscreen without the Fullscreen API, for example on iPhone: the stage
+       pinned over the viewport, inside the safe area. The shadow fills the
+       area outside it. */
+    #stage.maximized {
+      position: fixed;
+      top: env(safe-area-inset-top);
+      right: env(safe-area-inset-right);
+      bottom: env(safe-area-inset-bottom);
+      left: env(safe-area-inset-left);
+      z-index: 1000;
+      width: auto;
+      max-width: none;
+      margin: 0;
+      aspect-ratio: auto;
+      box-shadow: 0 0 0 100vmax #05070d;
+    }
+
+    html.stage-maximized,
+    html.stage-maximized body {
+      overflow: hidden;
     }
 
     #playerContainer,
@@ -76,10 +105,10 @@
 <body>
 <h1>Bitmovin Player WebXR</h1>
 
+<!-- Fullscreen applies to this box, not to the player container, see src/fullscreen.ts. -->
 <div id="stage">
   <div id="playerContainer">
-    <!-- `embedded` keeps A-Frame from styling the canvas as a fullscreen overlay.
-         Inside the player container, so the player's fullscreen mode includes it. -->
+    <!-- `embedded` keeps A-Frame from styling the canvas as a fullscreen overlay. -->
     <a-scene id="scene" embedded renderer="antialias: true; colorManagement: true">
       <!-- Camera at the origin, inside the projection surface. -->
       <a-camera id="cam" position="0 0 0" wasd-controls-enabled="false"></a-camera>
