@@ -1,14 +1,12 @@
-import * as playerUi from 'bitmovin-player-ui';
-import type { Component, ComponentConfig, UIConfig, UIManager } from 'bitmovin-player-ui';
 import type { PlayerAPI } from 'bitmovin-player';
+import type { Component, ComponentConfig, UIConfig, UIManager } from 'bitmovin-player-ui';
+// @ts-expect-error The skin is plain JavaScript without type declarations.
+import * as skin from '../../playerUi/skins/amp/player-ui.js';
 
 /**
- * The skin in skin/ is a plain script. It reads the player UI from the global
- * `bitmovin.playerui` when it runs, so set that first. ES modules run in import
- * order: index.ts imports this file before skin/player-ui.js.
+ * The AMP-style skin from playerUi/skins/amp. Its `require('bitmovin-player-ui')`
+ * resolves to this sample's copy, see the `--alias` in package.json.
  */
-const globals = window as unknown as { bitmovin?: Record<string, unknown> };
-globals.bitmovin = { ...globals.bitmovin, playerui: playerUi };
 
 /** The options of the skin's `createPlayerUI` that this sample uses. */
 export interface SkinOptions {
@@ -28,11 +26,4 @@ export interface SkinOptions {
   uiConfig?: UIConfig;
 }
 
-/** The skin's entry point, from skin/player-ui.js. */
-export function createPlayerUI(player: PlayerAPI, options: SkinOptions): UIManager {
-  const create = (window as unknown as { createPlayerUI?: typeof createPlayerUI }).createPlayerUI;
-  if (!create) {
-    throw new Error('skin/player-ui.js did not load.');
-  }
-  return create(player, options);
-}
+export const createPlayerUI: (player: PlayerAPI, options: SkinOptions) => UIManager = skin.createPlayerUI;

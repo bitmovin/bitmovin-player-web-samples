@@ -2,13 +2,10 @@ import 'aframe';
 // esbuild writes these to dist/index.css, in this order: the skin overrides the
 // player UI's stylesheet.
 import 'bitmovin-player-ui/dist/css/bitmovinplayer-ui.css';
-import '../skin/player.css';
+import '../../playerUi/skins/amp/player.css';
 // Colours of the control bar shown in VR. The bar is WebGL and reads only the
 // custom properties this file declares.
 import '@bitmovin/player-integration-webxr/ui/themes/bitmovinplayer-ui-webxr-glass-dark.css';
-// Before the skin: it gives the skin the player UI it reads.
-import './skin';
-import '../skin/player-ui.js';
 import { Player, PlayerConfig, SourceConfig } from 'bitmovin-player';
 import { UIConfig } from 'bitmovin-player-ui';
 import { createCompass } from '@bitmovin/player-integration-webxr/ui';

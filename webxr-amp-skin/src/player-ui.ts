@@ -22,7 +22,7 @@ export interface PlayerUiParts {
 }
 
 /**
- * The player UI on the page: the skin in skin/, with a VR button before the
+ * The player UI on the page: the AMP-style skin, with a VR button before the
  * fullscreen button.
  *
  * Changes to the skin's defaults, because the picture is a view, not a frame:

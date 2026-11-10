@@ -19,8 +19,8 @@ For the same page with the default Bitmovin Player UI, see the [WebXR sample](..
 
 ## Files
 
-- `skin/player-ui.js` and `skin/player.css`: the skin. A plain script that registers `createPlayerUI()` on `window`.
-  `src/skin.ts` gives it the player UI module and types its options.
+- `src/skin.ts`: imports the [AMP-style skin](../playerUi/skins/amp/) and types the options of its `createPlayerUI()`.
+  The build aliases `bitmovin-player-ui` to this sample's copy, so the skin and the sample use the same player UI.
 - `src/index.ts`: player config, source and the steps of `main()`.
 - `src/player-ui.ts`: the skin with a VR button, fullscreen of the video box and tap-to-hide.
 - `src/integration.ts`: the WebXR integration and the UI in VR sessions.

@@ -2,8 +2,8 @@
   "name": "webxr-amp-skin",
   "private": true,
   "scripts": {
-    "build": "esbuild src/index.ts --bundle --format=esm --target=es2022 --minify --outfile=dist/index.js",
-    "watch": "esbuild src/index.ts --bundle --format=esm --target=es2022 --minify --outfile=dist/index.js --watch"
+    "build": "esbuild src/index.ts --alias:bitmovin-player-ui=./node_modules/bitmovin-player-ui --bundle --format=esm --target=es2022 --minify --outfile=dist/index.js",
+    "watch": "esbuild src/index.ts --alias:bitmovin-player-ui=./node_modules/bitmovin-player-ui --bundle --format=esm --target=es2022 --minify --outfile=dist/index.js --watch"
   },
   "dependencies": {
     "@bitmovin/player-integration-webxr": "^1.0.0-rc.1",
