@@ -653,6 +653,12 @@
 
     const share = options.share === false ? null : createShare(options.share || {});
     const endSlate = options.endSlate === false ? null : new EndSlate(options.endSlate || {});
+    // one menu at a time: opening Share closes Settings, and the other way round
+    if (share) {
+      const sharePanel = share.panel;
+      settingsPanel.onShow.subscribe(() => sharePanel.hide());
+      sharePanel.onShow.subscribe(() => settingsPanel.hide());
+    }
 
     const controlBar = new pui.ControlBar({ components: [
       // progress bar on top, full width

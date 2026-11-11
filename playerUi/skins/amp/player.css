@@ -104,6 +104,8 @@
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-sharebutton .bmpui-ui-icon { --glyph: "\f064"; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-captiontogglebutton .bmpui-ui-icon { --glyph: "\f20a"; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settingstogglebutton .bmpui-ui-icon { --glyph: "\f013"; }
+  /* AMP's gear stays upright while its menu is open; Bitmovin turns it 30deg */
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settingstogglebutton.bmpui-on .bmpui-ui-icon { transform: none; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-casttogglebutton .bmpui-ui-icon { --glyph: "\e908"; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-casttogglebutton.bmpui-on .bmpui-ui-icon { --glyph: "\e909"; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-airplaytogglebutton .bmpui-ui-icon { --glyph: "\e903"; }
