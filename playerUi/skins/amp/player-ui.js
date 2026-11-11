@@ -445,6 +445,16 @@
         if (player.isLive() || !(duration > 0)) return;
         this.setPlaybackPosition((100 / duration) * /** @type {SeekEvent} */ (event).seekTarget);
       });
+      // Bitmovin stops the smooth position updates when the controls hide, but the seek track stays as a line
+      // until the UI is idle. Keep the updates running while playback runs, so the line moves and the bar does
+      // not jump when it shows again. Bitmovin's handler runs first, so this restarts the updater after it
+      // clears it. The updater is private in the typings, so read it through `any`.
+      // It also runs after the line hides: on show, Bitmovin restarts a stopped updater from its old position,
+      // and the bar jumps back before it catches up.
+      uimanager.onControlsHide.subscribe(() => {
+        const updater = /** @type {any} */ (this).smoothPlaybackPositionUpdater;
+        if (updater && player.isPlaying() && !player.isLive() && !updater.isActive()) updater.start();
+      });
     }
   }
 
