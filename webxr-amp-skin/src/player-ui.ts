@@ -66,6 +66,7 @@ export function createPlayerUi(player: PlayerAPI, parts: PlayerUiParts): UIManag
  */
 function createVrButton(scene: AFrameScene): Button<ButtonConfig> {
   const button = new Button({
+    // The skin draws its headset icon on this class.
     cssClass: 'ui-vrtogglebutton',
     ariaLabel: i18n.getLocalizer('vr'),
     hidden: true,
