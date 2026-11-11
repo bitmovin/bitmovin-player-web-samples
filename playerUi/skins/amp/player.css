@@ -30,8 +30,20 @@
   .bmp-amp-skin.bmp-amp-skin .bmpui-seekbar .bmpui-seekbar-bufferlevel { background: rgba(170, 170, 171, .7); }
   .bmp-amp-skin.bmp-amp-skin .bmpui-seekbar .bmpui-seekbar-playbackposition { background: #ddd; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-seekbar .bmpui-seekbar-playbackposition-marker {
-    background: #999; border: 0; border-radius: 50%; width: 11px; height: 11px; top: -2px; left: 0; margin-left: -5.5px;
+    background: #999; border: 0; border-radius: 50%; width: 10.5px; height: 10.5px; top: -1.75px; left: 0; margin-left: -5.25px;
   }
+  /* AMP brightens the played part and the handle under the pointer */
+  .bmp-amp-skin.bmp-amp-skin .bmpui-seekbar .bmpui-seekbar-playbackposition:hover { background: #fff; }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-seekbar .bmpui-seekbar-playbackposition-marker:hover { background: #ccc; }
+  /* thin line along the bottom edge with the bar hidden, and during ads: AMP's .25em x .5em handle, left of the position */
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-controlbar.bmpui-hidden .bmpui-ui-seekbar .bmpui-seekbar-playbackposition-marker,
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-ads .bmpui-ui-seekbar .bmpui-seekbar-playbackposition-marker {
+    width: 3.5px; height: 7px; top: 0; margin-left: -3.5px; border-radius: 0;
+  }
+  /* ads: orange played part that glides with the ad time; the seek bar takes no input */
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-ads .bmpui-ui-seekbar { pointer-events: none; }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-ads .bmpui-ui-seekbar .bmpui-seekbar-playbackposition { background: #f0ad4e; transition: transform .5s linear; }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-ads .bmpui-ui-seekbar .bmpui-seekbar-playbackposition-marker { transition: transform .5s linear; }
 
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-controlbar .bmpui-container-wrapper { gap: 0; margin: 0; }
   /* the seek preview label lives inside the control bar; keep Bitmovin's centring on the mouse (the reset above removed it) */
@@ -43,16 +55,18 @@
     padding: 3.6px; border: 0; border-radius: 0; background: rgba(51, 51, 51, .85); box-shadow: none;
   }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-seekbar-label .bmpui-seekbar-label-inner::after { display: none; }
+  /* no preview while a menu is open */
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer:has(.bmpui-ui-settings-panel:not(.bmpui-hidden)) .bmpui-ui-seekbar-label { display: none; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-seekbar-label .bmpui-seekbar-thumbnail { border: 0; border-radius: 0; margin: 0 0 3.6px; box-shadow: none; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-seekbar-label .bmpui-seekbar-label-metadata {
-    padding: 0; border-radius: 0; background: none; color: #fff; font: normal 11.9px/1.15 sans-serif; text-align: center;
+    padding: 0; border-radius: 0; background: none; color: #fff; font: normal 11.9px/1 sans-serif; text-align: center;
   }
   /* square-ended tracks, handle vertically centred on the 7px track */
   .bmp-amp-skin.bmp-amp-skin .bmpui-seekbar .bmpui-seekbar-bars, .bmp-amp-skin.bmp-amp-skin .bmpui-seekbar .bmpui-seekbar-bars > div { border-radius: 0; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-seekbar .bmpui-seekbar-playbackposition-marker { margin-top: 0; box-shadow: none; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-seekbar .bmpui-seekbar { margin: 0 6px; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-seekbar .bmpui-seekbar-bars { margin: 0 -6px; width: calc(100% + 12px); }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-controlbar-bottom { height: 40px; display: flex; align-items: center; padding: 0 8px; margin: 0; background: rgba(51, 51, 51, .85); }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-controlbar-bottom { height: 40px; display: flex; align-items: center; padding: 0 8.4px; margin: 0; background: rgba(51, 51, 51, .85); }
 
   /* All icon buttons: 14px icon, 7px side margins, #ddd */
   .bmp-amp-skin.bmp-amp-skin .bmpui-controlbar-bottom button {
@@ -90,11 +104,20 @@
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-sharebutton .bmpui-ui-icon { --glyph: "\f064"; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-captiontogglebutton .bmpui-ui-icon { --glyph: "\f20a"; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settingstogglebutton .bmpui-ui-icon { --glyph: "\f013"; }
+  /* AMP's gear stays upright while its menu is open; Bitmovin turns it 30deg */
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settingstogglebutton.bmpui-on .bmpui-ui-icon { transform: none; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-casttogglebutton .bmpui-ui-icon { --glyph: "\e908"; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-casttogglebutton.bmpui-on .bmpui-ui-icon { --glyph: "\e909"; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-airplaytogglebutton .bmpui-ui-icon { --glyph: "\e903"; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-piptogglebutton .bmpui-ui-icon { --glyph: "\e904"; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-piptogglebutton.bmpui-on .bmpui-ui-icon { --glyph: "\e906"; }
+  /* AMP's own sizes: Cast 1.25em (17.5px glyph, box and .5em margins), AirPlay a 13px glyph in a 1.35em box,
+     picture-in-picture 1px down */
+  .bmp-amp-skin.bmp-amp-skin .bmpui-controlbar-bottom .bmpui-ui-casttogglebutton { width: 17.5px; height: 17.5px; margin: 0 8.75px; }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-casttogglebutton .bmpui-ui-icon::before { width: 17.5px; height: 17.5px; font-size: 17.5px; }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-controlbar-bottom .bmpui-ui-airplaytogglebutton { width: 17.55px; height: 13px; margin: 0 6.5px; }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-airplaytogglebutton .bmpui-ui-icon::before { width: 13px; height: 13px; font-size: 13px; }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-piptogglebutton .bmpui-ui-icon { position: relative; top: 1px; }
   /* AMP's headset, for a VR button (cssClass 'ui-vrtogglebutton'). 1.25em wide, so it gets more than the square box */
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-vrtogglebutton .bmpui-ui-icon { --glyph: "\e905"; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-vrtogglebutton .bmpui-ui-icon::before { width: auto; }
@@ -117,21 +140,21 @@
   /* pause bars: the ink spans only the left 0.857em of the 1em glyph box; move its centre onto the circle centre */
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-hugeplaybacktogglebutton.bmpui-on .bmpui-ui-icon::before { transform: translateX(.071em); }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-label-setting-selected-option .bmpui-ui-icon { --glyph: "\f105"; color: #ddd; }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-label-setting-selected-option .bmpui-ui-icon::before { width: 16px; height: 16px; font-size: 16px; }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-label-setting-selected-option .bmpui-ui-icon::before { width: calc(var(--pr) * 4 / 3); height: calc(var(--pr) * 4 / 3); font-size: calc(var(--pr) * 4 / 3); }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-settingspanelpagebackbutton .bmpui-ui-icon { --glyph: "\f053"; color: #ddd; }  /* AMP's chevron, not the angle of the forward arrow */
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-settingspanelpagebackbutton .bmpui-ui-icon::before { width: 16px; height: 16px; font-size: 16px; }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-settingspanelpagebackbutton .bmpui-ui-icon::before { width: calc(var(--pf) * 4 / 3); height: calc(var(--pf) * 4 / 3); font-size: calc(var(--pf) * 4 / 3); }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-selected .bmpui-ui-icon { --glyph: "\f00c"; color: #ddd; }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-selected .bmpui-ui-icon::before { width: 12px; height: 12px; font-size: 12px; }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-selected .bmpui-ui-icon::before { width: var(--pr); height: var(--pr); font-size: var(--pr); }
   /* Time: 10.5px bold */
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-playbacktimelabel {
     font: bold 10.5px sans-serif; color: #fff; margin: 0 5.25px 0 7.875px; white-space: nowrap; padding: 0; flex: none;
   }
-  /* Volume: 100px slider, 11px handle. As in AMP, the slider shrinks when the bar is too narrow; the buttons keep
+  /* Volume: 100px slider, 10.5px handle. As in AMP, the slider shrinks when the bar is too narrow; the buttons keep
      their size and spacing. !important: Bitmovin sizes the slider with a deep selector, and the skin must not depend on its structure */
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-volumeslider { width: 100px !important; min-width: 0 !important; margin: 0 3.5px !important; flex: 0 1 100px !important; }
   /* Bitmovin hides the slider on players up to 400 px wide; the skin keeps that */
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-volumeslider .bmpui-seekbar { height: 7px; margin: 0 6px; }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-volumeslider .bmpui-seekbar-playbackposition-marker { width: 11px; height: 11px; border-radius: 50%; background: #999; border: 0; top: -2px; left: 0; margin-left: -5.5px; }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-volumeslider .bmpui-seekbar-playbackposition-marker { width: 10.5px; height: 10.5px; border-radius: 50%; background: #999; border: 0; top: -1.75px; left: 0; margin-left: -5.25px; }
 
   /* Big circular overlay: 112px circle */
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-playbacktoggle-overlay { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -146,13 +169,18 @@
     position: absolute; top: 50%; left: 50%; width: 112px; height: 112px; margin: -56px 0 0 -56px;
     border-radius: 50%; background: rgba(51, 51, 51, .85) !important;
   }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-hugeplaybacktogglebutton .bmpui-ui-icon:hover { background: rgba(85, 85, 85, .85) !important; }
   /* Show/hide: AMP slides the bar out below the video (bottom, .4s ease-out after .1s) instead of fading it */
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-controlbar,
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-controlbar.bmpui-hidden {
     opacity: 1; transform: translateY(0); visibility: visible;
     transition: transform .4s ease-out .1s, visibility 0s;
   }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-controlbar.bmpui-hidden {
+  /* AMP hides in two steps with a mouse: first the button row, so the 7px seek track stays as a line along the
+     bottom edge; then, once the UI is idle (player-ui.js), the line as well. The touch layout skips the line */
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-controlbar.bmpui-hidden { transform: translateY(calc(100% - 7px)); }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-controls-idle .bmpui-ui-controlbar.bmpui-hidden,
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-controlbar.bmpui-hidden {
     transform: translateY(100%); visibility: hidden;
     transition: transform .4s ease-out .1s, visibility 0s .5s;
   }
@@ -163,6 +191,7 @@
   .bmp-amp-skin.bmp-amp-skin .bmpui-player-state-finished .bmpui-ui-controlbar.bmpui-hidden {
     opacity: 1 !important; visibility: visible !important; display: block !important; pointer-events: auto; transform: translateY(0);
   }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-controls-idle .bmpui-ui-subtitle-overlay { bottom: 0; }
   /* lift the subtitles by exactly the bar height (7px track + 40px row) whenever the bar is showing:
      forced visible while paused / before first play, or shown on hover (.bmpui-controls-shown) */
   .bmp-amp-skin.bmp-amp-skin .bmpui-player-state-paused .bmpui-ui-subtitle-overlay,
@@ -170,8 +199,10 @@
   .bmp-amp-skin.bmp-amp-skin .bmpui-player-state-idle .bmpui-ui-subtitle-overlay,
   .bmp-amp-skin.bmp-amp-skin .bmpui-player-state-finished .bmpui-ui-subtitle-overlay,
   .bmp-amp-skin.bmp-amp-skin .bmpui-controls-shown .bmpui-ui-subtitle-overlay { bottom: 47px; }
-  /* Bitmovin adds its own bottom margin to the overlay on top of that lift; AMP has none */
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-subtitle-overlay { margin-bottom: 0; }
+  /* Bitmovin adds its own bottom margin to the overlay on top of that lift; AMP has none.
+     With the bar hidden AMP still lifts the subtitles by .5em (7px), above the seek track line; once the line
+     has gone too (idle, set before the lift above so a showing bar wins), it drops them to the bottom edge */
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-subtitle-overlay { margin-bottom: 0; bottom: 7px; }
   /* Subtitle text: AMP caption defaults (monospaced serif, 16px on a 16px line, soft drop shadow, 50% black box
      with 5px corners). Each rule applies only while the viewer has not chosen that setting in the subtitle menu. */
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-subtitle-overlay .bmpui-ui-subtitle-label { line-height: 1; } /* AMP: 16px text on a 16px line, scales with the size setting */
@@ -201,44 +232,56 @@
   @keyframes bmp-amp-skin-spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
   /* the big circle only shows while paused */
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-hugeplaybacktogglebutton.bmpui-on { opacity: 0; }
-  /* Settings popup: small dark box above the bar, bottom right */
+  /* Settings popup: small dark box above the bar, bottom right. Sizes follow AMP's menu font (--pf, 12px; the touch
+     layout scales it) and its row font (--pr, the same 12px; .87 of --pf in the touch layout).
+     AMP's .714em margin sets it off from the bar and the right edge; its height leaves room above */
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel {
-    background: rgba(51, 51, 51, .85); color: #fff; font: 11px Arial, sans-serif; border-radius: 0;
-    right: 8.5px; left: auto; bottom: 43px; width: auto; min-width: 0; max-width: 60%; padding: 12px;
+    --pf: 12px; --pr: var(--pf);
+    background: rgba(51, 51, 51, .85); color: #fff; font: calc(var(--pf) * .93) Arial, sans-serif; border-radius: 0;
+    right: calc(var(--pf) * .714); left: auto; bottom: calc(40px + var(--pf) * .714); width: auto; min-width: 0; max-width: 60%;
+    max-height: calc(90% - var(--pf) * 6.86); overflow-y: auto; padding: var(--pf);
   }
   /* AMP opens the share menu 30px further left than the settings menu */
   /* min-width: room for "Link copied!" (124px in Arial, plus slack for wider fallback fonts), so the menu does
      not grow when Copy link confirms */
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel.bmpui-share-panel { right: 38.5px; min-width: 128px; }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-settings-panel-item { padding: 4.8px 6px; margin: 0; }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel.bmpui-share-panel { right: calc(30px + var(--pf) * .714); min-width: calc(var(--pr) * 10.67); }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-settings-panel-item { padding: calc(var(--pr) * .4) calc(var(--pr) * .5); margin: 0; }
+  /* lighter row under the pointer, as AMP's menu items; not on the title row */
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-settings-panel-item:hover { background: rgba(85, 85, 85, .85); }
+  /* title row (back arrow and page name): AMP's bold .93em with a faint line below, flush left */
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-settings-panel-item.bmpui-title-item,
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-settings-panel-item.bmpui-title-item:hover {
+    background: none; border-bottom: 1px solid rgba(255, 255, 255, .1);
+    padding: calc(var(--pf) * .93 * .4) calc(var(--pf) * .93 * .7) calc(var(--pf) * .93 * .4) 0;
+  }
   /* AMP rows are ~22px: drop Bitmovin's 24px label min-height */
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-settings-panel-item .bmpui-ui-label { min-height: 0; line-height: 12px; }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-label { font-size: 12px; font-weight: normal; color: #fff; }  /* AMP: regular 12px */
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-settings-panel-item > .bmpui-container-wrapper { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-label-setting-selected-option { color: #fff; display: flex; align-items: center; font: 12px Arial, sans-serif; text-transform: capitalize; }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-settings-panel-item .bmpui-ui-label { min-height: 0; line-height: var(--pr); }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-label { font-size: var(--pr); font-weight: normal; color: #fff; }  /* AMP: regular 12px */
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-settings-panel-item > .bmpui-container-wrapper { display: flex; justify-content: space-between; align-items: center; gap: var(--pr); }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-label-setting-selected-option { color: #fff; display: flex; align-items: center; font: var(--pr) Arial, sans-serif; text-transform: capitalize; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-label-setting-selected-option .bmpui-ui-label-text { color: #fff; }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-label-setting-selected-option .bmpui-ui-icon { width: 10px; height: 14px; margin-left: 8px; }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-label-setting-selected-option .bmpui-ui-icon { width: calc(var(--pr) * 5 / 6); height: calc(var(--pr) * 7 / 6); margin-left: calc(var(--pr) * 2 / 3); }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-settings-panel-item .bmpui-ui-label-text { color: #fff; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel * { white-space: nowrap; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-settings-panel-item-select-option > .bmpui-container-wrapper,
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-title-item > .bmpui-container-wrapper { justify-content: flex-start; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-settings-panel-item-select-option .bmpui-ui-label { display: flex; align-items: center; }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-settings-panel-item-select-option .bmpui-ui-icon { width: 14px; height: 14px; margin-right: 6px; }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-settings-panel-item-select-option .bmpui-ui-icon { width: calc(var(--pr) * 7 / 6); height: calc(var(--pr) * 7 / 6); margin-right: calc(var(--pr) * .5); }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-settingspanelpagebackbutton {
-    display: flex; align-items: center; width: auto; height: auto; margin: 0; padding: 0; background: none; border: 0; color: #fff; font: bold 11px Arial, sans-serif; cursor: pointer;
+    display: flex; align-items: center; width: auto; height: auto; margin: 0; padding: 0; background: none; border: 0; color: #fff; font: bold calc(var(--pf) * .93) Arial, sans-serif; cursor: pointer;
   }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-settingspanelpagebackbutton .bmpui-ui-icon { width: 10px; height: 14px; margin-right: 8px; }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-settingspanelpagebackbutton .bmpui-ui-icon { width: calc(var(--pf) * 5 / 6); height: calc(var(--pf) * 7 / 6); margin-right: calc(var(--pf) * 2 / 3); }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-label { display: inline; }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel select { background: transparent; color: #fff; border: 0; font: 11px Arial, sans-serif; }
-  /* Autoplay row: AMP's toggle glyphs (f205 on, f204 off), 12px bold #ddd, 6px from the row's right edge */
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel select { background: transparent; color: #fff; border: 0; font: calc(var(--pr) * .93) Arial, sans-serif; }
+  /* Autoplay row: AMP's toggle glyphs (f205 on, f204 off), 1em bold #ddd, .5em from the row's right edge */
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-autoplaytogglebutton {
-    width: auto; height: auto; min-width: 0; padding: 0; margin: 0 6px; border: 0; background: none !important;
+    width: auto; height: auto; min-width: 0; padding: 0; margin: 0 calc(var(--pr) * .5); border: 0; background: none !important;
     color: #ddd; cursor: pointer; display: flex; align-items: center;
   }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-autoplaytogglebutton .bmpui-label { display: none; }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-autoplaytogglebutton .bmpui-ui-icon { width: auto; height: 12px; --glyph: "\f204"; }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-autoplaytogglebutton .bmpui-ui-icon { width: auto; height: var(--pr); --glyph: "\f204"; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-autoplaytogglebutton.bmpui-on .bmpui-ui-icon { --glyph: "\f205"; }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-autoplaytogglebutton .bmpui-ui-icon::before { width: auto; height: 12px; font-size: 12px; font-weight: bold; }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-autoplaytogglebutton .bmpui-ui-icon::before { width: auto; height: var(--pr); font-size: var(--pr); font-weight: bold; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-toggle-settings-panel-item { cursor: pointer; }
   /* captions on: red underline directly under the 14px glyph box, as in AMP. AMP also moves the glyph 1px up; the skin keeps it in place */
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-captiontogglebutton .bmpui-ui-icon { position: relative; }
@@ -246,14 +289,14 @@
     content: ""; position: absolute; left: 50%; bottom: -2px; width: 16px; height: 2px; margin-left: -8px; background: #f00;
   }
 
-  /* Share menu rows as in AMP: 12px text, 12px icon 6px in, label 18px after the icon, ~22px rows */
+  /* Share menu rows as in AMP: 12px text, 12px icon 6px in, label 18px after the icon, ~22px rows (in --pr) */
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-shareoption {
-    display: flex; align-items: center; gap: 18px; width: 100%; padding: 4.8px 6px; margin: 0; background: none; border: 0; color: #fff;
-    font: 12px Arial, sans-serif; text-align: left; cursor: pointer;
+    display: flex; align-items: center; gap: calc(var(--pr) * 1.5); width: 100%; padding: calc(var(--pr) * .4) calc(var(--pr) * .5);
+    margin: 0; background: none; border: 0; color: #fff; font: var(--pr) Arial, sans-serif; text-align: left; cursor: pointer;
   }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-shareoption:hover { background: rgba(85, 85, 85, .85); }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-shareoption .bmpui-ui-icon { flex: none; width: 12px; height: 12px; margin-left: 6px; }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-shareoption .bmpui-ui-icon::before { width: 12px; height: 12px; font-size: 12px; }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-shareoption .bmpui-ui-icon { flex: none; width: var(--pr); height: var(--pr); margin-left: calc(var(--pr) * .5); }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-shareoption .bmpui-ui-icon::before { width: var(--pr); height: var(--pr); font-size: var(--pr); }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-shareoption::after { content: attr(aria-label); }
   .bmp-amp-skin.bmp-amp-skin .bmpui-shareoption-facebook .bmpui-ui-icon { --glyph: "\f230"; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-shareoption-x .bmpui-ui-icon { --glyph: "\e900"; }  /* AMP's own X glyph in its Font Awesome build */
@@ -262,7 +305,7 @@
 
   /* "Style" / "Reset" text buttons in the caption menus */
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-settings-panel-navigation-text-button {
-    font: bold 11px Arial, sans-serif; color: #fff; background: none; border: 0; padding: 0 4px; margin: 0; cursor: pointer;
+    font: bold calc(var(--pf) * .93) Arial, sans-serif; color: #fff; background: none; border: 0; padding: 0 calc(var(--pf) / 3); margin: 0; cursor: pointer;
   }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-settings-panel-navigation-text-button:hover { text-decoration: underline; }
 
@@ -309,11 +352,14 @@
      desktop bar stays at every width. */
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer { container: bmp-amp-skin / inline-size; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-touch-jumps { display: none; }
-  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer > * { --u: 14px; --play: calc(var(--u) * 4); --jump: calc(var(--u) * 2.3); }
-  @media only screen and (max-width: 1024px) { .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer > * { --u: 24px; --play: calc(var(--u) * 2.1); } }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer > * { --u: 14px; --play: calc(var(--u) * 4); --jump: calc(var(--u) * 2.3); --spin: calc(var(--u) * 7.2); }
+  @media only screen and (max-width: 1024px) { .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer > * { --u: 24px; --play: calc(var(--u) * 2.1); --spin: calc(var(--u) * 3.5); } }
   @media only screen and (max-width: 700px) { .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer > * { --u: 20px; --play: calc(var(--u) * 1.8); --jump: calc(var(--u) * 1.8); } }
+  /* in fullscreen on small phones AMP's UI font drops further: 17px up to 480 px, 15px up to 320 px */
+  @media only screen and (max-width: 480px) { .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer.bmpui-fullscreen > * { --u: 17px; } }
+  @media only screen and (max-width: 320px) { .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer.bmpui-fullscreen > * { --u: 15px; } }
 
-  /* seek bar: .5em track, 1.5em round handle centred on it */
+  /* seek bar: .5em track, 1.5em round handle centred on it vertically; as in AMP, its centre is .375em right of the position */
   .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-top,
   .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-top .bmpui-ui-seekbar,
   .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-top .bmpui-seekbar,
@@ -322,7 +368,7 @@
   .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-top .bmpui-seekbar { margin: 0 calc(var(--u) * .75); }
   .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-top .bmpui-seekbar-bars { margin: 0 calc(var(--u) * -.75); width: calc(100% + var(--u) * 1.5); }
   .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-top .bmpui-seekbar-playbackposition-marker {
-    width: calc(var(--u) * 1.5); height: calc(var(--u) * 1.5); top: calc(var(--u) * -.5); margin-left: calc(var(--u) * -.75);
+    width: calc(var(--u) * 1.5); height: calc(var(--u) * 1.5); top: calc(var(--u) * -.5); margin-left: calc(var(--u) * -.375);
   }
 
   /* bar: 2.86em high, .6em side padding; 1em icons with .5em on each side (the whole 2em is the touch target) */
@@ -333,6 +379,13 @@
   .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-bottom .bmpui-ui-icon::before { width: var(--u); height: var(--u); font-size: var(--u); }
   .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-bottom .bmpui-ui-volumetogglebutton.bmpui-muted .bmpui-ui-icon::before { width: auto; }
   .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-bottom .bmpui-ui-vrtogglebutton .bmpui-ui-icon::before { width: auto; }
+  /* Cast 1.25em; AirPlay keeps AMP's fixed 13px glyph in a 1.35em box with .5em on each side */
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-bottom .bmpui-ui-casttogglebutton { width: calc(var(--u) * 2.5); margin: 0; }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-bottom .bmpui-ui-casttogglebutton .bmpui-ui-icon::before {
+    width: calc(var(--u) * 1.25); height: calc(var(--u) * 1.25); font-size: calc(var(--u) * 1.25);
+  }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-bottom .bmpui-ui-airplaytogglebutton { width: 30.55px; margin: 0; }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-bottom .bmpui-ui-airplaytogglebutton .bmpui-ui-icon::before { width: 13px; height: 13px; font-size: 13px; }
   .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-bottom .bmpui-ui-volumetogglebutton.bmpui-muted .bmpui-ui-icon::after { font-size: calc(var(--u) * .8); left: calc(var(--u) * .08); }
   /* captions on: the underline stays directly under the glyph, which is centred in the 2em button */
   .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-captiontogglebutton.bmpui-on .bmpui-ui-icon::after {
@@ -369,6 +422,9 @@
   /* Bitmovin hides the icon while playing (visibility, after a fade-out) */
   .bmp-amp-skin.bmp-amp-touch .bmpui-controls-shown .bmpui-ui-hugeplaybacktogglebutton.bmpui-on .bmpui-ui-icon { visibility: visible; animation: none; transition: none; }
   .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-endslate-replay { width: calc(var(--play) * 2); height: calc(var(--play) * 2); }
+  /* buffering spinner: AMP's 3.5em up to 1024 px (7.2em above) */
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-buffering-overlay-indicator { width: var(--spin); height: var(--spin); }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-buffering-overlay-indicator::before { font-size: var(--spin); }
   .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-endslate-replay .bmpui-ui-icon,
   .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-endslate-replay .bmpui-ui-icon::before {
     width: var(--play); height: var(--play); font-size: var(--play);
@@ -399,10 +455,38 @@
   }
   .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-unmutebutton .bmpui-ui-icon::before { width: var(--u); height: var(--u); font-size: var(--u); }
 
-  /* subtitles and menus above the taller bar (3.36em = track + bar) */
+  /* subtitles at the bottom edge with the bar hidden (AMP's touch view has no seek track line), and with menus
+     above the taller bar (3.36em = track + bar) */
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-subtitle-overlay { bottom: 0; }
   .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer:is(.bmpui-controls-shown, .bmpui-player-state-paused, .bmpui-player-state-prepared, .bmpui-player-state-idle, .bmpui-player-state-finished)
     .bmpui-ui-subtitle-overlay { bottom: calc(var(--u) * 3.36); }
-  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-settings-panel { bottom: calc(var(--u) * 3.36 - 4px); }
+  /* menus in AMP's mobile sizes: .857em menu font, rows at .87 of it with .5em above and below and no side padding.
+     On a short player the font, padding and gaps shrink (to 7% / 3% / 3% of the player height); the menu stays in the
+     space above the bar. AMP's fixed max-height leaves ~50px on a phone held upright, so 2 entries scroll there */
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer { container-type: size; }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-settings-panel {
+    --pf: clamp(10px, 7cqh, var(--u) * .857); --pr: calc(var(--pf) * .87); --gap: min(var(--u) * .857 * .714, 3cqh);
+    right: var(--gap); bottom: calc(var(--u) * 2.86 + var(--gap)); box-sizing: border-box; padding: min(var(--pf), 3cqh);
+    z-index: 3;  /* above the big play button, 10 s jumps and unmute button, which a menu this tall can cover */
+    max-width: calc(100% - var(--gap) * 2); max-height: calc(100% - var(--u) * 2.86 - var(--gap) * 2);
+    /* Bitmovin animates page changes with an inline width and height measured on a copy of the page. These come out
+       too small for some pages and cut them off, so touch menus size to their page, without the animation */
+    width: auto !important; height: auto !important;
+  }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-settings-panel.bmpui-share-panel {
+    right: calc(30px + var(--gap)); max-width: calc(100% - 30px - var(--gap) * 2);
+  }
+  /* a label wraps when the menu reaches its max-width; values and icons stay on one line */
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-settings-panel .bmpui-ui-settings-panel-item > .bmpui-container-wrapper > .bmpui-ui-label:first-child,
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-settings-panel .bmpui-ui-settings-panel-item > .bmpui-container-wrapper > .bmpui-ui-label:first-child *,
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-shareoption { white-space: normal; min-width: 0; }
+  /* "Style" / "Reset" as high as the page title, not Bitmovin's 24px */
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-settings-panel .bmpui-ui-settings-panel-navigation-text-button { height: auto; min-height: 0; }
+  /* chevrons: the glyph box (4/3 em) is wider than the icon (5/6 em); at the row end it would scroll the menu sideways */
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-settings-panel .bmpui-ui-label-setting-selected-option .bmpui-ui-icon::before,
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-settings-panel .bmpui-ui-settingspanelpagebackbutton .bmpui-ui-icon::before { width: auto; }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-settings-panel .bmpui-ui-settings-panel-item:not(.bmpui-title-item),
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-shareoption { padding: calc(var(--pr) * .5) 0; }
 
   /* up to 400 px: no picture-in-picture, AirPlay or Cast, so the bar fits */
   @container bmp-amp-skin (max-width: 400px) {
@@ -415,10 +499,11 @@
      gesture, so repeated taps on the 10 s jumps would get lost */
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer button { touch-action: manipulation; }
 
-  /* Keyboard focus: a clear ring on every control (Bitmovin's own focus style is invisible on the dark bar) */
+  /* Keyboard focus: AMP's 2px light blue ring on every control (Bitmovin's own focus style is invisible on the dark
+     bar). Inside the menus the ring sits within the row, so the menu's scroll box does not cut it off */
   .bmp-amp-skin.bmp-amp-skin button:focus-visible,
   .bmp-amp-skin.bmp-amp-skin [role="slider"]:focus-visible,
-  .bmp-amp-skin.bmp-amp-skin [role="menuitem"]:focus-visible { outline: 2px solid #8cf; outline-offset: 2px; }
+  .bmp-amp-skin.bmp-amp-skin [role="menuitem"]:focus-visible { outline: 2px solid #9ecaed; outline-offset: 0; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel [role="menuitem"]:focus-visible,
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel button:focus-visible { outline-offset: -2px; }
 
