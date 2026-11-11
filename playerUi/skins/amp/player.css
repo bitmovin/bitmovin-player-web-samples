@@ -115,7 +115,7 @@
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-hugeplaybacktogglebutton.bmpui-on .bmpui-ui-icon::before { transform: translateX(.071em); }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-label-setting-selected-option .bmpui-ui-icon { --glyph: "\f105"; color: #ddd; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-label-setting-selected-option .bmpui-ui-icon::before { width: 16px; height: 16px; font-size: 16px; }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-settingspanelpagebackbutton .bmpui-ui-icon { --glyph: "\f104"; color: #ddd; }
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-settingspanelpagebackbutton .bmpui-ui-icon { --glyph: "\f053"; color: #ddd; }  /* AMP's chevron, not the angle of the forward arrow */
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-ui-settingspanelpagebackbutton .bmpui-ui-icon::before { width: 16px; height: 16px; font-size: 16px; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-selected .bmpui-ui-icon { --glyph: "\f00c"; color: #ddd; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-settings-panel .bmpui-selected .bmpui-ui-icon::before { width: 12px; height: 12px; font-size: 12px; }
