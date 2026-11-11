@@ -203,7 +203,7 @@
   /** @param {ShareOptions} config */
   function createShare(config) {
     const providers = (config.providers || Object.keys(SHARE_PROVIDERS)).filter(p => SHARE_PROVIDERS[p]);
-    const panel = new pui.SettingsPanel({ hidden: true, components: [], cssClasses: ['share-panel'] });
+    const panel = new pui.SettingsPanel({ hidden: true, hideDelay: -1, components: [], cssClasses: ['share-panel'] });
     const options = providers.map(p => new ShareOption(p));
     panel.addComponent(new pui.SettingsPanelPage({ components: options }));
 
@@ -409,11 +409,34 @@
    * UIContainer with AMP's two-step hide. With a mouse, the button row slides away when the controls hide and the
    * seek track stays as a thin line along the bottom edge; IDLE_AFTER_MS later the line goes too
    * (`bmpui-controls-idle`, player.css). The touch layout hides everything at once, as AMP does.
+   *
+   * While a menu (Settings or Share) is open, the controls do not hide: not on the timer and not on mouse leave.
+   * Bitmovin's own `deferUiHideWhileSettingsOpen` is off, because it loses track when one menu replaces the other.
    */
   class SkinUIContainer extends pui.UIContainer {
+    /** @param {import('bitmovin-player-ui').UIContainerConfig} config */
+    constructor(config) {
+      super({ deferUiHideWhileSettingsOpen: false, ...config });
+    }
+
     /** @param {PlayerAPI} player @param {UIInstanceManager} uimanager */
     configure(player, uimanager) {
       super.configure(player, uimanager);
+      /** @type {import('bitmovin-player-ui').SettingsPanel<any>[]} */
+      const menus = [];
+      /** @param {import('bitmovin-player-ui').Container<any>} container */
+      const findMenus = container => container.getComponents().forEach(c => {
+        if (c instanceof pui.SettingsPanel) menus.push(c);
+        else if (c instanceof pui.Container) findMenus(c);
+      });
+      findMenus(this);
+      const menuOpen = () => menus.some(m => m.isShown());
+      // timer: a canceled preview keeps the controls up and restarts the timer
+      uimanager.onPreviewControlsHide.subscribe((_, args) => { if (menuOpen()) args.cancel = true; });
+      // mouse leave and other forced hides skip the preview
+      const hideUi = this.hideUi;
+      this.hideUi = force => { if (!menuOpen()) hideUi(force); };
+
       const element = this.getDomElement();
       /** @type {ReturnType<typeof setTimeout> | undefined} */
       let timer;
@@ -626,7 +649,7 @@
     const subtitleOverlay = new pui.SubtitleOverlay();
 
     // Captions: the CC button only switches them on and off (like AMP); track and style are picked in Settings
-    const settingsPanel = new pui.SettingsPanel({ hidden: true, components: [] });
+    const settingsPanel = new pui.SettingsPanel({ hidden: true, hideDelay: -1, components: [] });
     const subtitleStylePage = new pui.SubtitleSettingsPanelPage({
       settingsPanel,
       overlay: subtitleOverlay,
