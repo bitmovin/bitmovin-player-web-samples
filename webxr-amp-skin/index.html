@@ -150,18 +150,6 @@
       display: none;
     }
 
-    /* The VR button's icon: the headset from the skin's icon font. It is
-       1.25em wide, so it needs more than the square box the skin gives the
-       other icons. The selector outweighs the skin's touch-layout rule for
-       that box. */
-    .bmp-amp-skin.bmp-amp-skin .bmpui-ui-vrtogglebutton .bmpui-ui-icon {
-      --glyph: "\e905";
-    }
-
-    .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-controlbar-bottom .bmpui-ui-vrtogglebutton .bmpui-ui-icon::before {
-      width: auto;
-    }
-
     /* Note under the stage. `:not([hidden])`: a `display` here would beat `hidden`. */
     .stageNote:not([hidden]) {
       display: block;
