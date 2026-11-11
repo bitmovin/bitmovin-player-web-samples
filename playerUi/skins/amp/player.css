@@ -170,8 +170,9 @@
   .bmp-amp-skin.bmp-amp-skin .bmpui-player-state-idle .bmpui-ui-subtitle-overlay,
   .bmp-amp-skin.bmp-amp-skin .bmpui-player-state-finished .bmpui-ui-subtitle-overlay,
   .bmp-amp-skin.bmp-amp-skin .bmpui-controls-shown .bmpui-ui-subtitle-overlay { bottom: 47px; }
-  /* Bitmovin adds its own bottom margin to the overlay on top of that lift; AMP has none */
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-subtitle-overlay { margin-bottom: 0; }
+  /* Bitmovin adds its own bottom margin to the overlay on top of that lift; AMP has none.
+     With the bar hidden AMP still lifts the subtitles by .5em (7px) */
+  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-subtitle-overlay { margin-bottom: 0; bottom: 7px; }
   /* Subtitle text: AMP caption defaults (monospaced serif, 16px on a 16px line, soft drop shadow, 50% black box
      with 5px corners). Each rule applies only while the viewer has not chosen that setting in the subtitle menu. */
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-subtitle-overlay .bmpui-ui-subtitle-label { line-height: 1; } /* AMP: 16px text on a 16px line, scales with the size setting */
@@ -399,7 +400,8 @@
   }
   .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-unmutebutton .bmpui-ui-icon::before { width: var(--u); height: var(--u); font-size: var(--u); }
 
-  /* subtitles and menus above the taller bar (3.36em = track + bar) */
+  /* subtitles .5em up with the bar hidden, and with menus above the taller bar (3.36em = track + bar) */
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-subtitle-overlay { bottom: calc(var(--u) * .5); }
   .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer:is(.bmpui-controls-shown, .bmpui-player-state-paused, .bmpui-player-state-prepared, .bmpui-player-state-idle, .bmpui-player-state-finished)
     .bmpui-ui-subtitle-overlay { bottom: calc(var(--u) * 3.36); }
   .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-settings-panel { bottom: calc(var(--u) * 3.36 - 4px); }
