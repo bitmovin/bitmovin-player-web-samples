@@ -312,8 +312,76 @@
     }
   }
 
+  /** How long, in ms, to wait for iOS to revert a volume write: it accepts the write, then restores the old value. */
+  const VOLUME_REVERT_WAIT_MS = 250;
+  /** @type {Promise<boolean> | null} */
+  let volumeProbe = null;
+
+  /** Whether the page can set media volume. Probed once, on a detached element, so the player sees no events. */
+  function canSetVolume() {
+    if (!volumeProbe) {
+      volumeProbe = new Promise(resolve => {
+        const media = document.createElement('video');
+        const before = media.volume;
+        media.volume = before === 0.5 ? 0.25 : 0.5;
+        if (media.volume === before) resolve(false);
+        else setTimeout(() => resolve(media.volume !== before), VOLUME_REVERT_WAIT_MS);
+      });
+    }
+    return volumeProbe;
+  }
+
+  function isAndroid() {
+    const data = /** @type {{ userAgentData?: { platform?: string } }} */ (/** @type {unknown} */ (navigator)).userAgentData;
+    return /Android/.test(navigator.userAgent) || (data != null && data.platform === 'Android');
+  }
+
   /**
-   * Big play button overlay. With a mouse, a click anywhere on the video toggles playback. On touch screens
+   * Volume slider, in both layouts: shown where the page can set volume and the device is not Android, as in AMP.
+   * Bitmovin's own checks are off: `hideOnMobile` looks for "Mobi" in the user agent, which Android tablets do not
+   * send, and its volume check misses the iOS builds that revert a write a moment later.
+   */
+  class SettableVolumeSlider extends pui.VolumeSlider {
+    constructor() {
+      super({ hideOnMobile: false, hideIfVolumeControlProhibited: false });
+    }
+
+    /** @param {PlayerAPI} player @param {UIInstanceManager} uimanager */
+    configure(player, uimanager) {
+      super.configure(player, uimanager);
+      if (isAndroid()) {
+        this.hide();
+        return;
+      }
+      canSetVolume().then(settable => { if (!settable) this.hide(); });
+    }
+  }
+
+  /** User-agent token of Meta Quest Browser. */
+  const QUEST_BROWSER = /OculusBrowser/;
+
+  /**
+   * Touch layout (player.css, under `.bmp-amp-touch` on the player container): while the primary pointer is coarse,
+   * following changes of input. Always in Meta Quest Browser, as in AMP: it reports the controllers as a fine pointer
+   * and hand tracking as a coarse one, so the layout would change with the hands.
+   * @param {PlayerAPI} player
+   */
+  function watchTouchLayout(player) {
+    const container = player.getContainer();
+    if (QUEST_BROWSER.test(navigator.userAgent)) {
+      container.classList.add('bmp-amp-touch');
+      return;
+    }
+    if (!global.matchMedia) return;
+    const coarse = global.matchMedia('(pointer: coarse)');
+    const update = () => container.classList.toggle('bmp-amp-touch', coarse.matches);
+    update();
+    coarse.addEventListener('change', update);
+    player.on(player.exports.PlayerEvent.Destroy, () => coarse.removeEventListener('change', update));
+  }
+
+  /**
+   * Big play button overlay. With a mouse, a click anywhere on the video toggles playback. In the touch layout
    * (player.css shrinks the button to its circle), as in AMP: a tap on the video shows the controls (Bitmovin
    * does this while they are hidden) or hides them; only a tap on the circle plays or pauses.
    */
@@ -322,7 +390,8 @@
     configure(player, uimanager) {
       super.configure(player, uimanager);
       this.getDomElement().on('click', e => {
-        if (/** @type {Element} */ (e.target).closest('.bmpui-ui-hugeplaybacktogglebutton') || !global.matchMedia('(pointer: coarse)').matches) return;
+        const target = /** @type {Element} */ (e.target);
+        if (target.closest('.bmpui-ui-hugeplaybacktogglebutton') || !target.closest('.bmp-amp-touch')) return;
         const ui = uimanager.getUI();
         // not while paused (hidePlayerStateExceptions): the controls stay drawn there, see createUI.
         // hidingPrevented is private in Bitmovin's types, but a public field at runtime
@@ -569,7 +638,7 @@
         new pui.QuickSeekButton({ seekSeconds: 10, cssClass: 'ui-jumpforwardbutton' }),
         time,
         new pui.VolumeToggleButton(),
-        new pui.VolumeSlider(),
+        new SettableVolumeSlider(),
         new pui.Spacer(),
         ...(share ? [share.button] : []),
         new pui.CaptionToggleButton(),
@@ -742,7 +811,7 @@
       new pui.Container({ cssClasses: ['controlbar-bottom'], components: [
         new pui.PlaybackToggleButton(),
         new pui.VolumeToggleButton(),
-        new pui.VolumeSlider(),
+        new SettableVolumeSlider(),
         new pui.Spacer(),
         createFullscreenButton(options),
       ] }),
@@ -790,6 +859,7 @@
   function createPlayerUI(player, options = {}) {
     // all skin styles in player.css are scoped to this class, so the container can have any id
     player.getContainer().classList.add('bmp-amp-skin');
+    watchTouchLayout(player);
     // before the components are built: some render their text when they are created
     setLocalization(options.localization);
     const mainUI = createUI(player, options);
