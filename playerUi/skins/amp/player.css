@@ -297,109 +297,114 @@
     inset: auto; top: 50%; left: 50%; width: 112px; height: 112px; margin: -56px 0 0 -56px; border-radius: 50%; pointer-events: auto;
   }
   .bmp-amp-skin.bmp-amp-skin .bmpui-no-click-to-play .bmpui-ui-hugeplaybacktogglebutton.bmpui-on { pointer-events: none; }
-  @media (pointer: coarse) {
-  .bmp-amp-skin.bmp-amp-skin .bmpui-no-click-to-play.bmpui-controls-shown .bmpui-ui-hugeplaybacktogglebutton.bmpui-on { pointer-events: auto; }
-  }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-no-click-to-play.bmpui-controls-shown .bmpui-ui-hugeplaybacktogglebutton.bmpui-on { pointer-events: auto; }
 
-  /* Touch layout: AMP's mobile view. AMP sizes it in em of its UI font: 14px, 24px up to 1024 px, 20px up to 700 px.
-     The skin uses the same sizes as --u, by the width of the player (container queries on the UI container, so the
-     skin does not depend on Bitmovin's layout classes). With a mouse, the desktop bar stays at every width. */
+  /* Touch layout: AMP's mobile view, under .bmp-amp-touch on the player container (player-ui.js sets it: on a coarse
+     pointer, and always in a headset browser). AMP sizes it in em of its UI font, by the width of the screen: 14px,
+     24px up to 1024 px, 20px up to 700 px. The skin uses the same sizes as --u, and AMP's glyph sizes for the big play
+     button (--play: 4em, 2.1em, 1.8em) and the 10 s jumps (--jump: 2.3em, 1.8em up to 700 px). With a mouse, the
+     desktop bar stays at every width. */
   .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer { container: bmp-amp-skin / inline-size; }
   .bmp-amp-skin.bmp-amp-skin .bmpui-touch-jumps { display: none; }
-  @media (pointer: coarse) {
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer > * { --u: 14px; }
-  @container bmp-amp-skin (max-width: 1024px) { .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer > * { --u: 24px; } }
-  @container bmp-amp-skin (max-width: 700px) { .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer > * { --u: 20px; } }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer > * { --u: 14px; --play: calc(var(--u) * 4); --jump: calc(var(--u) * 2.3); }
+  @media only screen and (max-width: 1024px) { .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer > * { --u: 24px; --play: calc(var(--u) * 2.1); } }
+  @media only screen and (max-width: 700px) { .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer > * { --u: 20px; --play: calc(var(--u) * 1.8); --jump: calc(var(--u) * 1.8); } }
 
   /* seek bar: .5em track, 1.5em round handle centred on it */
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-controlbar-top,
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-controlbar-top .bmpui-ui-seekbar,
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-controlbar-top .bmpui-seekbar,
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-controlbar-top .bmpui-seekbar-bars,
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-controlbar-top .bmpui-seekbar-bars > div { height: calc(var(--u) * .5); }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-controlbar-top .bmpui-seekbar { margin: 0 calc(var(--u) * .75); }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-controlbar-top .bmpui-seekbar-bars { margin: 0 calc(var(--u) * -.75); width: calc(100% + var(--u) * 1.5); }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-controlbar-top .bmpui-seekbar-playbackposition-marker {
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-top,
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-top .bmpui-ui-seekbar,
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-top .bmpui-seekbar,
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-top .bmpui-seekbar-bars,
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-top .bmpui-seekbar-bars > div { height: calc(var(--u) * .5); }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-top .bmpui-seekbar { margin: 0 calc(var(--u) * .75); }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-top .bmpui-seekbar-bars { margin: 0 calc(var(--u) * -.75); width: calc(100% + var(--u) * 1.5); }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-top .bmpui-seekbar-playbackposition-marker {
     width: calc(var(--u) * 1.5); height: calc(var(--u) * 1.5); top: calc(var(--u) * -.5); margin-left: calc(var(--u) * -.75);
   }
 
   /* bar: 2.86em high, .6em side padding; 1em icons with .5em on each side (the whole 2em is the touch target) */
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-controlbar-bottom { height: calc(var(--u) * 2.86); padding: 0 calc(var(--u) * .6); }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-controlbar-bottom button {
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-bottom { height: calc(var(--u) * 2.86); padding: 0 calc(var(--u) * .6); }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-bottom button {
     width: calc(var(--u) * 2); height: calc(var(--u) * 2); min-width: var(--u); margin: 0; flex: 0 1 auto;   /* shrinks only below 375 px */
   }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-controlbar-bottom .bmpui-ui-icon::before { width: var(--u); height: var(--u); font-size: var(--u); }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-controlbar-bottom .bmpui-ui-volumetogglebutton.bmpui-muted .bmpui-ui-icon::before { width: auto; }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-controlbar-bottom .bmpui-ui-volumetogglebutton.bmpui-muted .bmpui-ui-icon::after { font-size: calc(var(--u) * .8); left: calc(var(--u) * .08); }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-bottom .bmpui-ui-icon::before { width: var(--u); height: var(--u); font-size: var(--u); }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-bottom .bmpui-ui-volumetogglebutton.bmpui-muted .bmpui-ui-icon::before { width: auto; }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-bottom .bmpui-ui-volumetogglebutton.bmpui-muted .bmpui-ui-icon::after { font-size: calc(var(--u) * .8); left: calc(var(--u) * .08); }
   /* captions on: the underline stays directly under the glyph, which is centred in the 2em button */
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-ui-captiontogglebutton.bmpui-on .bmpui-ui-icon::after {
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-captiontogglebutton.bmpui-on .bmpui-ui-icon::after {
     bottom: calc(var(--u) * .5 - 2px); width: calc(var(--u) * 8 / 7); margin-left: calc(var(--u) * -4 / 7);
   }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-ui-playbacktimelabel {
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-playbacktimelabel {
     font-size: calc(var(--u) * .75); margin: 0 calc(var(--u) * .375) 0 calc(var(--u) * .5625);
   }
-  /* AMP has no volume slider and no 10 s jumps in its touch bar (the mute button and hardware keys remain) */
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-ui-volumeslider,
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-controlbar-bottom .bmpui-ui-jumpbackbutton,
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-controlbar-bottom .bmpui-ui-jumpforwardbutton { display: none; }
+  /* volume slider: 100px wide, .5em track, .75em round handle, as in AMP */
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-volumeslider .bmpui-seekbar,
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-volumeslider .bmpui-seekbar-bars,
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-volumeslider .bmpui-seekbar-bars > div { height: calc(var(--u) * .5); }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-volumeslider .bmpui-seekbar-playbackposition-marker {
+    width: calc(var(--u) * .75); height: calc(var(--u) * .75); top: calc(var(--u) * -.125); margin-left: calc(var(--u) * -.375);
+  }
+  /* no 10 s jumps in the touch bar: they sit beside the big play button. The volume slider stays where volume can
+     be set; player-ui.js hides it elsewhere */
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-bottom .bmpui-ui-jumpbackbutton,
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-controlbar-bottom .bmpui-ui-jumpforwardbutton { display: none; }
 
-  /* big play button: 3.6em circle, 1.8em glyph; while playing, a tap that shows the controls also shows it as pause.
+  /* big play button: --play glyph in a circle twice its size; while playing, a tap that shows the controls also shows it as pause.
      Only the circle plays or pauses; a tap elsewhere shows or hides the controls (player-ui.js) */
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-ui-hugeplaybacktogglebutton {
-    inset: auto; top: 50%; left: 50%; width: calc(var(--u) * 3.6); height: calc(var(--u) * 3.6);
-    margin: calc(var(--u) * -1.8) 0 0 calc(var(--u) * -1.8); border-radius: 50%;
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-hugeplaybacktogglebutton {
+    inset: auto; top: 50%; left: 50%; width: calc(var(--play) * 2); height: calc(var(--play) * 2);
+    margin: calc(var(--play) * -1) 0 0 calc(var(--play) * -1); border-radius: 50%;
   }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-ui-hugeplaybacktogglebutton .bmpui-ui-icon {
-    width: calc(var(--u) * 3.6); height: calc(var(--u) * 3.6); margin: calc(var(--u) * -1.8) 0 0 calc(var(--u) * -1.8);
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-hugeplaybacktogglebutton .bmpui-ui-icon {
+    width: calc(var(--play) * 2); height: calc(var(--play) * 2); margin: calc(var(--play) * -1) 0 0 calc(var(--play) * -1);
   }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-ui-hugeplaybacktogglebutton .bmpui-ui-icon::before {
-    width: calc(var(--u) * 1.8); height: calc(var(--u) * 1.8); font-size: calc(var(--u) * 1.8);
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-hugeplaybacktogglebutton .bmpui-ui-icon::before {
+    width: var(--play); height: var(--play); font-size: var(--play);
   }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-controls-shown .bmpui-ui-hugeplaybacktogglebutton.bmpui-on { opacity: 1; }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-controls-shown .bmpui-ui-hugeplaybacktogglebutton.bmpui-on { opacity: 1; }
   /* Bitmovin hides the icon while playing (visibility, after a fade-out) */
-  .bmp-amp-skin.bmp-amp-skin .bmpui-controls-shown .bmpui-ui-hugeplaybacktogglebutton.bmpui-on .bmpui-ui-icon { visibility: visible; animation: none; transition: none; }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-ui-endslate-replay { width: calc(var(--u) * 3.6); height: calc(var(--u) * 3.6); }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-ui-endslate-replay .bmpui-ui-icon,
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-ui-endslate-replay .bmpui-ui-icon::before {
-    width: calc(var(--u) * 1.8); height: calc(var(--u) * 1.8); font-size: calc(var(--u) * 1.8);
+  .bmp-amp-skin.bmp-amp-touch .bmpui-controls-shown .bmpui-ui-hugeplaybacktogglebutton.bmpui-on .bmpui-ui-icon { visibility: visible; animation: none; transition: none; }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-endslate-replay { width: calc(var(--play) * 2); height: calc(var(--play) * 2); }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-endslate-replay .bmpui-ui-icon,
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-endslate-replay .bmpui-ui-icon::before {
+    width: var(--play); height: var(--play); font-size: var(--play);
   }
 
-  /* 10 s jumps: 3.6em boxes, 1.8em glyphs, centred at 25% and 75% of the width, shown with the controls (not at the end) */
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-touch-jumps { display: block; position: absolute; inset: 0; pointer-events: none; }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-touch-jumps > .bmpui-container-wrapper { display: contents; }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-touch-jumps button {
-    position: absolute; top: 50%; left: 25%; width: calc(var(--u) * 3.6); height: calc(var(--u) * 3.6);
-    margin: calc(var(--u) * -1.8) 0 0 calc(var(--u) * -1.8); min-width: 0; padding: 0; border: 0; box-shadow: none;
+  /* 10 s jumps: --jump glyphs in boxes twice their size, centred at 25% and 75% of the width, shown with the controls (not at the end) */
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-touch-jumps { display: block; position: absolute; inset: 0; pointer-events: none; }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-touch-jumps > .bmpui-container-wrapper { display: contents; }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-touch-jumps button {
+    position: absolute; top: 50%; left: 25%; width: calc(var(--jump) * 2); height: calc(var(--jump) * 2);
+    margin: calc(var(--jump) * -1) 0 0 calc(var(--jump) * -1); min-width: 0; padding: 0; border: 0; box-shadow: none;
     background: none !important; background-image: none !important; color: #ddd; cursor: pointer; pointer-events: auto;
     display: none; align-items: center; justify-content: center;
   }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-touch-jumps .bmpui-ui-jumpforwardbutton { left: 75%; }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-touch-jumps button:hover { color: #fff; }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-touch-jumps .bmpui-label { display: none; }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-touch-jumps .bmpui-ui-icon::before {
-    width: calc(var(--u) * 1.8); height: calc(var(--u) * 1.8); font-size: calc(var(--u) * 1.8);
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-touch-jumps .bmpui-ui-jumpforwardbutton { left: 75%; }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-touch-jumps button:hover { color: #fff; }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-touch-jumps .bmpui-label { display: none; }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-touch-jumps .bmpui-ui-icon::before {
+    width: var(--jump); height: var(--jump); font-size: var(--jump);
   }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer:is(.bmpui-controls-shown, .bmpui-player-state-paused, .bmpui-player-state-prepared, .bmpui-player-state-idle)
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer:is(.bmpui-controls-shown, .bmpui-player-state-paused, .bmpui-player-state-prepared, .bmpui-player-state-idle)
     .bmpui-touch-jumps button:not(.bmpui-hidden) { display: flex; }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer.bmpui-player-state-finished .bmpui-touch-jumps button { display: none; }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer.bmpui-player-state-finished .bmpui-touch-jumps button { display: none; }
 
   /* unmute pill: 1.75em x 1.5em, .25em corners, 1em from the top, 1.25em from the right */
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-ui-unmutebutton {
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-unmutebutton {
     top: var(--u); right: calc(var(--u) * 1.25); width: calc(var(--u) * 1.75); height: calc(var(--u) * 1.5); border-radius: calc(var(--u) * .25);
   }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-ui-unmutebutton .bmpui-ui-icon::before { width: var(--u); height: var(--u); font-size: var(--u); }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-unmutebutton .bmpui-ui-icon::before { width: var(--u); height: var(--u); font-size: var(--u); }
 
   /* subtitles and menus above the taller bar (3.36em = track + bar) */
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer:is(.bmpui-controls-shown, .bmpui-player-state-paused, .bmpui-player-state-prepared, .bmpui-player-state-idle, .bmpui-player-state-finished)
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer:is(.bmpui-controls-shown, .bmpui-player-state-paused, .bmpui-player-state-prepared, .bmpui-player-state-idle, .bmpui-player-state-finished)
     .bmpui-ui-subtitle-overlay { bottom: calc(var(--u) * 3.36); }
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-ui-settings-panel { bottom: calc(var(--u) * 3.36 - 4px); }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-settings-panel { bottom: calc(var(--u) * 3.36 - 4px); }
 
   /* up to 400 px: no picture-in-picture, AirPlay or Cast, so the bar fits */
   @container bmp-amp-skin (max-width: 400px) {
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-ui-piptogglebutton,
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-ui-airplaytogglebutton,
-  .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-ui-casttogglebutton { display: none; }
-  }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-piptogglebutton,
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-airplaytogglebutton,
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-casttogglebutton { display: none; }
   }
 
   /* No double-tap zoom on the controls: iOS holds back a second quick tap on a button as a possible zoom

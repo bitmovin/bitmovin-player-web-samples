@@ -65,6 +65,12 @@ createPlayerUI(player, { localization: { language: 'auto', vocabularies: { de: {
 
 The Settings menu has an Autoplay switch. The viewer's choice is saved in `localStorage` under one key for the whole origin. It applies to every player on every page of the site, and it overrides `options.autoplay` from then on. To remove the switch, use `createPlayerUI(player, { autoplaySetting: false })`.
 
+## Touch layout
+
+The skin has two layouts: the desktop bar, and AMP's mobile view, with larger controls and the 10 s jumps beside the big play button. The touch layout shows while the primary pointer is coarse, and changes when the viewer changes input. In Meta Quest Browser it always shows: that browser reports the controllers as a fine pointer and hand tracking as a coarse one. The `bmp-amp-touch` class on the player container selects it.
+
+In both layouts, the volume slider shows where the page can set volume and the device is not Android, as in AMP.
+
 ## Pages with their own layout
 
 Some pages put the player into a layout of their own, for example a box with a WebGL canvas under the player. These options fit the skin into such a layout:
