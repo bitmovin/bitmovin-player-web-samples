@@ -77,7 +77,7 @@ Some pages put the player into a layout of their own, for example a box with a W
 
 | Option              | What it does                                                                                       |
 | ------------------- | -------------------------------------------------------------------------------------------------- |
-| `buttons`           | Bitmovin UI components to add to the control bar, before the fullscreen button.                    |
+| `buttons`           | Bitmovin UI components to add to the control bar, before the fullscreen button. A button with the CSS class `ui-vrtogglebutton` gets AMP's headset icon. |
 | `fullscreen`        | `{ toggle, onChange }`: the page decides what goes fullscreen. The button and the F key call `toggle`. `onChange(listener)` must call `listener(true)` or `listener(false)` on each change. |
 | `interactionSource` | The element whose mouse and touch activity shows the controls. Default: the UI itself.            |
 | `clickToPlay`       | `false`: a click on the video does not play or pause, and the pointer goes through to what is under it. Only the big play button plays. |
