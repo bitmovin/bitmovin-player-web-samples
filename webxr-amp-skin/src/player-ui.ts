@@ -1,6 +1,7 @@
 import { PlayerAPI } from 'bitmovin-player';
 import { Button, ButtonConfig, i18n, UIConfig, UIManager } from 'bitmovin-player-ui';
 import { probeVolumeControl, watchImmersiveSupport } from '@bitmovin/player-integration-webxr/ui';
+import { isMobileBrowser } from './browser';
 import { bindStageFullscreen } from './fullscreen';
 import { AFrameScene } from './scene';
 import { createPlayerUI, SkinOptions } from './skin';
@@ -45,8 +46,8 @@ export function createPlayerUi(player: PlayerAPI, parts: PlayerUiParts): UIManag
 
   hideControlsOnTap(parts.scene, uiManager);
 
-  // iOS and iPadOS leave the volume to the hardware buttons. The skin has no
-  // volume slider on touch devices, so only the note is left.
+  // iOS and iPadOS leave the volume to the hardware buttons. The skin hides
+  // its volume slider there and on Android, so only the note is left.
   probeVolumeControl().then((canSet) => {
     parts.volumeNotice.hidden = canSet;
   });
@@ -58,9 +59,10 @@ export function createPlayerUi(player: PlayerAPI, parts: PlayerUiParts): UIManag
  * Starts a WebXR session. Not the UI's VRToggleButton: that one drives the
  * player's own VR renderer.
  *
- * Shown only where the browser supports immersive VR, such as on Meta Quest or
- * Apple Vision Pro. Elsewhere enterVR() falls back to a fullscreen view, or
- * throws on iOS.
+ * Shown only on headsets, such as Meta Quest or Apple Vision Pro: where the
+ * browser supports immersive VR, but not on phones and tablets. Some of them,
+ * such as Chrome for Android, report support too. Elsewhere enterVR() falls
+ * back to a fullscreen view, or throws on iOS.
  */
 function createVrButton(scene: AFrameScene): Button<ButtonConfig> {
   const button = new Button({
@@ -72,7 +74,9 @@ function createVrButton(scene: AFrameScene): Button<ButtonConfig> {
     // A-Frame owns the WebXR session, so ask the scene, not the player.
     scene.enterVR().catch(console.warn);
   });
-  watchImmersiveSupport((supported) => (supported ? button.show() : button.hide()));
+  if (!isMobileBrowser()) {
+    watchImmersiveSupport((supported) => (supported ? button.show() : button.hide()));
+  }
   return button;
 }
 

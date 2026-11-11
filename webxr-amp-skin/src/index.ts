@@ -72,8 +72,9 @@ async function main(): Promise<void> {
   askForDeviceOrientationOnClick(xr);
 
   // 5. A dial in the upper right of the picture: where the viewer looks,
-  //    relative to the video's front. It hides itself in a VR session.
-  createCompass(scene, { xr });
+  //    relative to the video's front. It hides itself in a VR session. A fixed
+  //    90° wedge looks the same at every window shape.
+  createCompass(scene, { xr, wedgeDeg: 90 });
 
   // 6. The control bar and buffering indicator inside VR sessions.
   showVrUiInSessions(stage, scene, player, xr);

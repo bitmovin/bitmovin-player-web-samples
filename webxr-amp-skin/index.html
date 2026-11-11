@@ -150,13 +150,16 @@
       display: none;
     }
 
-    /* The VR button's icon. The skin's icon font has no headset, so this one is
-       a mask in the text colour, at the size of the skin's other icons. */
-    .bmp-amp-skin.bmp-amp-skin .bmpui-ui-vrtogglebutton .bmpui-ui-icon::before {
-      content: "";
-      background-color: currentColor;
-      -webkit-mask: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Cpath fill-rule=%27evenodd%27 d=%27M3 6h18a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-5.5l-2-3h-3l-2 3H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1zm4.5 4a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zm9 0a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z%27/%3E%3C/svg%3E") center / contain no-repeat;
-      mask: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Cpath fill-rule=%27evenodd%27 d=%27M3 6h18a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-5.5l-2-3h-3l-2 3H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1zm4.5 4a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zm9 0a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z%27/%3E%3C/svg%3E") center / contain no-repeat;
+    /* The VR button's icon: the headset from the skin's icon font. It is
+       1.25em wide, so it needs more than the square box the skin gives the
+       other icons. The selector outweighs the skin's touch-layout rule for
+       that box. */
+    .bmp-amp-skin.bmp-amp-skin .bmpui-ui-vrtogglebutton .bmpui-ui-icon {
+      --glyph: "\e905";
+    }
+
+    .bmp-amp-skin.bmp-amp-skin .bmpui-ui-uicontainer .bmpui-controlbar-bottom .bmpui-ui-vrtogglebutton .bmpui-ui-icon::before {
+      width: auto;
     }
 
     /* Note under the stage. `:not([hidden])`: a `display` here would beat `hidden`. */

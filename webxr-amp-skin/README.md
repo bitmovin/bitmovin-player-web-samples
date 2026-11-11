@@ -13,8 +13,8 @@ For the same page with the default Bitmovin Player UI, see the [WebXR sample](..
   On a touch device, a tap on the picture shows or hides the controls.
 - Fullscreen includes the scene. On iPhone, which has no fullscreen for elements, the video box fills the viewport.
 - A compass in the top right corner shows where you look, relative to the front of the video.
-- Where the browser supports immersive VR, for example on Meta Quest or Apple Vision Pro,
-  a VR button shows before the fullscreen button. In VR, the integration's control bar shows in the scene.
+- On a headset whose browser supports immersive VR, for example Meta Quest or Apple Vision Pro,
+  a VR button shows before the fullscreen button. Phones and tablets do not get it. In VR, the integration's control bar shows in the scene.
   It shows the source's title, description, poster and metadata.
 
 ## Files
