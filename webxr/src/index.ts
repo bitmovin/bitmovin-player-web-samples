@@ -6,7 +6,6 @@ import 'bitmovin-player-ui/dist/css/bitmovinplayer-ui.css';
 import '@bitmovin/player-integration-webxr/ui/themes/bitmovinplayer-ui-webxr-glass-dark.css';
 import { Player, PlayerConfig, SourceConfig } from 'bitmovin-player';
 import { createCompass, watchImmersiveSupport } from '@bitmovin/player-integration-webxr/ui';
-import { isMobileBrowser } from './browser';
 import { setCustomIcons } from './custom-icons';
 import { askForDeviceOrientationOnClick, createIntegration, showVrUiInSessions } from './integration';
 import { createPlayerUi } from './player-ui';
@@ -42,17 +41,13 @@ async function main(): Promise<void> {
   askForDeviceOrientationOnClick(xr);
 
   // 5. A dial in the upper right of the picture: where the viewer looks,
-  //    relative to the video's front. It hides itself in a VR session. A fixed
-  //    90° wedge looks the same at every window shape.
-  createCompass(scene, { xr, wedgeDeg: 90 });
+  //    relative to the video's front. It hides itself in a VR session.
+  createCompass(scene, { xr });
 
-  // 6. Show the VR button only on headsets, such as Meta Quest or Apple Vision
-  //    Pro: where the browser supports immersive VR, but not on phones and
-  //    tablets. Some of them, such as Chrome for Android, report support too.
-  //    Elsewhere enterVR() falls back to a fullscreen view, or throws on iOS.
-  if (!isMobileBrowser()) {
-    watchImmersiveSupport((supported) => playerUi.setVrSupported(supported));
-  }
+  // 6. Show the VR button only where the browser supports immersive VR, such
+  //    as on Meta Quest or Apple Vision Pro. Elsewhere enterVR() falls back to
+  //    a fullscreen view, or throws on iOS.
+  watchImmersiveSupport((supported) => playerUi.setVrSupported(supported));
 
   // 7. The control bar and buffering indicator inside VR sessions.
   showVrUiInSessions(scene, player, xr);
