@@ -402,6 +402,32 @@
     }
   }
 
+  /** How long the seek track stays as a line along the bottom edge after the controls hide (AMP's autoHide). */
+  const IDLE_AFTER_MS = 3000;
+
+  /**
+   * UIContainer with AMP's two-step hide. With a mouse, the button row slides away when the controls hide and the
+   * seek track stays as a thin line along the bottom edge; IDLE_AFTER_MS later the line goes too
+   * (`bmpui-controls-idle`, player.css). The touch layout hides everything at once, as AMP does.
+   */
+  class SkinUIContainer extends pui.UIContainer {
+    /** @param {PlayerAPI} player @param {UIInstanceManager} uimanager */
+    configure(player, uimanager) {
+      super.configure(player, uimanager);
+      const element = this.getDomElement();
+      /** @type {ReturnType<typeof setTimeout> | undefined} */
+      let timer;
+      uimanager.onControlsHide.subscribe(() => {
+        clearTimeout(timer);
+        timer = setTimeout(() => element.addClass('bmpui-controls-idle'), IDLE_AFTER_MS);
+      });
+      uimanager.onControlsShow.subscribe(() => {
+        clearTimeout(timer);
+        element.removeClass('bmpui-controls-idle');
+      });
+    }
+  }
+
   /**
    * Seek bar and time label that move to a seek's target at once. Bitmovin's follow the playback time, which
    * stays at the old position until the seek completes, so a 10 s jump showed only after the new data loaded.
@@ -658,7 +684,7 @@
     // draws them there in any case; without this, Bitmovin would count them as hidden and, on a touch device,
     // swallow the first tap on a control that is on screen.
     const PlayerState = pui.PlayerUtils && pui.PlayerUtils.PlayerState;
-    return new pui.UIContainer(containerConfig(options, {
+    return new SkinUIContainer(containerConfig(options, {
       hideDelay: 3000,
       hidePlayerStateExceptions: PlayerState
         ? [PlayerState.Idle, PlayerState.Prepared, PlayerState.Paused, PlayerState.Finished]
@@ -817,7 +843,7 @@
       ] }),
     ] });
 
-    return new pui.UIContainer(containerConfig(options, {
+    return new SkinUIContainer(containerConfig(options, {
       cssClasses: ['ui-ads'],
       hidePlayerStateExceptions: PlayerState ? [PlayerState.Prepared, PlayerState.Paused, PlayerState.Finished] : undefined,
       components: [
