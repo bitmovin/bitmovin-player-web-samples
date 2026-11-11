@@ -460,10 +460,31 @@
   .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-subtitle-overlay { bottom: 0; }
   .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer:is(.bmpui-controls-shown, .bmpui-player-state-paused, .bmpui-player-state-prepared, .bmpui-player-state-idle, .bmpui-player-state-finished)
     .bmpui-ui-subtitle-overlay { bottom: calc(var(--u) * 3.36); }
-  /* menus in AMP's mobile sizes: .857em menu font, rows at .87 of it with .5em above and below and no side padding */
+  /* menus in AMP's mobile sizes: .857em menu font, rows at .87 of it with .5em above and below and no side padding.
+     On a short player the font, padding and gaps shrink (to 7% / 3% / 3% of the player height); the menu stays in the
+     space above the bar. AMP's fixed max-height leaves ~50px on a phone held upright, so 2 entries scroll there */
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer { container-type: size; }
   .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-settings-panel {
-    --pf: calc(var(--u) * .857); --pr: calc(var(--u) * .857 * .87); bottom: calc(var(--u) * 2.86 + var(--pf) * .714);
+    --pf: clamp(10px, 7cqh, var(--u) * .857); --pr: calc(var(--pf) * .87); --gap: min(var(--u) * .857 * .714, 3cqh);
+    right: var(--gap); bottom: calc(var(--u) * 2.86 + var(--gap)); box-sizing: border-box; padding: min(var(--pf), 3cqh);
+    z-index: 3;  /* above the big play button, 10 s jumps and unmute button, which a menu this tall can cover */
+    max-width: calc(100% - var(--gap) * 2); max-height: calc(100% - var(--u) * 2.86 - var(--gap) * 2);
+    /* Bitmovin animates page changes with an inline width and height measured on a copy of the page. These come out
+       too small for some pages and cut them off, so touch menus size to their page, without the animation */
+    width: auto !important; height: auto !important;
   }
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-settings-panel.bmpui-share-panel {
+    right: calc(30px + var(--gap)); max-width: calc(100% - 30px - var(--gap) * 2);
+  }
+  /* a label wraps when the menu reaches its max-width; values and icons stay on one line */
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-settings-panel .bmpui-ui-settings-panel-item > .bmpui-container-wrapper > .bmpui-ui-label:first-child,
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-settings-panel .bmpui-ui-settings-panel-item > .bmpui-container-wrapper > .bmpui-ui-label:first-child *,
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-shareoption { white-space: normal; min-width: 0; }
+  /* "Style" / "Reset" as high as the page title, not Bitmovin's 24px */
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-settings-panel .bmpui-ui-settings-panel-navigation-text-button { height: auto; min-height: 0; }
+  /* chevrons: the glyph box (4/3 em) is wider than the icon (5/6 em); at the row end it would scroll the menu sideways */
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-settings-panel .bmpui-ui-label-setting-selected-option .bmpui-ui-icon::before,
+  .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-settings-panel .bmpui-ui-settingspanelpagebackbutton .bmpui-ui-icon::before { width: auto; }
   .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-settings-panel .bmpui-ui-settings-panel-item:not(.bmpui-title-item),
   .bmp-amp-skin.bmp-amp-touch .bmpui-ui-uicontainer .bmpui-ui-shareoption { padding: calc(var(--pr) * .5) 0; }
 
