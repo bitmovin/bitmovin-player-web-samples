@@ -19,6 +19,12 @@ const playerConfig: PlayerConfig = {
   key: 'YOUR-PLAYER-LICENSE-KEY',
   // The UI is built in player-ui.ts, with the skin.
   ui: false,
+  // The viewer sees a magnified part of the 360° picture, so a quality that
+  // looks good in a flat player looks soft here. Start at 20 Mbps, not at a
+  // low quality. After the start, adaptation selects the quality as usual.
+  adaptation: {
+    startupBitrate: '20mbps',
+  },
 };
 
 // 360° monoscopic stream. The VR control bar shows the title, description,
