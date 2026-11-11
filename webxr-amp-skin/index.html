@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bitmovin Player - WebXR with AMP-style skin</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <link rel="icon" type="image/png" href="../images/bit-fav.png">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
+
+  <!-- The player UI, the skin and the VR control bar styles, bundled from src/index.ts. -->
+  <link rel="stylesheet" href="dist/index.css">
+
+  <style>
+    /* The page */
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 300;
+      color: #fff;
+      background: linear-gradient(to right, #2c83b9 0%, #1eabe3 100%);
+    }
+
+    #wrapper {
+      min-height: 100vh;
+      padding-bottom: 10em;
+      background: url(../images/logo-bg-demopage.png);
+    }
+
+    #banner {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #fff;
+      background-color: #1eabe3;
+    }
+
+    #banner .logo {
+      width: 25%;
+      min-width: 350px;
+      padding: 10px;
+    }
+
+    #banner h1 {
+      margin: 0;
+      padding: 30px;
+      font-weight: 300;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 800px) {
+      #banner h1 {
+        display: none;
+      }
+    }
+
+    .content {
+      margin-top: 60px;
+    }
+
+    /* The stage: a 16:9 box. The scene's canvas and the player UI fill it,
+       the canvas below the UI. */
+
+    #stage {
+      position: relative;
+      width: 90%;
+      max-width: 900px;
+      aspect-ratio: 16 / 9;
+      margin: 0 auto;
+      overflow: hidden;
+      background: #05070d;
+      box-shadow: 0 0 56px 0 rgba(0, 0, 0, 0.75);
+    }
+
+    #stage:fullscreen {
+      width: 100%;
+      max-width: none;
+      aspect-ratio: auto;
+      box-shadow: none;
+    }
+
+    /* Fullscreen without the Fullscreen API, for example on iPhone: the stage
+       pinned over the viewport, inside the safe area. The shadow fills the
+       area outside it. */
+    #stage.maximized {
+      position: fixed;
+      top: env(safe-area-inset-top);
+      right: env(safe-area-inset-right);
+      bottom: env(safe-area-inset-bottom);
+      left: env(safe-area-inset-left);
+      z-index: 1000;
+      width: auto;
+      max-width: none;
+      margin: 0;
+      aspect-ratio: auto;
+      box-shadow: 0 0 0 100vmax #05070d;
+    }
+
+    html.stage-maximized,
+    html.stage-maximized body {
+      overflow: hidden;
+    }
+
+    #scene,
+    #playerContainer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* The player renders onto the projection surface in the scene, not into its
+       container. The container must not paint over the canvas or take the
+       pointer, else dragging to look around never reaches the scene. */
+    #playerContainer,
+    #playerContainer.bitmovinplayer-container {
+      background: transparent;
+      pointer-events: none;
+    }
+
+    /* In a VR session the page UI is not visible. Remove it, so it does not
+       take clicks meant for the scene. */
+    #stage.vr-active .bmpui-ui-uicontainer {
+      display: none;
+    }
+
+    /* The stock UI gives every element inside its container `pointer-events: auto`.
+       Let drags on the picture through to the canvas. The skin's playback overlay
+       does this itself, with `clickToPlay: false`. The control bar rows, the
+       settings panel and the error overlay keep or get back their events. */
+    .bmpui-ui-controlbar,
+    .bmpui-ui-buffering-overlay,
+    .bmpui-ui-buffering-overlay * {
+      pointer-events: none;
+    }
+
+    .bmpui-ui-settings-panel,
+    .bmpui-ui-errormessage-overlay {
+      pointer-events: auto;
+    }
+
+    /* Picture-in-picture, Cast and AirPlay hand over the decoded frame: for 360°
+       video, the whole flat image, not the view. */
+    .bmpui-ui-piptogglebutton,
+    .bmpui-ui-casttogglebutton,
+    .bmpui-ui-airplaytogglebutton {
+      display: none;
+    }
+
+    /* Note under the stage. `:not([hidden])`: a `display` here would beat `hidden`. */
+    .stageNote:not([hidden]) {
+      display: block;
+      width: 90%;
+      max-width: 900px;
+      margin: 16px auto 0;
+      padding: 12px 16px;
+      border-left: 3px solid #ffd9a8;
+      border-radius: 4px;
+      background: rgba(5, 7, 13, 0.25);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+<div id="wrapper">
+  <div id="banner">
+    <div class="logo"><img src="../images/bitmovin-logo.png" alt="Bitmovin"></div>
+    <h1>Bitmovin Player WebXR</h1>
+  </div>
+
+  <div class="content">
+    <!-- Fullscreen applies to this box, not to the player container, so the canvas comes along. -->
+    <div id="stage">
+      <!-- `embedded` keeps A-Frame from styling the canvas as a fullscreen overlay. -->
+      <a-scene id="scene" embedded renderer="antialias: true; colorManagement: true"
+               loading-screen="backgroundColor: #05070d">
+        <!-- Camera at the origin, inside the projection surface. -->
+        <a-camera id="cam" position="0 0 0" wasd-controls-enabled="false"></a-camera>
+      </a-scene>
+
+      <!-- Over the canvas: the player's pixels go to the scene, but its UI is DOM. -->
+      <div id="playerContainer"></div>
+    </div>
+
+    <p id="volumeNotice" class="stageNote" hidden>
+      This device does not let web pages set the volume, so the player can only mute and unmute.
+      Use the volume buttons on the device.
+    </p>
+  </div>
+</div>
+
+<script type="module" src="dist/index.js"></script>
+</body>
+</html>
