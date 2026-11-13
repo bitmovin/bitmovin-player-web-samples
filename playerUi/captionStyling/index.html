@@ -22,7 +22,8 @@
     bottom: calc(env(safe-area-inset-bottom, 0px) + var(--control-bar-height)) !important;
     margin-bottom: 0 !important;
   }
-  /* Place every caption region (CEA-608, WebVTT and TTML) bottom-left. Change inset and max-width to fit your video. */
+  /* Place every caption region (CEA-608, WebVTT and TTML) bottom-left. Change inset and max-width to fit your video.
+     Streams that show captions in several regions at once will have them overlap. */
   .bottom-left-captions .bmpui-subtitle-region-container {
     position: absolute !important;
     inset: auto auto 1em 4% !important;
@@ -31,12 +32,17 @@
     max-width: 55% !important;
     text-align: left !important;
   }
-  /* Ignore the line, position, size and align settings of WebVTT cues. */
-  .bottom-left-captions .bmpui-subtitle-vtt-cue {
+  /* Ignore the line, position, size and align settings of WebVTT cues, and stack cues shown at the same time. */
+  .bottom-left-captions .bmpui-subtitle-vtt-cue,
+  .bottom-left-captions .bmpui-subtitle-vtt-region-container .bmpui-ui-subtitle-label {
+    display: flex !important;
     position: relative !important;
     inset: auto !important;
     width: auto !important;
     text-align: left !important;
+  }
+  .bottom-left-captions .bmpui-subtitle-region-container .bmpui-ui-label-text {
+    margin-inline: 0 !important;
   }
 </style>
 
@@ -86,7 +92,8 @@
 <script>
   function buildUI(player, { overrideStyle, overridePosition }) {
     const uiManager = bitmovin.playerui.UIFactory.buildUI(player, {
-      // Don't restore subtitle settings a viewer saved earlier, which would replace the style below.
+      // Turns off saved UI settings, so subtitle settings a viewer chose earlier don't replace the style below.
+      // Remove it if you want to keep viewers' own choices.
       disableStorageApi: true,
       componentConfigOverrides: {
         SubtitleOverlay: {
@@ -98,6 +105,7 @@
     });
 
     // Caption style for every track: white text on a solid black box at 100% size.
+    // Overriding colours embedded in the stream needs Player UI 4.23.1 or later.
     if (overrideStyle) {
       const settings = uiManager.getSubtitleSettingsManager();
       settings.fontColor.value = 'white';
@@ -115,7 +123,7 @@
 
   function enableCaptionsOnce(player) {
     let enabled = false;
-    player.on(bitmovin.player.PlayerEvent.SourceLoaded, () => { enabled = false; });
+    player.on(bitmovin.player.PlayerEvent.SourceUnloaded, () => { enabled = false; });
     player.on(bitmovin.player.PlayerEvent.SubtitleAdded, () => {
       const captions = player.subtitles.list().find(track => track.kind === 'captions');
       if (!enabled && captions) {
