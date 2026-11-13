@@ -121,18 +121,7 @@
     });
   }
 
-  const player = new bitmovin.player.Player(document.getElementById('player'), {
-    key: 'YOUR-PLAYER-LICENSE-KEY',
-    ui: false,
-    playback: { autoplay: true, muted: true }
-  });
-
-  let uiManager = buildUI(player, { overrideStyle: true, overridePosition: true });
-  enableCaptionsOnce(player);
-
-  player.load({ hls: 'https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_ts/master.m3u8' });
-
-  // Demo page only: test streams and buttons
+  // Public test streams with CEA-608 captions, and the overrides turned on at start
   const STREAMS = [
     { title: 'HLS - CEA-608 + WebVTT', hls: 'https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_ts/master.m3u8' },
     { title: 'DASH - CEA-608 VOD', dash: 'https://livesim2.dashif.org/vod/testpic_2s/cea608.mpd' },
@@ -140,6 +129,18 @@
   ];
   const overrides = { overrideStyle: true, overridePosition: true };
 
+  const player = new bitmovin.player.Player(document.getElementById('player'), {
+    key: 'YOUR-PLAYER-LICENSE-KEY',
+    ui: false,
+    playback: { autoplay: true, muted: true }
+  });
+
+  let uiManager = buildUI(player, overrides);
+  enableCaptionsOnce(player);
+
+  player.load(STREAMS[0]);
+
+  // Demo page only: buttons that switch streams and rebuild the UI
   function rebuildUI() {
     uiManager.release();
     uiManager = buildUI(player, overrides);
