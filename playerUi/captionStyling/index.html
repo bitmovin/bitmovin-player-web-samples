@@ -13,12 +13,16 @@
 
 <style>
   .bottom-left-captions .bmpui-ui-subtitle-overlay {
-    bottom: 0 !important;
+    bottom: env(safe-area-inset-bottom, 0px) !important;
+    margin-bottom: 0 !important;
+  }
+  .bottom-left-captions .bmpui-ui-subtitle-overlay.bmpui-controlbar-visible {
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 5em) !important;
   }
   .bottom-left-captions .bmpui-subtitle-vtt-cue-container,
   .bottom-left-captions .bmpui-subtitle-position-default {
     position: absolute !important;
-    inset: auto auto 10% 4% !important;
+    inset: auto auto 1em 4% !important;
     max-width: 55% !important;
     text-align: left !important;
   }
