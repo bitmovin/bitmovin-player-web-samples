@@ -12,12 +12,12 @@
 <script src="https://cdn.bitmovin.com/player/web/8/bitmovinplayer-ui.js"></script>
 
 <style>
-  .bottom-left-captions .bmpui-ui-subtitle-overlay {
-    bottom: env(safe-area-inset-bottom, 0px) !important;
-    margin-bottom: 0 !important;
+  .bottom-left-captions {
+    --control-bar-height: 5em;
   }
-  .bottom-left-captions .bmpui-ui-subtitle-overlay.bmpui-controlbar-visible {
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 5em) !important;
+  .bottom-left-captions .bmpui-ui-subtitle-overlay {
+    bottom: calc(env(safe-area-inset-bottom, 0px) + var(--control-bar-height)) !important;
+    margin-bottom: 0 !important;
   }
   .bottom-left-captions .bmpui-subtitle-vtt-cue-container,
   .bottom-left-captions .bmpui-subtitle-position-default {
