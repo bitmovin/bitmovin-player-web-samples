@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
 <link rel="icon" type="image/png" href="../../images/bit-fav.png">
 
+<!-- Needs Player UI 4.23.1 or later -->
 <script src="https://cdn.bitmovin.com/player/web/8/bitmovinplayer.js"></script>
 <link rel="stylesheet" href="https://cdn.bitmovin.com/player/web/8/bitmovinplayer-ui.css">
 <script src="https://cdn.bitmovin.com/player/web/8/bitmovinplayer-ui.js"></script>
@@ -17,10 +18,13 @@
   .bottom-left-captions {
     --control-bar-height: 5em;
   }
-  /* Keep captions above the control bar and the device safe area, without moving when the bar shows. */
+  /* Keep captions near the bottom, above the device safe area, and move them above the control bar while it shows. */
   .bottom-left-captions .bmpui-ui-subtitle-overlay {
-    bottom: calc(env(safe-area-inset-bottom, 0px) + var(--control-bar-height)) !important;
+    bottom: env(safe-area-inset-bottom, 0px) !important;
     margin-bottom: 0 !important;
+  }
+  .bottom-left-captions .bmpui-ui-subtitle-overlay.bmpui-controlbar-visible {
+    bottom: calc(env(safe-area-inset-bottom, 0px) + var(--control-bar-height)) !important;
   }
   /* Place every caption region (CEA-608, WebVTT and TTML) bottom-left. Change inset and max-width to fit your video.
      Needs enableCea608CaptionPositioning: false, otherwise CEA-608 rows overlap.
@@ -40,6 +44,10 @@
     position: relative !important;
     inset: auto !important;
     width: auto !important;
+    height: auto !important;
+    transform: none !important;
+    writing-mode: horizontal-tb !important;
+    justify-content: flex-start !important;
     text-align: left !important;
   }
   .bottom-left-captions .bmpui-subtitle-region-container .bmpui-ui-label-text {
@@ -93,7 +101,7 @@
 <script>
   function buildUI(player, { overrideStyle, overridePosition }) {
     const uiManager = bitmovin.playerui.UIFactory.buildUI(player, {
-      // Turns off saved UI settings, so subtitle settings saved earlier don't replace the style below.
+      // Stops the style below from being saved over viewers' own subtitle settings. This turns off all UI storage.
       disableStorageApi: true,
       componentConfigOverrides: {
         SubtitleOverlay: {
@@ -106,7 +114,6 @@
     });
 
     // Caption style for every track: white text on a solid black box at 100% size.
-    // Overriding styling embedded in the stream needs Player UI 4.23.1 or later.
     if (overrideStyle) {
       const settings = uiManager.getSubtitleSettingsManager();
       settings.fontColor.value = 'white';
@@ -129,7 +136,7 @@
     player.on(bitmovin.player.PlayerEvent.SubtitleAdded, () => {
       const captions = player.subtitles.list().find(track => track.kind === 'captions');
       if (!enabled && captions) {
-        player.subtitles.enable(captions.id);
+        player.subtitles.enable(captions.id, true);
         enabled = true;
       }
     });
