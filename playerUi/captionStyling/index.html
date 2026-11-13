@@ -139,8 +139,12 @@
   function onButtonClick(groupId, callback) {
     const buttons = document.querySelectorAll(`#${groupId} button`);
     buttons.forEach((button, index) => {
+      button.setAttribute('aria-pressed', button.classList.contains('active'));
       button.onclick = () => {
-        buttons.forEach(other => other.classList.toggle('active', other === button));
+        buttons.forEach(other => {
+          other.classList.toggle('active', other === button);
+          other.setAttribute('aria-pressed', other === button);
+        });
         callback(index);
       };
     });
