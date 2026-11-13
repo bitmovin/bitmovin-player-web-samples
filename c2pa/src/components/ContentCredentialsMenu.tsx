@@ -1,32 +1,31 @@
-import { type ManifestStore } from '@contentauth/c2pa-web';
+import { type C2paPlaybackState } from '../c2pa/C2paValidator';
 import './ContentCredentialsMenu.css';
 
 interface ContentCredentialsMenuProps {
-  manifest: ManifestStore | undefined;
+  state: C2paPlaybackState | undefined;
   onClose: () => void;
 }
 
-export function ContentCredentialsMenu({ manifest, onClose }: ContentCredentialsMenuProps) {
-  if (!manifest) return null;
+export function ContentCredentialsMenu({ state, onClose }: ContentCredentialsMenuProps) {
+  const activeManifest = state?.manifest;
 
-  const activeManifestLabel = manifest.active_manifest;
-  const activeManifest = activeManifestLabel ? manifest.manifests[activeManifestLabel] : undefined;
-
-  if (!activeManifest) return null;
+  if (!state || !activeManifest) return null;
 
   // Extract relevant data
-  const issuer = activeManifest.signature_info?.issuer || 'Unknown';
-  const issueDate = activeManifest.signature_info?.time
-    ? new Date(activeManifest.signature_info.time).toLocaleDateString('en-US', {
+  const issuer = activeManifest.signatureInfo.issuer || 'Unknown';
+  // Note: the library only exposes the certificate validity start, not the
+  // actual signing time, so this is shown as "Certificate valid from"
+  const certValidFrom = activeManifest.signatureInfo.certNotBefore
+    ? new Date(activeManifest.signatureInfo.certNotBefore).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'short',
         day: 'numeric',
       })
-    : 'Unknown';
+    : '';
 
-  // Extract app/device used from claim_generator
-  const appUsed = activeManifest.claim_generator
-    ? activeManifest.claim_generator.split(' ')[0].replace(/_/g, ' ')
+  // Extract app/device used from claimGenerator
+  const appUsed = activeManifest.claimGenerator
+    ? activeManifest.claimGenerator.split(' ')[0].replace(/_/g, ' ')
     : 'Unknown';
 
   // Extract author/name from CreativeWork assertion
@@ -75,9 +74,42 @@ export function ContentCredentialsMenu({ manifest, onClose }: ContentCredentials
     }
   }
 
+  // Extract performed actions from the c2pa.actions assertion (v1 or v2)
+  const actionsAssertion = activeManifest.assertions.find(a => a.label.startsWith('c2pa.actions'));
+  let actions: string[] = [];
+
+  if (actionsAssertion && typeof actionsAssertion.data === 'object' && actionsAssertion.data) {
+    const data = actionsAssertion.data as { actions?: Array<{ action?: string }> };
+    actions = (data.actions ?? [])
+      .map(a => a.action)
+      .filter((a): a is string => !!a)
+      .map(a => {
+        const name = a.replace(/^c2pa\./, '').replace(/_/g, ' ');
+        return name.charAt(0).toUpperCase() + name.slice(1);
+      });
+  }
+
+  // Extract the BMFF hash binding version from the assertion label, e.g.
+  // c2pa.hash.bmff.v3 (streaming profile) vs the legacy v2 the library
+  // cannot validate segment-wise
+  const hashBinding = activeManifest.assertions.find(a => a.label.startsWith('c2pa.hash.bmff'))?.label ?? '';
+  const hashBindingUnsupported = hashBinding !== '' && state.mode === 'Init only';
+
   // Get validation status
-  const validationStatus =
-    manifest.validation_state === 'Valid' || manifest.validation_state === 'Trusted' ? 'Passed' : 'Failed';
+  const validationStatus = state.isValid ? 'Passed' : 'Failed';
+
+  // Describe the sequence continuity result for Live VSI streams
+  let sequenceInfo = '';
+  if (state.sequenceNumber !== undefined && state.sequenceResult) {
+    const reason = state.sequenceResult.reason;
+    if (reason === 'gap_detected') {
+      sequenceInfo = `#${state.sequenceNumber} (gap detected: missing #${state.sequenceResult.missingFrom}–#${state.sequenceResult.missingTo})`;
+    } else if (reason === 'valid') {
+      sequenceInfo = `#${state.sequenceNumber}`;
+    } else {
+      sequenceInfo = `#${state.sequenceNumber} (${reason.replace(/_/g, ' ')})`;
+    }
+  }
 
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
@@ -94,9 +126,7 @@ export function ContentCredentialsMenu({ manifest, onClose }: ContentCredentials
 
         <div className="cc-menu-header">
           <h2>Content Credentials</h2>
-          <p className="cc-menu-issuer">
-            Issued by {issuer} on {issueDate}
-          </p>
+          <p className="cc-menu-issuer">Issued by {issuer}</p>
         </div>
 
         <div className="cc-menu-content">
@@ -104,6 +134,12 @@ export function ContentCredentialsMenu({ manifest, onClose }: ContentCredentials
             <div className="cc-menu-info-item">
               <strong>App or device used</strong> {appUsed}
             </div>
+
+            {certValidFrom && (
+              <div className="cc-menu-info-item">
+                <strong>Certificate valid from</strong> {certValidFrom}
+              </div>
+            )}
 
             {authorName && (
               <div className="cc-menu-info-item">
@@ -143,9 +179,38 @@ export function ContentCredentialsMenu({ manifest, onClose }: ContentCredentials
               </div>
             )}
 
+            {actions.length > 0 && (
+              <div className="cc-menu-info-item">
+                <strong>Actions</strong> {actions.join(', ')}
+              </div>
+            )}
+
+            <div className="cc-menu-info-item">
+              <strong>Validation Method</strong> {state.mode}
+            </div>
+
+            {hashBinding && (
+              <div className="cc-menu-info-item">
+                <strong>Hash Binding</strong> {hashBinding}
+                {hashBindingUnsupported && ' (segment validation not supported)'}
+              </div>
+            )}
+
+            {sequenceInfo && (
+              <div className="cc-menu-info-item">
+                <strong>Segment Sequence</strong> {sequenceInfo}
+              </div>
+            )}
+
             <div className="cc-menu-info-item">
               <strong>Current Validation Status</strong> {validationStatus}
             </div>
+
+            {state.errorCodes.length > 0 && (
+              <div className="cc-menu-info-item">
+                <strong>Validation Errors</strong> {state.errorCodes.join(', ')}
+              </div>
+            )}
           </div>
 
           <button className="cc-menu-inspect-btn" onClick={onClose}>
