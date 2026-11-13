@@ -23,6 +23,7 @@
     margin-bottom: 0 !important;
   }
   /* Place every caption region (CEA-608, WebVTT and TTML) bottom-left. Change inset and max-width to fit your video.
+     Needs enableCea608CaptionPositioning: false, otherwise CEA-608 rows overlap.
      Streams that show captions in several regions at once will have them overlap. */
   .bottom-left-captions .bmpui-subtitle-region-container {
     position: absolute !important;
@@ -92,20 +93,20 @@
 <script>
   function buildUI(player, { overrideStyle, overridePosition }) {
     const uiManager = bitmovin.playerui.UIFactory.buildUI(player, {
-      // Turns off saved UI settings, so subtitle settings a viewer chose earlier don't replace the style below.
-      // Remove it if you want to keep viewers' own choices.
+      // Turns off saved UI settings, so subtitle settings saved earlier don't replace the style below.
       disableStorageApi: true,
       componentConfigOverrides: {
         SubtitleOverlay: {
-          // false = ignore the colours and positions embedded in CEA-608 captions.
+          // false = drop the CEA-608 monospace, uppercase font. Colours are replaced by the settings below.
           enableCea608CaptionFormatting: !overrideStyle,
+          // false = ignore the CEA-608 row and column, so the position CSS applies.
           enableCea608CaptionPositioning: !overridePosition
         }
       }
     });
 
     // Caption style for every track: white text on a solid black box at 100% size.
-    // Overriding colours embedded in the stream needs Player UI 4.23.1 or later.
+    // Overriding styling embedded in the stream needs Player UI 4.23.1 or later.
     if (overrideStyle) {
       const settings = uiManager.getSubtitleSettingsManager();
       settings.fontColor.value = 'white';
@@ -121,6 +122,7 @@
     return uiManager;
   }
 
+  // Optional, not part of the styling: turns on the CEA-608 captions once per stream.
   function enableCaptionsOnce(player) {
     let enabled = false;
     player.on(bitmovin.player.PlayerEvent.SourceUnloaded, () => { enabled = false; });
