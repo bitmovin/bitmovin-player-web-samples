@@ -93,15 +93,16 @@
     return uiManager;
   }
 
-  function enableFirstCaptionTrack(player) {
-    const enable = () => {
-      const tracks = player.subtitles.list();
-      if (tracks.length && !tracks.some(track => track.enabled)) {
-        player.subtitles.enable(tracks[0].id);
+  function enableCaptionsOnce(player) {
+    let enabled = false;
+    player.on(bitmovin.player.PlayerEvent.SourceLoaded, () => { enabled = false; });
+    player.on(bitmovin.player.PlayerEvent.SubtitleAdded, () => {
+      const captions = player.subtitles.list().find(track => track.kind === 'captions');
+      if (!enabled && captions) {
+        player.subtitles.enable(captions.id);
+        enabled = true;
       }
-    };
-    player.on(bitmovin.player.PlayerEvent.Playing, enable);
-    player.on(bitmovin.player.PlayerEvent.SubtitleAdded, enable);
+    });
   }
 
   const player = new bitmovin.player.Player(document.getElementById('player'), {
@@ -111,7 +112,7 @@
   });
 
   let uiManager = buildUI(player, { overrideStyle: true, overridePosition: true });
-  enableFirstCaptionTrack(player);
+  enableCaptionsOnce(player);
 
   player.load({ hls: 'https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_ts/master.m3u8' });
 
