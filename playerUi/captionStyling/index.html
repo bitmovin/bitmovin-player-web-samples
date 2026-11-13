@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="https://cdn.bitmovin.com/player/web/8/bitmovinplayer-ui.css">
 <script src="https://cdn.bitmovin.com/player/web/8/bitmovinplayer-ui.js"></script>
 
-<!-- Caption position: copy this block -->
+<!-- Caption position -->
 <style>
   /* Active while "Bottom left" is selected; buildUI() toggles the class on the player container. */
   .bottom-left-captions {
@@ -22,21 +22,25 @@
     bottom: calc(env(safe-area-inset-bottom, 0px) + var(--control-bar-height)) !important;
     margin-bottom: 0 !important;
   }
-  /* Place the caption box bottom-left. Change inset and max-width to fit your video. */
-  .bottom-left-captions .bmpui-subtitle-vtt-cue-container,
-  .bottom-left-captions .bmpui-subtitle-position-default {
+  /* Place every caption region (CEA-608, WebVTT and TTML) bottom-left. Change inset and max-width to fit your video. */
+  .bottom-left-captions .bmpui-subtitle-region-container {
     position: absolute !important;
     inset: auto auto 1em 4% !important;
+    width: auto !important;
+    height: auto !important;
     max-width: 55% !important;
     text-align: left !important;
   }
-  /* Keep WebVTT cues inside the caption box instead of their own position. */
+  /* Ignore the line, position, size and align settings of WebVTT cues. */
   .bottom-left-captions .bmpui-subtitle-vtt-cue {
     position: relative !important;
+    inset: auto !important;
+    width: auto !important;
+    text-align: left !important;
   }
 </style>
 
-<!-- Demo page styles: not needed in your app -->
+<!-- Demo page styles -->
 <style>
   body {
     margin: 0 0 10em;
