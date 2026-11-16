@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Bitmovin Demo - Caption Styling</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
+<link rel="icon" type="image/png" href="../../images/bit-fav.png">
+
+<!-- Needs Player UI 4.23.1 or later -->
+<script src="https://cdn.bitmovin.com/player/web/8/bitmovinplayer.js"></script>
+<link rel="stylesheet" href="https://cdn.bitmovin.com/player/web/8/bitmovinplayer-ui.css">
+<script src="https://cdn.bitmovin.com/player/web/8/bitmovinplayer-ui.js"></script>
+
+<!-- Caption position -->
+<style>
+  /* Active while "Bottom left" is selected; buildUI() toggles the class on the player container. */
+  .bottom-left-captions {
+    --control-bar-height: 5em;
+  }
+  /* Keep captions near the bottom, above the device safe area, and move them above the control bar while it shows. */
+  .bottom-left-captions .bmpui-ui-subtitle-overlay {
+    bottom: env(safe-area-inset-bottom, 0px) !important;
+    margin-bottom: 0 !important;
+  }
+  .bottom-left-captions .bmpui-ui-subtitle-overlay.bmpui-controlbar-visible {
+    bottom: calc(env(safe-area-inset-bottom, 0px) + var(--control-bar-height)) !important;
+  }
+  /* Place every caption region (CEA-608, WebVTT and TTML) bottom-left. Change inset and max-width to fit your video.
+     Needs enableCea608CaptionPositioning: false, otherwise CEA-608 rows overlap.
+     Streams that show captions in several regions at once will have them overlap. */
+  .bottom-left-captions .bmpui-subtitle-region-container {
+    position: absolute !important;
+    inset: auto auto 1em 4% !important;
+    width: auto !important;
+    height: auto !important;
+    max-width: 55% !important;
+    text-align: left !important;
+  }
+  /* Ignore the line, position, size and align settings of WebVTT cues, and stack cues shown at the same time. */
+  .bottom-left-captions .bmpui-subtitle-vtt-cue,
+  .bottom-left-captions .bmpui-subtitle-vtt-region-container .bmpui-ui-subtitle-label {
+    display: flex !important;
+    position: relative !important;
+    inset: auto !important;
+    width: auto !important;
+    height: auto !important;
+    transform: none !important;
+    writing-mode: horizontal-tb !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+  }
+  .bottom-left-captions .bmpui-subtitle-region-container .bmpui-ui-label-text {
+    margin-inline: 0 !important;
+  }
+</style>
+
+<!-- Demo page styles -->
+<style>
+  body {
+    margin: 0 0 10em;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    color: #fff;
+    background: linear-gradient(to right, #2c83b9, #1eabe3) fixed;
+  }
+  h1, h2, p { font-weight: 300; text-align: center; margin: 40px; }
+  #banner { margin: 0; padding: 30px; border-bottom: 1px solid #fff; background: #1eabe3; }
+  #player { max-width: 900px; width: 90%; margin: auto; box-shadow: 0 0 56px rgba(0, 0, 0, 0.75); }
+  .buttons { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; margin: 20px; }
+  .buttons span { min-width: 140px; text-align: right; }
+  .buttons button { font: inherit; padding: 10px 18px; border: 1px solid #fff; border-radius: 4px; background: none; color: #fff; cursor: pointer; }
+  .buttons button.active, .buttons button:hover { background: #fff; color: #2c83b9; }
+  #url { font: 12px monospace; word-break: break-all; margin: 20px; }
+  a { color: #97d9ef; font-weight: 400; text-decoration: none; }
+  a:hover { color: #fff; }
+</style>
+</head>
+
+<body>
+<h1 id="banner">Bitmovin HTML5 Player</h1>
+<h1>Caption Styling</h1>
+<h2>Override the styling and positioning of closed captions.</h2>
+
+<div class="buttons" id="streams"></div>
+<div id="player"></div>
+<p id="url"></p>
+<div class="buttons" id="style">
+  <span>Caption style:</span>
+  <button class="active">Uniform</button>
+  <button>Stream default</button>
+</div>
+<div class="buttons" id="position">
+  <span>Caption position:</span>
+  <button class="active">Bottom left</button>
+  <button>Stream default</button>
+</div>
+<p>For more information, have a look at our
+  <a href="https://developer.bitmovin.com/playback/docs/subtitles-captions" target="_blank">subtitles &amp; captions documentation</a>.</p>
+
+<script>
+  function buildUI(player, { overrideStyle, overridePosition }) {
+    const uiManager = bitmovin.playerui.UIFactory.buildUI(player, {
+      // Stops the style below from being saved over viewers' own subtitle settings. This turns off all UI storage.
+      disableStorageApi: true,
+      componentConfigOverrides: {
+        SubtitleOverlay: {
+          // false = drop the CEA-608 monospace, uppercase font. Colours are replaced by the settings below.
+          enableCea608CaptionFormatting: !overrideStyle,
+          // false = ignore the CEA-608 row and column, so the position CSS applies.
+          enableCea608CaptionPositioning: !overridePosition
+        }
+      }
+    });
+
+    // Caption style for every track: white text on a solid black box at 100% size.
+    if (overrideStyle) {
+      const settings = uiManager.getSubtitleSettingsManager();
+      settings.fontColor.value = 'white';
+      settings.fontOpacity.value = '100';
+      settings.backgroundColor.value = 'black';
+      settings.backgroundOpacity.value = '100';
+      settings.fontSize.value = '100';
+    }
+
+    // Caption position: turns the .bottom-left-captions CSS on or off.
+    player.getContainer().classList.toggle('bottom-left-captions', overridePosition);
+
+    return uiManager;
+  }
+
+  // Optional, not part of the styling: turns on the CEA-608 captions once per stream.
+  function enableCaptionsOnce(player) {
+    let enabled = false;
+    player.on(bitmovin.player.PlayerEvent.SourceUnloaded, () => { enabled = false; });
+    player.on(bitmovin.player.PlayerEvent.SubtitleAdded, () => {
+      const captions = player.subtitles.list().find(track => track.kind === 'captions');
+      if (!enabled && captions) {
+        player.subtitles.enable(captions.id, true);
+        enabled = true;
+      }
+    });
+  }
+
+  // Public test streams with CEA-608 captions, and the overrides turned on at start
+  const STREAMS = [
+    { title: 'HLS - CEA-608 + WebVTT', hls: 'https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_ts/master.m3u8' },
+    { title: 'DASH - CEA-608 VOD', dash: 'https://livesim2.dashif.org/vod/testpic_2s/cea608.mpd' },
+    { title: 'DASH - CEA-608 Live', dash: 'https://livesim2.dashif.org/livesim2/testpic_2s/cea608.mpd' }
+  ];
+  const overrides = { overrideStyle: true, overridePosition: true };
+
+  const player = new bitmovin.player.Player(document.getElementById('player'), {
+    key: 'YOUR-PLAYER-LICENSE-KEY',
+    ui: false,
+    playback: { autoplay: true, muted: true }
+  });
+
+  let uiManager = buildUI(player, overrides);
+  enableCaptionsOnce(player);
+
+  player.load(STREAMS[0]);
+
+  // Demo page only: buttons that switch streams and rebuild the UI
+  function rebuildUI() {
+    uiManager.release();
+    uiManager = buildUI(player, overrides);
+  }
+
+  function showStream(stream) {
+    document.getElementById('url').textContent = stream.hls || stream.dash;
+  }
+
+  function onButtonClick(groupId, callback) {
+    const buttons = document.querySelectorAll(`#${groupId} button`);
+    buttons.forEach((button, index) => {
+      button.setAttribute('aria-pressed', button.classList.contains('active'));
+      button.onclick = () => {
+        buttons.forEach(other => {
+          other.classList.toggle('active', other === button);
+          other.setAttribute('aria-pressed', other === button);
+        });
+        callback(index);
+      };
+    });
+  }
+
+  document.getElementById('streams').innerHTML = STREAMS.map(stream => `<button>${stream.title}</button>`).join('');
+  document.querySelector('#streams button').classList.add('active');
+  showStream(STREAMS[0]);
+
+  onButtonClick('streams', index => { showStream(STREAMS[index]); player.load(STREAMS[index]); });
+  onButtonClick('style', index => { overrides.overrideStyle = index === 0; rebuildUI(); });
+  onButtonClick('position', index => { overrides.overridePosition = index === 0; rebuildUI(); });
+</script>
+</body>
+</html>

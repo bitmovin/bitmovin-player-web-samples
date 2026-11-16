@@ -53,6 +53,7 @@ These examples are build around the Bitmovin Adaptive Streaming Player, demonstr
   * [labeling](playerUi/labeling.html): Change Languages, Quality and Subtitles labels
   * [customForwardRewindButtons](playerUi/customForwardRewindButtons.html): Custom Forward & Rewind Buttons
   * [playbackControlsUiWithImaAds](playerUi/playbackControlsUiWithImaAds.html) : Adding playback controls UI during Ads playback with IMA SDK
+  * [captionStyling](playerUi/captionStyling/index.html): Override the styling and positioning of closed captions
   * [**TV UI**](playerUi/tv)
     * [disney](playerUi/tv/disney/index.html): Customized TV UI in the style of Disney Plus
       <img src="images/tv-ui-disney.png" width="66%"><br>
