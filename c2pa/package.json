@@ -13,7 +13,7 @@
     "@svta/cml-c2pa": "^1.1.2",
     "@svta/cml-iso-bmff": "^1.0.5",
     "@svta/cml-utils": "^1.6.0",
-    "bitmovin-player": "^8.227.0",
+    "bitmovin-player": "^8.285.0",
     "bitmovin-player-react": "^1.0.3",
     "bitmovin-player-ui": "^3.102.0",
     "cbor-x": "^1.6.5",
