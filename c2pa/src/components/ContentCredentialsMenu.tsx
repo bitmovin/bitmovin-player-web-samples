@@ -98,9 +98,12 @@ export function ContentCredentialsMenu({ state, onClose }: ContentCredentialsMen
   // Get validation status
   const validationStatus = state.isValid ? 'Passed' : 'Failed';
 
-  // Describe the sequence continuity result for Live VSI streams
+  // Describe the segment sequence of live streams, including the sequence
+  // continuity result for Live VSI streams
   let sequenceInfo = '';
-  if (state.sequenceNumber !== undefined && state.sequenceResult) {
+  if (state.sequenceNumber !== undefined && !state.sequenceResult) {
+    sequenceInfo = `#${state.sequenceNumber}`;
+  } else if (state.sequenceNumber !== undefined && state.sequenceResult) {
     const reason = state.sequenceResult.reason;
     if (reason === 'gap_detected') {
       sequenceInfo = `#${state.sequenceNumber} (gap detected: missing #${state.sequenceResult.missingFrom}–#${state.sequenceResult.missingTo})`;
@@ -193,6 +196,12 @@ export function ContentCredentialsMenu({ state, onClose }: ContentCredentialsMen
               <div className="cc-menu-info-item">
                 <strong>Hash Binding</strong> {hashBinding}
                 {hashBindingUnsupported && ' (segment validation not supported)'}
+              </div>
+            )}
+
+            {state.streamId && (
+              <div className="cc-menu-info-item">
+                <strong>Stream ID</strong> {state.streamId}
               </div>
             )}
 
